@@ -3,1959 +3,649 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Les Mousquetaires Brignoles - Portail QHSE & Logistique</title>
+    <title>Les Mousquetaires - Portail QHSE 2026</title>
     
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Polices modernes -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Poppins:wght@500;700;900&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome 6 -->
+    <!-- Icônes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- Chart.js -->
+    <!-- Moteurs JS (Graphiques, 3D, Animation) -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 
     <style>
-        /* ============================================
-           VARIABLES CSS GLOBALES
-        ============================================ */
+        /* ================= VARIABLES ================= */
         :root {
-            --rouge-cavalier: #820720;
-            --rouge-mousquetaires: #E2001A;
-            --rouge-light: #ff4757;
-            --noir: #0a0a0a;
-            --noir-85: #1a1a1a;
-            --noir-65: #404040;
-            --noir-45: #737373;
-            --blanc: #ffffff;
-            --sable: #F5F3EF;
-            --sable-25: #FAFAFA;
-            --acier: #E5E7EB;
-            --acier-45: #F3F4F6;
-            
-            --success: #10B981;
-            --success-light: #D1FAE5;
-            --warning: #F59E0B;
-            --warning-light: #FEF3C7;
-            --danger: #EF4444;
-            --danger-light: #FEE2E2;
-            --info: #3B82F6;
-            --info-light: #DBEAFE;
-            
-            --gradient-primary: linear-gradient(135deg, #E2001A 0%, #820720 100%);
-            --gradient-dark: linear-gradient(180deg, #1a1a1a 0%, #2d2d2d 100%);
-            
-            --font-primary: 'Inter', sans-serif;
-            --font-heading: 'Poppins', sans-serif;
-            
-            --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
-            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
-            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1);
-            --shadow-2xl: 0 25px 50px -12px rgba(0,0,0,0.25);
-            
+            --primary: #E2001A; /* Rouge Mousquetaires */
+            --primary-dark: #820720;
+            --dark: #0a0a0a;
+            --dark-light: #1a1a1a;
+            --gray: #f3f4f6;
+            --text: #1f2937;
+            --white: #ffffff;
             --sidebar-width: 280px;
-            --topbar-height: 70px;
-            
-            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-bounce: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            --header-height: 80px;
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* ============================================
-           RESET & BASE
-        ============================================ */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: var(--font-primary);
-            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
-            color: var(--noir);
-            line-height: 1.6;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-            font-family: var(--font-heading);
-            font-weight: 700;
-            line-height: 1.2;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        button {
-            cursor: pointer;
-            font-family: inherit;
-            border: none;
-            background: none;
-        }
-
-        ul {
-            list-style: none;
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--acier-45);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--noir-45);
-            border-radius: 10px;
-        }
-
-        /* ============================================
-           ANIMATIONS
-        ============================================ */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(-100%); }
-            to { transform: translateX(0); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 5px rgba(226,0,26,0.3); }
-            50% { box-shadow: 0 0 20px rgba(226,0,26,0.6); }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        /* ============================================
-           LAYOUT
-        ============================================ */
-        .wrapper {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* ============================================
-           SIDEBAR
-        ============================================ */
-        .sidebar {
-            width: var(--sidebar-width);
-            background: var(--gradient-dark);
-            color: var(--blanc);
+        /* ================= LOAD SCREEN (CINÉMATIQUE) ================= */
+        #page-loader {
             position: fixed;
-            top: 0;
-            left: 0;
-            height: 100vh;
-            overflow-y: auto;
-            overflow-x: hidden;
-            z-index: 1000;
-            transition: transform var(--transition);
-            box-shadow: 4px 0 25px rgba(0,0,0,0.15);
-        }
-
-        .sidebar::-webkit-scrollbar {
-            width: 4px;
-        }
-        .sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.2);
-            border-radius: 10px;
-        }
-
-        /* Brand */
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 20px;
-            background: rgba(0,0,0,0.3);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        .brand-logo {
-            width: 50px;
-            height: 50px;
-            background: var(--blanc);
-            border-radius: 12px;
-            padding: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition-bounce);
-        }
-
-        .brand-logo:hover {
-            transform: rotate(-5deg) scale(1.1);
-        }
-
-        .brand-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .brand-text h2 {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 2px;
-        }
-
-        .brand-text span {
-            font-size: 11px;
-            color: rgba(255,255,255,0.6);
-        }
-
-        /* Menu */
-        .menu-title {
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: rgba(255,255,255,0.4);
-            padding: 20px 20px 8px;
-            margin-top: 5px;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 20px;
-            cursor: pointer;
-            transition: var(--transition);
-            border-left: 4px solid transparent;
-            font-size: 14px;
-            font-weight: 500;
-            color: rgba(255,255,255,0.7);
-            position: relative;
-        }
-
-        .nav-item:hover {
-            background: rgba(255,255,255,0.08);
-            color: var(--blanc);
-            border-left-color: rgba(255,255,255,0.3);
-        }
-
-        .nav-item:hover i {
-            transform: scale(1.2);
-            color: var(--rouge-mousquetaires);
-        }
-
-        .nav-item.active {
-            background: linear-gradient(90deg, rgba(226,0,26,0.2) 0%, transparent 100%);
-            color: var(--blanc);
-            border-left-color: var(--rouge-mousquetaires);
-        }
-
-        .nav-item.active i {
-            color: var(--rouge-mousquetaires);
-        }
-
-        .nav-item i {
-            width: 20px;
-            font-size: 15px;
-            transition: var(--transition);
-        }
-
-        /* Submenu */
-        .nav-submenu {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease;
-            background: rgba(0,0,0,0.2);
-        }
-
-        .nav-submenu.open {
-            max-height: 500px;
-        }
-
-        .nav-submenu .nav-item {
-            padding-left: 52px;
-            font-size: 13px;
-            border-left: none;
-        }
-
-        .nav-item.has-submenu::after {
-            content: '\f078';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            font-size: 10px;
-            margin-left: auto;
-            transition: var(--transition);
-        }
-
-        .nav-item.has-submenu.open::after {
-            transform: rotate(180deg);
-        }
-
-        .nav-badge {
-            background: var(--rouge-mousquetaires);
-            color: var(--blanc);
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 20px;
-            margin-left: auto;
-            animation: pulse 2s infinite;
-        }
-
-        /* ============================================
-           MAIN CONTENT
-        ============================================ */
-        .main {
-            flex: 1;
-            margin-left: var(--sidebar-width);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            transition: var(--transition);
-        }
-
-        /* ============================================
-           TOP BAR
-        ============================================ */
-        .top-bar {
-            height: var(--topbar-height);
-            background: rgba(255,255,255,0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--acier);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 25px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        #mobileMenuBtn {
-            display: none;
-            width: 44px;
-            height: 44px;
-            border-radius: 10px;
-            background: var(--acier-45);
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            transition: var(--transition);
-        }
-
-        #mobileMenuBtn:hover {
-            background: var(--acier);
-        }
-
-        .header-title h1 {
-            font-size: 1.2rem;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .header-title p {
-            font-size: 12px;
-            color: var(--noir-45);
-        }
-
-        /* Search */
-        .search-wrapper {
-            position: relative;
-            flex: 1;
-            max-width: 400px;
-            margin: 0 30px;
-        }
-
-        .search-wrapper input {
-            width: 100%;
-            padding: 12px 18px 12px 45px;
-            border: 2px solid var(--acier);
-            border-radius: 25px;
-            font-size: 14px;
-            transition: var(--transition);
-            background: var(--acier-45);
-        }
-
-        .search-wrapper input:focus {
-            outline: none;
-            border-color: var(--rouge-mousquetaires);
-            background: var(--blanc);
-            box-shadow: 0 0 0 4px rgba(226,0,26,0.1);
-        }
-
-        .search-wrapper i {
-            position: absolute;
-            left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--noir-45);
-        }
-
-        /* User Actions */
-        .user-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            position: relative;
-        }
-
-        .icon-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            background: var(--acier-45);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: var(--transition);
-            position: relative;
-        }
-
-        .icon-btn:hover {
-            background: var(--blanc);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .icon-btn:hover i {
-            color: var(--rouge-mousquetaires);
-        }
-
-        .icon-btn i {
-            font-size: 18px;
-            color: var(--noir-65);
-            transition: var(--transition);
-        }
-
-        .icon-btn .badge {
-            position: absolute;
-            top: -4px;
-            right: -4px;
-            background: var(--gradient-primary);
-            color: var(--blanc);
-            font-size: 10px;
-            font-weight: 700;
-            min-width: 20px;
-            height: 20px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            animation: pulse 2s infinite;
-        }
-
-        /* Dropdown */
-        .dropdown-menu {
-            position: absolute;
-            top: calc(100% + 10px);
-            right: 0;
-            background: var(--blanc);
-            border-radius: 16px;
-            box-shadow: var(--shadow-2xl);
-            min-width: 350px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: var(--transition);
-            z-index: 1000;
-            border: 1px solid var(--acier);
-            overflow: hidden;
-        }
-
-        .dropdown-menu.show {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .dropdown-header {
-            padding: 15px 20px;
-            background: var(--gradient-dark);
-            color: var(--blanc);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .notif-item {
-            padding: 15px 20px;
-            border-bottom: 1px solid var(--acier-45);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .notif-item:hover {
-            background: var(--sable-25);
-            padding-left: 25px;
-        }
-
-        .notif-item:last-child {
-            border-bottom: none;
-        }
-
-        .notif-title {
-            font-weight: 600;
-            font-size: 13px;
-            margin-bottom: 4px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .notif-title i {
-            color: var(--rouge-mousquetaires);
-        }
-
-        .notif-text {
-            font-size: 12px;
-            color: var(--noir-45);
-        }
-
-        .notif-time {
-            font-size: 11px;
-            color: var(--noir-45);
-            margin-top: 5px;
-        }
-
-        /* User Profile */
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-left: 15px;
-            padding-left: 15px;
-            border-left: 1px solid var(--acier);
-            cursor: pointer;
-        }
-
-        .user-info {
-            text-align: right;
-        }
-
-        .user-name {
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .user-role {
-            font-size: 11px;
-            color: var(--noir-45);
-        }
-
-        .user-avatar {
-            width: 44px;
-            height: 44px;
-            background: var(--gradient-primary);
-            border-radius: 12px;
-            color: var(--blanc);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 14px;
-            transition: var(--transition);
-        }
-
-        .user-profile:hover .user-avatar {
-            transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(226,0,26,0.3);
-        }
-
-        /* ============================================
-           PAGES CONTENT
-        ============================================ */
-        .page-content {
-            display: none;
-            padding: 25px;
-            flex: 1;
-        }
-
-        .page-content.active {
-            display: block;
-            animation: fadeIn 0.4s ease forwards;
-        }
-
-        /* ============================================
-           STATS CARDS
-        ============================================ */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: var(--blanc);
-            border-radius: 20px;
-            padding: 25px;
-            cursor: pointer;
-            transition: var(--transition);
-            box-shadow: var(--shadow-sm);
-            border: 1px solid transparent;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: var(--gradient-primary);
-            transform: scaleX(0);
-            transition: var(--transition);
-        }
-
-        .stat-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-xl);
-            border-color: var(--acier);
-        }
-
-        .stat-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .stat-card:hover .stat-icon {
-            transform: scale(1.1) rotate(-5deg);
-        }
-
-        .stat-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-        }
-
-        .stat-value {
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            line-height: 1;
-            margin-bottom: 5px;
-        }
-
-        .stat-label {
-            font-size: 14px;
-            color: var(--noir-45);
-            font-weight: 600;
-        }
-
-        .stat-icon {
-            width: 55px;
-            height: 55px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 22px;
-            transition: var(--transition-bounce);
-        }
-
-        .stat-icon.green { background: var(--success-light); color: var(--success); }
-        .stat-icon.orange { background: var(--warning-light); color: var(--warning); }
-        .stat-icon.red { background: var(--danger-light); color: var(--danger); }
-        .stat-icon.blue { background: var(--info-light); color: var(--info); }
-
-        .stat-trend {
-            margin-top: 15px;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .stat-trend.up { background: var(--success-light); color: var(--success); }
-        .stat-trend.down { background: var(--danger-light); color: var(--danger); }
-        .stat-trend.warning { background: var(--warning-light); color: #b45309; }
-
-        /* ============================================
-           QUICK ACCESS
-        ============================================ */
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .section-title h2 {
-            font-size: 1.4rem;
-        }
-
-        .section-title i {
-            color: var(--rouge-mousquetaires);
-        }
-
-        .quick-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .quick-card {
-            background: var(--blanc);
-            border-radius: 16px;
-            padding: 20px 15px;
-            text-align: center;
-            cursor: pointer;
-            transition: var(--transition);
-            border: 2px solid transparent;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .quick-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--rouge-mousquetaires);
-        }
-
-        .quick-card:hover .quick-icon {
-            transform: scale(1.15) rotate(-5deg);
-            background: var(--gradient-primary);
-            color: var(--blanc);
-        }
-
-        .quick-card:hover .quick-label {
-            color: var(--rouge-mousquetaires);
-        }
-
-        .quick-icon {
-            width: 55px;
-            height: 55px;
-            border-radius: 14px;
-            background: var(--acier-45);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 12px;
-            font-size: 22px;
-            color: var(--rouge-mousquetaires);
-            transition: var(--transition-bounce);
-        }
-
-        .quick-label {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--noir);
-            transition: var(--transition);
-        }
-
-        /* ============================================
-           CONTENT CARDS
-        ============================================ */
-        .content-row {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-
-        @media (max-width: 1024px) {
-            .content-row {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .content-card {
-            background: var(--blanc);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .card-header {
-            padding: 20px;
-            background: var(--sable-25);
-            border-bottom: 1px solid var(--acier);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .card-header h3 {
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .card-header h3 i {
-            color: var(--rouge-mousquetaires);
-        }
-
-        .card-body {
-            padding: 20px;
-        }
-
-        /* Chart */
-        .chart-container {
-            height: 280px;
-        }
-
-        /* Alerts */
-        .alert {
-            display: flex;
-            gap: 15px;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            border-left: 4px solid;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .alert:hover {
-            transform: translateX(5px);
-        }
-
-        .alert-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            flex-shrink: 0;
-        }
-
-        .alert-title {
-            font-weight: 700;
-            font-size: 13px;
-            margin-bottom: 3px;
-        }
-
-        .alert-text {
-            font-size: 12px;
-            opacity: 0.8;
-        }
-
-        .alert-danger {
-            background: var(--danger-light);
-            border-color: var(--danger);
-            color: #991b1b;
-        }
-        .alert-danger .alert-icon { background: rgba(239,68,68,0.2); color: var(--danger); }
-
-        .alert-warning {
-            background: var(--warning-light);
-            border-color: var(--warning);
-            color: #92400e;
-        }
-        .alert-warning .alert-icon { background: rgba(245,158,11,0.2); color: var(--warning); }
-
-        .alert-info {
-            background: var(--info-light);
-            border-color: var(--info);
-            color: #1e40af;
-        }
-        .alert-info .alert-icon { background: rgba(59,130,246,0.2); color: var(--info); }
-
-        .alert-success {
-            background: var(--success-light);
-            border-color: var(--success);
-            color: #065f46;
-        }
-        .alert-success .alert-icon { background: rgba(16,185,129,0.2); color: var(--success); }
-
-        /* ============================================
-           PAGE HEADER
-        ============================================ */
-        .breadcrumb {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            color: var(--noir-45);
-            margin-bottom: 15px;
-        }
-
-        .breadcrumb a {
-            color: var(--rouge-mousquetaires);
-            cursor: pointer;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .page-header {
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--acier);
-        }
-
-        .page-header h2 {
-            font-size: 1.6rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 5px;
-        }
-
-        .page-header h2 i {
-            color: var(--rouge-mousquetaires);
-        }
-
-        .page-header p {
-            color: var(--noir-45);
-            font-size: 14px;
-        }
-
-        /* ============================================
-           DOCUMENT LIST
-        ============================================ */
-        .doc-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .doc-item {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 15px;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: var(--transition);
-            border: 1px solid var(--acier);
-            background: var(--blanc);
-        }
-
-        .doc-item:hover {
-            background: var(--sable-25);
-            transform: translateX(8px);
-            border-color: var(--rouge-mousquetaires);
-            box-shadow: var(--shadow-md);
-        }
-
-        .doc-item:hover .doc-icon {
-            transform: scale(1.1);
-        }
-
-        .doc-icon {
-            width: 45px;
-            height: 45px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            transition: var(--transition);
-            flex-shrink: 0;
-        }
-
-        .doc-icon.pdf { background: #fee2e2; color: #dc2626; }
-        .doc-icon.excel { background: #d1fae5; color: #059669; }
-        .doc-icon.word { background: #dbeafe; color: #2563eb; }
-        .doc-icon.folder { background: #fef3c7; color: #d97706; }
-
-        .doc-info {
-            flex: 1;
-        }
-
-        .doc-name {
-            font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 2px;
-        }
-
-        .doc-meta {
-            font-size: 12px;
-            color: var(--noir-45);
-        }
-
-        .doc-action {
-            opacity: 0;
-            transition: var(--transition);
-            color: var(--noir-45);
-        }
-
-        .doc-item:hover .doc-action {
-            opacity: 1;
-        }
-
-        /* ============================================
-           BUTTONS
-        ============================================ */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .btn-primary {
-            background: var(--gradient-primary);
-            color: var(--blanc);
-            box-shadow: 0 4px 15px rgba(226,0,26,0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(226,0,26,0.4);
-        }
-
-        .btn-secondary {
-            background: var(--acier-45);
-            color: var(--noir);
-            border: 1px solid var(--acier);
-        }
-
-        .btn-secondary:hover {
-            background: var(--acier);
-        }
-
-        .btn-sm {
-            padding: 8px 14px;
-            font-size: 12px;
-        }
-
-        /* ============================================
-           TEMPERATURE CARDS
-        ============================================ */
-        .temp-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .temp-card {
-            background: var(--blanc);
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
-            border: 2px solid transparent;
-            transition: var(--transition);
-        }
-
-        .temp-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .temp-card.ok { border-color: var(--success); }
-        .temp-card.warning { border-color: var(--warning); }
-        .temp-card.danger { border-color: var(--danger); }
-
-        .temp-value {
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin-bottom: 5px;
-        }
-
-        .temp-card.ok .temp-value { color: var(--success); }
-        .temp-card.warning .temp-value { color: var(--warning); }
-        .temp-card.danger .temp-value { color: var(--danger); }
-
-        .temp-label {
-            font-size: 13px;
-            color: var(--noir-45);
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .temp-status {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .temp-card.ok .temp-status { background: var(--success-light); color: var(--success); }
-        .temp-card.warning .temp-status { background: var(--warning-light); color: #b45309; }
-        .temp-card.danger .temp-status { background: var(--danger-light); color: var(--danger); }
-
-        /* ============================================
-           OVERLAY
-        ============================================ */
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 999;
-            backdrop-filter: blur(4px);
-        }
-
-        .overlay.active {
-            display: block;
-        }
-
-        /* ============================================
-           TOAST NOTIFICATIONS
-        ============================================ */
-        .toast-container {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #0a0a0a;
             z-index: 9999;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-        }
-
-        .toast {
-            background: var(--blanc);
-            padding: 15px 20px;
-            border-radius: 12px;
-            box-shadow: var(--shadow-xl);
-            display: flex;
             align-items: center;
-            gap: 12px;
-            animation: fadeIn 0.3s ease;
-            min-width: 300px;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
         }
 
-        .toast.success { border-left: 4px solid var(--success); }
-        .toast.error { border-left: 4px solid var(--danger); }
-        .toast.info { border-left: 4px solid var(--info); }
-
-        .toast-icon {
-            font-size: 20px;
+        #page-loader.active {
+            opacity: 1;
+            pointer-events: all;
         }
 
-        .toast.success .toast-icon { color: var(--success); }
-        .toast.error .toast-icon { color: var(--danger); }
-        .toast.info .toast-icon { color: var(--info); }
+        .loader-content { text-align: center; overflow: hidden; }
 
-        .toast-message {
-            flex: 1;
-            font-size: 14px;
-            font-weight: 500;
+        .loader-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem; font-weight: 900; color: white;
+            letter-spacing: 5px; text-transform: uppercase;
+            opacity: 0; transform: translateY(20px);
         }
 
-        .toast-close {
-            cursor: pointer;
-            color: var(--noir-45);
+        .loader-subtitle {
+            font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--primary);
+            letter-spacing: 8px; margin-top: 10px; text-transform: uppercase;
+            opacity: 0;
+        }
+
+        .loader-bar {
+            width: 0%; height: 4px; background: var(--primary);
+            margin-top: 30px; border-radius: 2px;
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        /* Animation Classes */
+        .loading .loader-title { animation: textReveal 0.8s cubic-bezier(0.2, 1, 0.3, 1) forwards; }
+        .loading .loader-subtitle { animation: textReveal 0.8s cubic-bezier(0.2, 1, 0.3, 1) 0.2s forwards; }
+        .loading .loader-bar { animation: loadProgress 1.2s ease-in-out forwards; }
+
+        @keyframes textReveal { to { opacity: 1; transform: translateY(0); } }
+        @keyframes loadProgress { 0% { width: 0%; } 50% { width: 60%; } 100% { width: 100%; } }
+
+        /* ================= CSS BASE ================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: #f0f2f5; color: var(--text); overflow-x: hidden; }
+        h1, h2, h3 { font-family: 'Poppins', sans-serif; }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: linear-gradient(180deg, #111 0%, #1a1a1a 100%);
+            color: var(--white);
+            height: 100vh;
+            position: fixed;
+            z-index: 1000;
+            overflow-y: auto;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.3);
             transition: var(--transition);
         }
 
-        .toast-close:hover {
-            color: var(--noir);
+        .brand {
+            padding: 25px; display: flex; align-items: center; gap: 15px;
+            background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .brand img { width: 45px; height: 45px; background: white; border-radius: 10px; padding: 5px; object-fit: contain; }
+        .brand-text h2 { font-size: 14px; font-weight: 700; letter-spacing: 0.5px; }
+        .brand-text span { font-size: 11px; opacity: 0.7; }
+
+        .menu-category { font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: rgba(255,255,255,0.4); padding: 25px 25px 10px; font-weight: 700; }
+        
+        .nav-item {
+            padding: 14px 25px; display: flex; align-items: center; gap: 12px;
+            cursor: pointer; transition: var(--transition);
+            border-left: 4px solid transparent; font-size: 14px;
+            position: relative; overflow: hidden;
+        }
+        .nav-item::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(90deg, rgba(226,0,26,0.2), transparent);
+            transform: translateX(-100%); transition: var(--transition);
+        }
+        .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.05); border-left-color: var(--primary); }
+        .nav-item:hover::before, .nav-item.active::before { transform: translateX(0); }
+        .nav-item i { width: 20px; text-align: center; transition: var(--transition); }
+        .nav-item:hover i { transform: scale(1.2); color: var(--primary); }
+
+        .submenu { max-height: 0; overflow: hidden; transition: 0.5s ease; background: rgba(0,0,0,0.2); }
+        .submenu.open { max-height: 500px; }
+        .submenu .nav-item { padding-left: 55px; font-size: 13px; border: none; }
+
+        /* MAIN CONTENT */
+        .main { margin-left: var(--sidebar-width); flex: 1; padding-top: var(--header-height); transition: var(--transition); }
+
+        .topbar {
+            height: var(--header-height); background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(20px); position: fixed; top: 0; right: 0;
+            width: calc(100% - var(--sidebar-width)); z-index: 900;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 40px; box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: var(--transition);
         }
 
-        /* ============================================
-           RESPONSIVE
-        ============================================ */
+        .search-box input {
+            width: 400px; padding: 12px 20px 12px 50px;
+            border-radius: 30px; border: none; background: var(--gray);
+            font-family: inherit; transition: var(--transition);
+        }
+        .search-box input:focus { background: var(--white); box-shadow: 0 0 0 4px rgba(226,0,26,0.1); outline: none; }
+        .search-box { position: relative; }
+        .search-box i { position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: #6b7280; }
+
+        .user-menu { display: flex; gap: 20px; align-items: center; }
+        .icon-btn {
+            width: 45px; height: 45px; border-radius: 12px; background: var(--white);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: var(--transition); position: relative;
+        }
+        .icon-btn:hover { transform: translateY(-3px); color: var(--primary); }
+        .badge {
+            position: absolute; top: -5px; right: -5px;
+            background: var(--primary); color: white; font-size: 10px;
+            width: 20px; height: 20px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(226,0,26,0.7); } 70% { box-shadow: 0 0 0 10px rgba(226,0,26,0); } 100% { box-shadow: 0 0 0 0 rgba(226,0,26,0); } }
+
+        /* PAGES */
+        .page { display: none; padding: 40px; animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        .page.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* 3D CARDS */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-bottom: 40px; }
+        .card-3d {
+            background: var(--white); border-radius: 20px; padding: 30px;
+            transform-style: preserve-3d; transform: perspective(1000px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1); cursor: pointer;
+        }
+        .card-content { transform: translateZ(30px); }
+        .card-value { font-size: 3rem; font-weight: 800; color: var(--dark); line-height: 1; margin-bottom: 5px; }
+        .card-icon { width: 60px; height: 60px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 20px; }
+        .card-icon.red { background: #ff4757; color: white; }
+        .card-icon.green { background: #2ed573; color: white; }
+        .card-icon.blue { background: #1e90ff; color: white; }
+        .card-icon.orange { background: #ffa502; color: white; }
+
+        /* DASHBOARD LAYOUT */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(20px);
+            border-radius: 20px; padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        .dashboard-row { display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-bottom: 40px; }
+        #canvas3d { width: 100%; height: 350px; border-radius: 15px; background: #1a1a1a; position: relative; overflow: hidden; }
+
+        /* QUICK LINKS */
+        .grid-links { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 20px; }
+        .link-item {
+            background: white; border-radius: 15px; padding: 20px 10px;
+            text-align: center; cursor: pointer; transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid transparent;
+        }
+        .link-item:hover { transform: translateY(-5px); border-color: var(--primary); }
+        .link-item i { font-size: 28px; margin-bottom: 10px; color: var(--primary); }
+
+        /* DOCS LIST */
+        .doc-list { display: flex; flex-direction: column; gap: 10px; }
+        .doc-row {
+            display: flex; align-items: center; gap: 15px; padding: 15px;
+            background: white; border-radius: 12px; cursor: pointer; transition: 0.2s;
+        }
+        .doc-row:hover { transform: translateX(10px); border-left: 4px solid var(--primary); }
+        .file-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; }
+        .pdf { background: #ffe5e5; color: #ff4757; }
+        .xls { background: #e5ffe5; color: #2ed573; }
+
+        /* RESPONSIVE */
         @media (max-width: 1024px) {
-            .sidebar {
-                transform: translateX(-100%);
-            }
-
-            .sidebar.active {
-                transform: translateX(0);
-            }
-
-            .main {
-                margin-left: 0;
-            }
-
-            #mobileMenuBtn {
-                display: flex;
-            }
-
-            .search-wrapper {
-                display: none;
-            }
-
-            .user-info {
-                display: none;
-            }
+            .sidebar { transform: translateX(-100%); }
+            .sidebar.active { transform: translateX(0); }
+            .main, .topbar { margin-left: 0; width: 100%; }
+            .dashboard-row { grid-template-columns: 1fr; }
+            #menu-toggle { display: block !important; margin-right: 20px; font-size: 24px; cursor: pointer; }
         }
+        #menu-toggle { display: none; }
 
-        @media (max-width: 768px) {
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .quick-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-
-            .header-title p {
-                display: none;
-            }
-
-            .stat-value {
-                font-size: 1.8rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .quick-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .quick-card {
-                padding: 15px 10px;
-            }
-
-            .quick-icon {
-                width: 45px;
-                height: 45px;
-                font-size: 18px;
-            }
-
-            .quick-label {
-                font-size: 11px;
-            }
-        }
     </style>
 </head>
 <body>
-    <!-- Toast Container -->
-    <div class="toast-container" id="toastContainer"></div>
 
-    <!-- Overlay -->
-    <div class="overlay" id="overlay"></div>
+    <!-- 1. SCREEN LOADER (Animation Cinématique) -->
+    <div id="page-loader">
+        <div class="loader-content">
+            <div class="loader-title">LES MOUSQUETAIRES</div>
+            <div class="loader-subtitle">LOGISTIQUE BRIGNOLES</div>
+            <div class="loader-bar"></div>
+        </div>
+    </div>
 
-    <div class="wrapper">
-        <!-- ============================================
-             SIDEBAR
-        ============================================ -->
-        <nav class="sidebar" id="sidebar">
-            <div class="brand">
-                <div class="brand-logo">
-                    <!-- Logo local - Remplacez par votre chemin -->
-                    <img src="logo-groupement.svg" alt="Logo" onerror="this.src='https://upload.wikimedia.org/wikipedia/fr/thumb/8/84/Intermarch%C3%A9-logo.svg/1200px-Intermarch%C3%A9-logo.svg.png'">
-                </div>
-                <div class="brand-text">
-                    <h2>Les Mousquetaires</h2>
-                    <span>Base Logistique Brignoles</span>
-                </div>
+    <!-- 2. SIDEBAR -->
+    <nav class="sidebar" id="sidebar">
+        <div class="brand">
+            <!-- Image Locale avec Fallback -->
+            <img src="logo-groupement.svg" onerror="this.src='https://upload.wikimedia.org/wikipedia/fr/thumb/8/84/Intermarch%C3%A9-logo.svg/1200px-Intermarch%C3%A9-logo.svg.png'" alt="Logo">
+            <div class="brand-text">
+                <h2>Les Mousquetaires</h2>
+                <span>Brignoles - Logistique</span>
+            </div>
+        </div>
+
+        <div class="menu-category">Général</div>
+        <div class="nav-item active" onclick="showPage('home', this)">
+            <i class="fas fa-home"></i> <span>Vue d'ensemble</span>
+        </div>
+
+        <div class="menu-category">Opérations</div>
+        <div class="nav-item" onclick="toggleSubmenu('sub-proc', this)">
+            <i class="fas fa-clipboard-list"></i> <span>Procédures</span>
+            <i class="fas fa-chevron-down" style="margin-left: auto; font-size: 10px;"></i>
+        </div>
+        <div class="submenu" id="sub-proc">
+            <div class="nav-item" onclick="showPage('reception', this)">Réception</div>
+            <div class="nav-item" onclick="showPage('stock', this)">Stock & Entrepôt</div>
+            <div class="nav-item" onclick="showPage('expedition', this)">Expéditions</div>
+        </div>
+
+        <div class="menu-category">Sécurité & Qualité</div>
+        <div class="nav-item" onclick="showPage('securite', this)">
+            <i class="fas fa-shield-alt"></i> <span>Incendie & POI</span>
+        </div>
+        <div class="nav-item" onclick="showPage('qualite', this)">
+            <i class="fas fa-check-circle"></i> <span>Qualité & Hygiène</span>
+        </div>
+        <div class="nav-item" onclick="showPage('accidents', this)">
+            <i class="fas fa-user-injured"></i> <span>Suivi AT / incidents</span>
+        </div>
+
+        <div class="menu-category">Outils</div>
+        <div class="nav-item" onclick="showPage('stats', this)">
+            <i class="fas fa-chart-pie"></i> <span>Indicateurs 2026</span>
+        </div>
+        <div class="nav-item" onclick="showPage('docs', this)">
+            <i class="fas fa-folder-open"></i> <span>GED Documentaire</span>
+        </div>
+        <div class="nav-item" onclick="showPage('coordonnees', this)">
+            <i class="fas fa-address-book"></i> <span>Coordonnées</span>
+        </div>
+    </nav>
+
+    <!-- 3. MAIN CONTENT -->
+    <div class="main">
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div style="display:flex; align-items:center;">
+                <i class="fas fa-bars" id="menu-toggle" onclick="toggleSidebar()"></i>
+                <h2 id="page-title">Tableau de Bord</h2>
             </div>
 
-            <div class="sidebar-menu">
-                <!-- TABLEAU DE BORD -->
-                <div class="menu-title">Tableau de bord</div>
-                <div class="nav-item active" onclick="navigateTo('home', this)">
-                    <i class="fas fa-th-large"></i>
-                    <span>Vue d'ensemble</span>
-                </div>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Rechercher une procédure, un document...">
+            </div>
 
-                <!-- PROCÉDURES -->
-                <div class="menu-title">Procédures</div>
-                <div class="nav-item has-submenu" onclick="toggleSubmenu('exploitation', this)">
-                    <i class="fas fa-clipboard-list"></i>
-                    <span>Exploitation Logistique</span>
+            <div class="user-menu">
+                <div class="icon-btn" onclick="showPage('qualite', null)">
+                    <i class="fas fa-bell"></i>
+                    <span class="badge">3</span>
                 </div>
-                <div class="nav-submenu" id="submenu-exploitation">
-                    <div class="nav-item" onclick="navigateTo('proc-reception', this)">
-                        <i class="fas fa-truck-loading"></i>
-                        <span>Réception</span>
+                <div class="icon-btn">
+                    <i class="fas fa-cog"></i>
+                </div>
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <div style="text-align:right;">
+                        <div style="font-weight:700; font-size:14px;">Admin</div>
+                        <div style="font-size:11px; color:#888;">Resp. QHSE</div>
                     </div>
-                    <div class="nav-item" onclick="navigateTo('proc-stock', this)">
-                        <i class="fas fa-boxes"></i>
-                        <span>Stock</span>
-                    </div>
-                    <div class="nav-item" onclick="navigateTo('proc-preparation', this)">
-                        <i class="fas fa-dolly"></i>
-                        <span>Préparation</span>
-                    </div>
-                    <div class="nav-item" onclick="navigateTo('proc-chargement', this)">
-                        <i class="fas fa-truck"></i>
-                        <span>Chargement</span>
-                    </div>
-                    <div class="nav-item" onclick="navigateTo('proc-transport', this)">
-                        <i class="fas fa-shipping-fast"></i>
-                        <span>Transport</span>
-                    </div>
-                    <div class="nav-item" onclick="navigateTo('proc-spdv', this)">
-                        <i class="fas fa-store"></i>
-                        <span>Service PDV</span>
-                    </div>
-                </div>
-
-                <div class="nav-item has-submenu" onclick="toggleSubmenu('qualite', this)">
-                    <i class="fas fa-broom"></i>
-                    <span>Qualité / Hygiène</span>
-                </div>
-                <div class="nav-submenu" id="submenu-qualite">
-                    <div class="nav-item" onclick="navigateTo('qualite-controle', this)">
-                        <i class="fas fa-clipboard-check"></i>
-                        <span>Contrôles</span>
-                    </div>
-                    <div class="nav-item" onclick="navigateTo('qualite-temperature', this)">
-                        <i class="fas fa-thermometer-half"></i>
-                        <span>Températures</span>
-                    </div>
-                    <div class="nav-item" onclick="navigateTo('qualite-nettoyage', this)">
-                        <i class="fas fa-spray-can"></i>
-                        <span>Nettoyage</span>
-                    </div>
-                    <div class="nav-item" onclick="navigateTo('qualite-retrait', this)">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <span>Retrait Qualité</span>
-                        <span class="nav-badge">1</span>
-                    </div>
-                </div>
-
-                <div class="nav-item" onclick="navigateTo('proc-securite', this)">
-                    <i class="fas fa-hard-hat"></i>
-                    <span>Sécurité</span>
-                </div>
-                <div class="nav-item" onclick="navigateTo('proc-rh', this)">
-                    <i class="fas fa-users"></i>
-                    <span>Ressources Humaines</span>
-                </div>
-                <div class="nav-item" onclick="navigateTo('proc-technique', this)">
-                    <i class="fas fa-tools"></i>
-                    <span>Technique / Maintenance</span>
-                </div>
-
-                <!-- QHSE -->
-                <div class="menu-title">QHSE & Sécurité</div>
-                <div class="nav-item" onclick="navigateTo('incendie-poi', this)">
-                    <i class="fas fa-fire-extinguisher"></i>
-                    <span>Incendie / POI</span>
-                </div>
-                <div class="nav-item" onclick="navigateTo('accidents', this)">
-                    <i class="fas fa-user-injured"></i>
-                    <span>Accidents (AT)</span>
-                </div>
-                <div class="nav-item" onclick="navigateTo('dechets', this)">
-                    <i class="fas fa-recycle"></i>
-                    <span>Déchets & Environnement</span>
-                </div>
-
-                <!-- PILOTAGE -->
-                <div class="menu-title">Pilotage</div>
-                <div class="nav-item" onclick="navigateTo('indicateurs', this)">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Indicateurs</span>
-                </div>
-                <div class="nav-item" onclick="navigateTo('evaluation', this)">
-                    <i class="fas fa-user-check"></i>
-                    <span>Évaluation Personnel</span>
-                </div>
-                <div class="nav-item" onclick="navigateTo('audits', this)">
-                    <i class="fas fa-clipboard-list"></i>
-                    <span>Audits & Revue Direction</span>
-                </div>
-
-                <!-- RÉFÉRENTIELS -->
-                <div class="menu-title">Référentiels</div>
-                <div class="nav-item" onclick="navigateTo('referentiels', this)">
-                    <i class="fas fa-book"></i>
-                    <span>Tous les Référentiels</span>
-                </div>
-                <div class="nav-item" onclick="navigateTo('formation', this)">
-                    <i class="fas fa-graduation-cap"></i>
-                    <span>Formation</span>
-                </div>
-                <div class="nav-item" onclick="navigateTo('fds', this)">
-                    <i class="fas fa-flask"></i>
-                    <span>Fiches de Sécurité</span>
-                </div>
-
-                <!-- OUTILS -->
-                <div class="menu-title">Outils</div>
-                <div class="nav-item" onclick="navigateTo('affichage', this)">
-                    <i class="fas fa-image"></i>
-                    <span>Affichage</span>
-                </div>
-                <div class="nav-item" onclick="navigateTo('coordonnees', this)">
-                    <i class="fas fa-address-book"></i>
-                    <span>Coordonnées & Plans</span>
-                </div>
-                <div class="nav-item" onclick="navigateTo('reglementation', this)">
-                    <i class="fas fa-gavel"></i>
-                    <span>Réglementation</span>
+                    <img src="https://ui-avatars.com/api/?name=Admin+Mousquetaire&background=E2001A&color=fff" style="width:40px; height:40px; border-radius:50%;">
                 </div>
             </div>
-        </nav>
+        </div>
 
-        <!-- ============================================
-             MAIN CONTENT
-        ============================================ -->
-        <div class="main">
-            <!-- TOP BAR -->
-            <div class="top-bar">
-                <div class="header-left">
-                    <button id="mobileMenuBtn" onclick="toggleSidebar()">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <div class="header-title">
-                        <h1>Les Mousquetaires Brignoles</h1>
-                        <p>Portail QHSE & Logistique - 2026</p>
+        <!-- ================= PAGE: HOME ================= -->
+        <div id="home" class="page active">
+            <h2 style="margin-bottom:30px;">Vue d'ensemble - Logistique Brignoles 2026</h2>
+
+            <!-- 3D Stats Cards (Tilt Effect) -->
+            <div class="stats-grid">
+                <div class="card-3d" data-tilt data-tilt-glare data-tilt-max="10" onclick="showPage('qualite', null)">
+                    <div class="card-content">
+                        <div class="card-icon green"><i class="fas fa-check"></i></div>
+                        <div class="card-value count-up" data-target="98.5">0</div>
+                        <div class="card-label">Taux Conformité</div>
+                        <div class="trend up"><i class="fas fa-arrow-up"></i> +2.4%</div>
                     </div>
                 </div>
 
-                <div class="search-wrapper">
-                    <input type="text" id="globalSearch" placeholder="Rechercher..." oninput="liveSearch(this.value)">
-                    <i class="fas fa-search"></i>
+                <div class="card-3d" data-tilt data-tilt-glare data-tilt-max="10" onclick="showPage('accidents', null)">
+                    <div class="card-content">
+                        <div class="card-icon blue"><i class="fas fa-user-shield"></i></div>
+                        <div class="card-value count-up" data-target="45">0</div>
+                        <div class="card-label">Jours sans AT</div>
+                        <div class="trend up">Record année</div>
+                    </div>
                 </div>
 
-                <div class="user-actions">
-                    <div class="icon-btn" onclick="toggleNotifications()">
-                        <i class="fas fa-bell"></i>
-                        <span class="badge">3</span>
+                <div class="card-3d" data-tilt data-tilt-glare data-tilt-max="10" onclick="showPage('stats', null)">
+                    <div class="card-content">
+                        <div class="card-icon orange"><i class="fas fa-boxes"></i></div>
+                        <div class="card-value count-up" data-target="1250">0</div>
+                        <div class="card-label">Palettes Réception</div>
+                        <div class="trend up">+15% vs N-1</div>
                     </div>
-                    <div class="dropdown-menu" id="notifMenu">
-                        <div class="dropdown-header">
-                            <i class="fas fa-bell"></i> Notifications
-                        </div>
-                        <div class="notif-item" onclick="navigateTo('qualite-retrait'); closeNotifications();">
-                            <div class="notif-title"><i class="fas fa-exclamation-circle"></i> Retrait Qualité</div>
-                            <div class="notif-text">Lot #4852 à bloquer immédiatement</div>
-                            <div class="notif-time"><i class="fas fa-clock"></i> Il y a 15 min</div>
-                        </div>
-                        <div class="notif-item" onclick="navigateTo('audits'); closeNotifications();">
-                            <div class="notif-title"><i class="fas fa-calendar-check"></i> Audit Prévu</div>
-                            <div class="notif-text">Audit certification le 20/02/2026</div>
-                            <div class="notif-time"><i class="fas fa-clock"></i> Il y a 2h</div>
-                        </div>
-                        <div class="notif-item" onclick="navigateTo('proc-reception'); closeNotifications();">
-                            <div class="notif-title"><i class="fas fa-file-alt"></i> Nouvelle Procédure</div>
-                            <div class="notif-text">Mise à jour procédure réception v2.4</div>
-                            <div class="notif-time"><i class="fas fa-clock"></i> Hier</div>
-                        </div>
-                    </div>
+                </div>
 
-                    <div class="icon-btn" onclick="showToast('Paramètres en cours de développement', 'info')">
-                        <i class="fas fa-cog"></i>
-                    </div>
-
-                    <div class="user-profile" onclick="showToast('Profil utilisateur', 'info')">
-                        <div class="user-info">
-                            <div class="user-name">Admin</div>
-                            <div class="user-role">Responsable QHSE</div>
-                        </div>
-                        <div class="user-avatar">AD</div>
+                <div class="card-3d" data-tilt data-tilt-glare data-tilt-max="10" onclick="showPage('qualite', null)">
+                    <div class="card-content">
+                        <div class="card-icon red"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div class="card-value">1</div>
+                        <div class="card-label">Alerte Qualité</div>
+                        <div class="trend down">Action Requise</div>
                     </div>
                 </div>
             </div>
 
-            <!-- ============================================
-                 PAGE: ACCUEIL
-            ============================================ -->
-            <div id="home" class="page-content active">
-                <!-- Stats -->
-                <div class="stats-grid">
-                    <div class="stat-card" onclick="navigateTo('indicateurs')">
-                        <div class="stat-header">
-                            <div>
-                                <div class="stat-value">98.5%</div>
-                                <div class="stat-label">Taux Conformité</div>
-                            </div>
-                            <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
-                        </div>
-                        <div class="stat-trend up"><i class="fas fa-arrow-up"></i> +2.4% vs M-1</div>
-                    </div>
-
-                    <div class="stat-card" onclick="navigateTo('accidents')">
-                        <div class="stat-header">
-                            <div>
-                                <div class="stat-value">12</div>
-                                <div class="stat-label">Jours sans AT</div>
-                            </div>
-                            <div class="stat-icon blue"><i class="fas fa-shield-alt"></i></div>
-                        </div>
-                        <div class="stat-trend warning"><i class="fas fa-bullseye"></i> Objectif : > 30j</div>
-                    </div>
-
-                    <div class="stat-card" onclick="navigateTo('audits')">
-                        <div class="stat-header">
-                            <div>
-                                <div class="stat-value">5</div>
-                                <div class="stat-label">Actions en cours</div>
-                            </div>
-                            <div class="stat-icon orange"><i class="fas fa-tasks"></i></div>
-                        </div>
-                        <div class="stat-trend up"><i class="fas fa-check"></i> 2 clôturées</div>
-                    </div>
-
-                    <div class="stat-card" onclick="navigateTo('qualite-retrait')">
-                        <div class="stat-header">
-                            <div>
-                                <div class="stat-value">1</div>
-                                <div class="stat-label">Alerte Qualité</div>
-                            </div>
-                            <div class="stat-icon red"><i class="fas fa-exclamation-triangle"></i></div>
-                        </div>
-                        <div class="stat-trend down"><i class="fas fa-bolt"></i> Action Requise</div>
-                    </div>
+            <!-- Dashboard Row (3D Model + Chart) -->
+            <div class="dashboard-row">
+                <!-- 3D Warehouse Visualization -->
+                <div class="glass-panel">
+                    <h3 style="margin-bottom:20px;">📦 Visualisation Entrepôt (Temps Réel)</h3>
+                    <div id="canvas3d"></div>
                 </div>
 
-                <!-- Accès Rapide -->
-                <div class="section-title">
-                    <i class="fas fa-bolt"></i>
-                    <h2>Accès Rapide</h2>
-                </div>
-                <div class="quick-grid">
-                    <div class="quick-card" onclick="navigateTo('proc-reception')">
-                        <div class="quick-icon"><i class="fas fa-clipboard-list"></i></div>
-                        <div class="quick-label">Procédures</div>
-                    </div>
-                    <div class="quick-card" onclick="navigateTo('affichage')">
-                        <div class="quick-icon"><i class="fas fa-image"></i></div>
-                        <div class="quick-label">Affichage</div>
-                    </div>
-                    <div class="quick-card" onclick="navigateTo('indicateurs')">
-                        <div class="quick-icon"><i class="fas fa-chart-bar"></i></div>
-                        <div class="quick-label">Indicateurs</div>
-                    </div>
-                    <div class="quick-card" onclick="navigateTo('evaluation')">
-                        <div class="quick-icon"><i class="fas fa-user-check"></i></div>
-                        <div class="quick-label">Évaluation</div>
-                    </div>
-                    <div class="quick-card" onclick="navigateTo('referentiels')">
-                        <div class="quick-icon"><i class="fas fa-book"></i></div>
-                        <div class="quick-label">Référentiels</div>
-                    </div>
-                    <div class="quick-card" onclick="navigateTo('formation')">
-                        <div class="quick-icon"><i class="fas fa-graduation-cap"></i></div>
-                        <div class="quick-label">Formation</div>
-                    </div>
-                    <div class="quick-card" onclick="navigateTo('audits')">
-                        <div class="quick-icon"><i class="fas fa-clipboard-check"></i></div>
-                        <div class="quick-label">Audits</div>
-                    </div>
-                    <div class="quick-card" onclick="navigateTo('coordonnees')">
-                        <div class="quick-icon"><i class="fas fa-address-book"></i></div>
-                        <div class="quick-label">Coordonnées</div>
-                    </div>
-                    <div class="quick-card" onclick="navigateTo('accidents')">
-                        <div class="quick-icon"><i class="fas fa-user-injured"></i></div>
-                        <div class="quick-label">Suivi AT</div>
-                    </div>
-                    <div class="quick-card" onclick="navigateTo('dechets')">
-                        <div class="quick-icon"><i class="fas fa-recycle"></i></div>
-                        <div class="quick-label">Déchets</div>
-                    </div>
-                    <div class="quick-card" onclick="navigateTo('incendie-poi')">
-                        <div class="quick-icon"><i class="fas fa-fire-extinguisher"></i></div>
-                        <div class="quick-label">Incendie/POI</div>
-                    </div>
-                    <div class="quick-card" onclick="navigateTo('qualite-retrait')">
-                        <div class="quick-icon"><i class="fas fa-exclamation-triangle"></i></div>
-                        <div class="quick-label">Retrait Qualité</div>
-                    </div>
-                    <div class="quick-card" onclick="navigateTo('fds')">
-                        <div class="quick-icon"><i class="fas fa-flask"></i></div>
-                        <div class="quick-label">Fiches FDS</div>
-                    </div>
-                    <div class="quick-card" onclick="navigateTo('reglementation')">
-                        <div class="quick-icon"><i class="fas fa-gavel"></i></div>
-                        <div class="quick-label">Réglementation</div>
-                    </div>
-                </div>
-
-                <!-- Graphique & Alertes -->
-                <div class="content-row">
-                    <div class="content-card">
-                        <div class="card-header">
-                            <h3><i class="fas fa-chart-line"></i> Indicateurs 2026</h3>
-                            <button class="btn btn-sm btn-secondary" onclick="showToast('Export en cours...', 'info')">
-                                <i class="fas fa-download"></i> Export
-                            </button>
+                <!-- Access Rapide -->
+                <div class="glass-panel">
+                    <h3 style="margin-bottom:20px;">⚡ Accès Rapide</h3>
+                    <div class="grid-links">
+                        <div class="link-item" onclick="showPage('reception', null)">
+                            <i class="fas fa-truck-loading"></i>
+                            <span>Réception</span>
                         </div>
-                        <div class="card-body">
-                            <div class="chart-container">
-                                <canvas id="mainChart"></canvas>
-                            </div>
+                        <div class="link-item" onclick="showPage('securite', null)">
+                            <i class="fas fa-fire-extinguisher"></i>
+                            <span>Incendie</span>
                         </div>
-                    </div>
-
-                    <div class="content-card">
-                        <div class="card-header">
-                            <h3><i class="fas fa-bell"></i> Alertes</h3>
+                        <div class="link-item" onclick="showPage('docs', null)">
+                            <i class="fas fa-flask"></i>
+                            <span>FDS</span>
                         </div>
-                        <div class="card-body">
-                            <div class="alert alert-danger" onclick="navigateTo('qualite-retrait')">
-                                <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></div>
-                                <div>
-                                    <div class="alert-title">Retrait Lot #4852</div>
-                                    <div class="alert-text">Action immédiate requise</div>
-                                </div>
-                            </div>
-                            <div class="alert alert-warning" onclick="navigateTo('audits')">
-                                <div class="alert-icon"><i class="fas fa-calendar-alt"></i></div>
-                                <div>
-                                    <div class="alert-title">Audit Certification</div>
-                                    <div class="alert-text">Prévu le 20/02/2026</div>
-                                </div>
-                            </div>
-                            <div class="alert alert-info" onclick="navigateTo('qualite-temperature')">
-                                <div class="alert-icon"><i class="fas fa-thermometer-half"></i></div>
-                                <div>
-                                    <div class="alert-title">Contrôle Températures</div>
-                                    <div class="alert-text">RAS - Tout conforme</div>
-                                </div>
-                            </div>
-                            <div class="alert alert-success" onclick="navigateTo('indicateurs')">
-                                <div class="alert-icon"><i class="fas fa-trophy"></i></div>
-                                <div>
-                                    <div class="alert-title">Objectif Atteint</div>
-                                    <div class="alert-text">Conformité > 98%</div>
-                                </div>
-                            </div>
+                        <div class="link-item" onclick="showPage('docs', null)">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span>Formation</span>
+                        </div>
+                        <div class="link-item" onclick="showPage('docs', null)">
+                            <i class="fas fa-file-contract"></i>
+                            <span>Procédures</span>
+                        </div>
+                        <div class="link-item" onclick="showPage('stats', null)">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Planning</span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- ============================================
-                 PAGE: RÉCEPTION
-            ============================================ -->
-            <div id="proc-reception" class="page-content">
-                <div class="breadcrumb">
-                    <a onclick="navigateTo('home')">Accueil</a>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Procédures</span>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Réception</span>
+            <!-- Charts Section -->
+            <div class="glass-panel">
+                <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+                    <h3>📊 Performance Hebdomadaire</h3>
                 </div>
-
-                <div class="page-header">
-                    <h2><i class="fas fa-truck-loading"></i> Réception</h2>
-                    <p>Documents et procédures du service réception</p>
+                <div style="height:300px; width:100%;">
+                    <canvas id="mainChart"></canvas>
                 </div>
+            </div>
+        </div>
 
-                <div class="content-card">
-                    <div class="card-header">
-                        <h3><i class="fas fa-folder-open"></i> Documents Process</h3>
-                        <button class="btn btn-sm btn-primary" onclick="showToast('Nouveau document ajouté', 'success')">
-                            <i class="fas fa-plus"></i> Ajouter
-                        </button>
+        <!-- ================= PAGE: RECEPTION ================= -->
+        <div id="reception" class="page">
+            <h2 style="margin-bottom:20px;">Procédures de Réception</h2>
+            <div class="glass-panel">
+                <div class="doc-list">
+                    <div class="doc-row" onclick="alert('Téléchargement du PDF...')">
+                        <div class="file-icon pdf"><i class="fas fa-file-pdf"></i></div>
+                        <div>
+                            <h4>Protocole de Déchargement 2026</h4>
+                            <span style="font-size:12px; color:#888;">Mis à jour le 12/01/2026</span>
+                        </div>
+                        <i class="fas fa-download" style="margin-left:auto; opacity:0.5;"></i>
                     </div>
-                    <div class="card-body">
-                        <div class="doc-list">
-                            <div class="doc-item" onclick="openDocument('Protocole de déchargement')">
-                                <div class="doc-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                                <div class="doc-info">
-                                    <div class="doc-name">Protocole de déchargement</div>
-                                    <div class="doc-meta">PDF • Mis à jour le 15/01/2026</div>
-                                </div>
-                                <div class="doc-action"><i class="fas fa-chevron-right"></i></div>
-                            </div>
-                            <div class="doc-item" onclick="openDocument('Contrôle températures réception')">
-                                <div class="doc-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                                <div class="doc-info">
-                                    <div class="doc-name">Contrôle températures réception</div>
-                                    <div class="doc-meta">PDF • Mis à jour le 10/01/2026</div>
-                                </div>
-                                <div class="doc-action"><i class="fas fa-chevron-right"></i></div>
-                            </div>
-                            <div class="doc-item" onclick="openDocument('Gestion des litiges réception')">
-                                <div class="doc-icon excel"><i class="fas fa-file-excel"></i></div>
-                                <div class="doc-info">
-                                    <div class="doc-name">Gestion des litiges réception</div>
-                                    <div class="doc-meta">Excel • Mis à jour le 12/01/2026</div>
-                                </div>
-                                <div class="doc-action"><i class="fas fa-chevron-right"></i></div>
-                            </div>
-                            <div class="doc-item" onclick="openDocument('Gestion de la casse')">
-                                <div class="doc-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                                <div class="doc-info">
-                                    <div class="doc-name">Gestion de la casse</div>
-                                    <div class="doc-meta">PDF • Mis à jour le 08/01/2026</div>
-                                </div>
-                                <div class="doc-action"><i class="fas fa-chevron-right"></i></div>
-                            </div>
-                            <div class="doc-item" onclick="openDocument('Retour fournisseur')">
-                                <div class="doc-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                                <div class="doc-info">
-                                    <div class="doc-name">Retour fournisseur</div>
-                                    <div class="doc-meta">PDF • Mis à jour le 05/01/2026</div>
-                                </div>
-                                <div class="doc-action"><i class="fas fa-chevron-right"></i></div>
-                            </div>
-                            <div class="doc-item" onclick="openDocument('Nettoyage zone réception')">
-                                <div class="doc-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                                <div class="doc-info">
-                                    <div class="doc-name">Nettoyage zone réception</div>
-                                    <div class="doc-meta">PDF • Mis à jour le 03/01/2026</div>
-                                </div>
-                                <div class="doc-action"><i class="fas fa-chevron-right"></i></div>
-                            </div>
-                            <div class="doc-item" onclick="openDocument('Protocole sécurité base')">
-                                <div class="doc-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                                <div class="doc-info">
-                                    <div class="doc-name">Protocole sécurité base</div>
-                                    <div class="doc-meta">PDF • Mis à jour le 01/01/2026</div>
-                                </div>
-                                <div class="doc-action"><i class="fas fa-chevron-right"></i></div>
-                            </div>
+                    <div class="doc-row" onclick="alert('Téléchargement du PDF...')">
+                        <div class="file-icon pdf"><i class="fas fa-file-pdf"></i></div>
+                        <div>
+                            <h4>Contrôle Température à Réception</h4>
+                            <span style="font-size:12px; color:#888;">Procédure obligatoire</span>
+                        </div>
+                        <i class="fas fa-download" style="margin-left:auto; opacity:0.5;"></i>
+                    </div>
+                    <div class="doc-row" onclick="alert('Ouverture Excel...')">
+                        <div class="file-icon xls"><i class="fas fa-file-excel"></i></div>
+                        <div>
+                            <h4>Suivi des Litiges Transport</h4>
+                            <span style="font-size:12px; color:#888;">Fichier Excel partagé</span>
+                        </div>
+                        <i class="fas fa-download" style="margin-left:auto; opacity:0.5;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= PAGE: SECURITE ================= -->
+        <div id="securite" class="page">
+            <h2 style="margin-bottom:20px;">Sécurité & Incendie (POI)</h2>
+            <div class="dashboard-row">
+                <div class="glass-panel">
+                    <h3>📍 Plan d'Évacuation Interactif</h3>
+                    <div style="height:300px; background:#eee; border-radius:15px; display:flex; align-items:center; justify-content:center; margin-top:20px; border:2px dashed #ccc;">
+                        <p style="color:#888"><i class="fas fa-map-marked-alt"></i> Carte Interactive en cours de chargement...</p>
+                    </div>
+                </div>
+                <div class="glass-panel">
+                    <h3>Documents Urgents</h3>
+                    <div class="doc-list">
+                        <div class="doc-row" onclick="alert('Ouverture PDF')">
+                            <div class="file-icon pdf"><i class="fas fa-file-medical"></i></div>
+                            <div><h4>Fiche Réflexe POI</h4></div>
+                        </div>
+                        <div class="doc-row" onclick="alert('Ouverture PDF')">
+                            <div class="file-icon pdf"><i class="fas fa-users"></i></div>
+                            <div><h4>Liste Sauveteurs SST</h4></div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- ============================================
-                 PAGE: STOCK
-            ============================================ -->
-            <div id="proc-stock" class="page-content">
-                <div class="breadcrumb">
-                    <a onclick="navigateTo('home')">Accueil</a>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Stock</span>
-                </div>
-
-                <div class="page-header">
-                    <h2><i class="fas fa-boxes"></i> Stock</h2>
-                    <p>Gestion des stocks et entrepôt</p>
-                </div>
-
-                <div class="content-card">
-                    <div class="card-header">
-                        <h3><i class="fas fa-folder-open"></i> Documents Stock</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="doc-list">
-                            <div class="doc-item" onclick="openDocument('Contrôle des dates DLC/DDM')">
-                                <div class="doc-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                                <div class="doc-info">
-                                    <div class="doc-name">Contrôle des dates (DLC/DDM)</div>
-                                    <div class="doc-meta">PDF • Procédure</div>
-                                </div>
-                                <div class="doc-action"><i class="fas fa-chevron-right"></i></div>
-                            </div>
-                            <div class="doc-item" onclick="openDocument('Températures entrepôt')">
-                                <div class="doc-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                                <div class="doc-info">
-                                    <div class="doc-name">Températures entrepôt</div>
-                                    <div class="doc-meta">PDF • Procédure</div>
-                                </div>
-                                <div class="doc-action"><i class="fas fa-chevron-right"></i></div>
-                            </div>
-                            <div class="doc-item" onclick="openDocument('Dons aux associations')">
-                                <div class="doc-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                                <div class="doc-info">
-                                    <div class="doc-name">Dons aux associations</div>
-                                    <div class="doc-meta">PDF • Procédure</div>
-                                </div>
-                                <div class="doc-action"><i class="fas fa-chevron-right"></i></div>
-                            </div>
-                            <div class="doc-item" onclick="openDocument('Gestion de la casse')">
-                                <div class="doc-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                                <div class="doc-info">
-                                    <div class="doc-name">Gestion de la casse</div>
-                                    <div class="doc-meta">PDF • Procédure</div>
-                                </div>
-                                <div class="doc-action"><i class="fas fa-chevron-right"></i></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- ================= PAGE: QUALITE ================= -->
+        <div id="qualite" class="page">
+            <h2 style="margin-bottom:20px;">Qualité & Hygiène</h2>
+            <div class="glass-panel" style="border-left: 5px solid var(--primary);">
+                <h3 style="color:var(--primary)"><i class="fas fa-exclamation-circle"></i> Retrait Produit en cours</h3>
+                <p style="margin-top:10px;"><strong>Produit :</strong> Jambon Supérieur Tranché</p>
+                <p><strong>Lot :</strong> #4852</p>
+                <p><strong>Action :</strong> Retrait immédiat et isolement en zone quarantaine.</p>
+                <button style="margin-top:15px; padding:10px 20px; background:var(--primary); color:white; border:none; border-radius:5px; cursor:pointer;" onclick="alert('Retrait confirmé !')">Confirmer le retrait</button>
             </div>
+        </div>
 
-            <!-- ============================================
-                 PAGE: TEMPÉRATURES
-            ============================================ -->
-            <div id="qualite-temperature" class="page-content">
-                <div class="breadcrumb">
-                    <a onclick="navigateTo('home')">Accueil</a>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Qualité</span>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Températures</span>
-                </div>
-
-                <div class="page-header">
-                    <h2><i class="fas fa-thermometer-half"></i> Contrôle Températures</h2>
-                    <p>Suivi des températures en temps réel</p>
-                </div>
-
-                <div class="temp-grid">
-                    <div class="temp-card ok">
-                        <div class="temp-value">-18°C</div>
-                        <div class="temp-label">Entrepôt Gel</div>
-                        <div class="temp-status"><i class="fas fa-check"></i> Conforme</div>
-                    </div>
-                    <div class="temp-card ok">
-                        <div class="temp-value">+4°C</div>
-                        <div class="temp-label">Entrepôt Frais</div>
-                        <div class="temp-status"><i class="fas fa-check"></i> Conforme</div>
-                    </div>
-                    <div class="temp-card ok">
-                        <div class="temp-value">+12°C</div>
-                        <div class="temp-label">Zone Réception</div>
-                        <div class="temp-status"><i class="fas fa-check"></i> Conforme</div>
-                    </div>
-                    <div class="temp-card ok">
-                        <div class="temp-value">+8°C</div>
-                        <div class="temp-label">Quai Expédition</div>
-                        <div class="temp-status"><i class="fas fa-check"></i> Conforme</div>
-                    </div>
-                </div>
-
-                <div class="content-card">
-                    <div class="card-header">
-                        <h3><i class="fas fa-folder-open"></i> Documents Températures</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="doc-list">
-                            <div class="doc-item" onclick="openDocument('Procédure contrôle températures')">
-                                <div class="doc-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                                <div class="doc-info">
-                                    <div class="doc-name">Procédure contrôle températures</div>
-                                    <div class="doc-meta">PDF • Référence</div>
-                                </div>
-                                <div class="doc-action"><i class="fas fa-chevron-right"></i></div>
-                            </div>
-                            <div class="doc-item" onclick="openDocument('Relevés températures')">
-                                <div class="doc-icon excel"><i class="fas fa-file-excel"></i></div>
-                                <div class="doc-info">
-                                    <div class="doc-name">Relevés températures entrepôt</div>
-                                    <div class="doc-meta">Excel • Suivi</div>
-                                </div>
-                                <div class="doc-action"><i class="fas fa-chevron-right"></i></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <!-- ================= PAGE: COORDONNEES ================= -->
+        <div id="coordonnees" class="page">
+            <h2 style="margin-bottom:20px;">Coordonnées & Plans</h2>
+            <div class="glass-panel">
+                <p><strong>Urgence :</strong> 04 94 00 00 00</p>
+                <p><strong>Poste de Garde :</strong> 04 94 00 00 01</p>
+                <p><strong>Responsable QHSE :</strong> 06 00 00 00 00</p>
             </div>
+        </div>
 
-            <!-- ============================================
-                 PAGE: RETRAIT QUALITÉ
-            ============================================ -->
-            <div id="qualite-retrait" class="page-content">
-                <div class="breadcrumb">
-                    <a onclick="navigateTo('home')">Accueil</a>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Qualité</span>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Retrait Qualité</span>
-                </div>
+        <!-- Placeholders pour autres pages -->
+        <div id="stock" class="page"><h2>Stock</h2><div class="glass-panel"><p>Contenu Stock...</p></div></div>
+        <div id="expedition" class="page"><h2>Expéditions</h2><div class="glass-panel"><p>Contenu Expéditions...</p></div></div>
+        <div id="accidents" class="page"><h2>Accidents</h2><div class="glass-panel"><p>Contenu Accidents...</p></div></div>
+        <div id="stats" class="page"><h2>Indicateurs</h2><div class="glass-panel"><p>Contenu Stats...</p></div></div>
+        <div id="docs" class="page"><h2>GED</h2><div class="glass-panel"><p>Base documentaire...</p></div></div>
 
-                <div class="page-header">
-                    <h2><i class="fas fa-exclamation-triangle"></i> Retrait Qualité / Rappel Produit</h2>
-                    <p>Gestion des retraits et rappels produits</p>
-                </div>
+    </div>
 
-                <div class="alert alert-danger">
-                    <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></div>
-                    <div>
-                        <div class="alert-title">⚠️ ALERTE EN COURS - Lot #4852</div>
-                        <div class="alert-text">Produit : Jambon supérieur tranché - Action immédiate requise - Bloquer et isoler le lot</div>
-                    </div>
-                </div>
+    <!-- ================= LOGIC & SCRIPTS ================= -->
+    <script>
+        // 1. LOADER CINÉMATIQUE
+        function triggerLoader(callback) {
+            const loader = document.getElementById('page-loader');
+            const content = loader.querySelector('.loader-content');
+            
+            loader.classList.add('active');
+            content.classList.add('loading');
 
-                <div class="content-card">
-                    <div class="card-header">
-                        <h3><i class="fas fa-folder-open"></i> Documents Retrait</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="doc-list">
-                            <div class="doc-item" onclick="openDocument('Procédure retrait qualité')">
-                                <div class="doc-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                                <div class="doc-info">
-                                    <div class="doc-name">Procédure retrait qualité</div>
-                                    <div class="doc-meta">PDF • Référence</div>
-                                </div>
-                                <div class="doc-action"><i class="fas fa-chevron-right"></i></div>
-                            </div>
-                            <div class="doc-item" onclick="openDocument('Base de données retraits')">
-                                <div class="doc-icon excel"><i class="fas fa-file-excel"></i></div>
-                                <div class="doc-info">
-                                    <div class="doc-name">Base de données retraits</div>
-                                    <div class="doc-meta">Excel • Historique</div>
-                                </div>
-                                <div class="doc-action"><i class="fas fa-chevron-right"></i></div>
-                            </div>
-                            <div class="doc-item" onclick="openDocument('Feuilles suivi retrait')">
-                                <div class="doc-icon excel"><i class="fas fa-file-excel"></i></div>
-                                <div class="doc-info">
-                                    <div class="doc-name">Feuilles suivi retrait</div>
-                                    <div class="doc-meta">Excel • Suivi</div>
-                                </div>
-                                <div class="doc-action"><i class="fas fa-chevron-right"></i></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            // Durée 1.2s pour l'effet "Wow"
+            setTimeout(() => {
+                if(callback) callback();
+                loader.classList.remove('active');
+                content.classList.remove('loading');
+            }, 1200);
+        }
 
-            <!-- ============================================
-                 PAGE: INCENDIE / POI
-            ============================================ -->
-            <div id="incendie-poi" class="page-content">
-                <div class="breadcrumb">
-                    <a onclick="navigateTo('home')">Accueil</a>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Incendie / POI</span>
-                </div>
+        // 2. NAVIGATION (Fixe pour tous les liens)
+        function showPage(pageId, element) {
+            triggerLoader(() => {
+                // Masquer toutes les pages
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                
+                // Afficher la page cible
+                const target = document.getElementById(pageId);
+                if(target) {
+                    target.classList.add('active');
+                    window.scrollTo(0,0);
+                } else {
+                    console.log("Page introuvable, retour accueil");
+                    document.getElementById('home').classList.add('active');
+                }
 
-                <div class="page-header">
-                    <h2><i class="fas fa-fire-extinguisher"></i> Sécurité Incendie & POI</h2>
-                    <p>Plan d'Organisation Interne et consignes incendie</p>
-                </div>
+                // Gérer le menu actif
+                if(element) {
+                    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                    if(!element.parentElement.classList.contains('submenu')) {
+                        element.classList.add('active');
+                    }
+                }
 
-                <div class="content-card">
-                    <div class="card-header">
-                        <h3><i class="fas fa-folder-open"></i> Documents Incendie</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="doc-list">
-                            <div class="doc-item" onclick="openDocument('Plan Organisation Interne')">
-                                <div class="doc-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                                <div class="doc-info">
-                                    <div class="doc-name">Plan d'Organisation Interne (POI)</div>
-                                    <div class="doc-meta">PDF • Référence</div>
-                                </div>
-                                <div class="doc-action"><i class="fas fa-chevron-right"></i></div>
-                            </div>
-                            <div class="doc-item" onclick="openDocument('Fiches réflexes POI')">
-                                <div class="doc-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                                <div class="doc-info">
-                                    <div class="doc-name">Fiches réflexes POI</div>
-                                    <div class="doc-meta">PDF • Consignes</div>
-                                </div>
-                                <div class="doc-action"><i class="fas fa-chevron-right"></i></div>
-                            </div>
-                            <div class="doc-item" onclick="openDocument('Rôles DOI RCOM ROBS')">
+                // Titre
+                const titles = {
+                    'home': 'Tableau de Bord',
+                    'reception': 'Réception',
+                    'securite': 'Sécurité Incendie',
+                    'qualite': 'Qualité & Hygiène',
+                    'stats': 'Indicateurs'
+                };
+                document.getElementById('page-title').innerText = titles[pageId] || "Tableau de Bord";
+
+                // Fermer menu mobile
+                if(window.innerWidth <= 1024) document.getElementById('sidebar').classList.remove('active');
+            });
+        }
+
+        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+        
+        function toggleSubmenu(id, el) {
+            document.getElementById(id).classList.toggle('open');
+            el.querySelector('.fa-chevron-down').style.transform = document.getElementById(id).classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        // 3. EFFETS 3D & COMPTEURS
+        document.addEventListener("DOMContentLoaded", () => {
+            triggerLoader(); // Intro au chargement
+
+            setTimeout(() => {
+                document.querySelectorAll('.count-up').forEach(c => {
+                    const target = parseFloat(c.getAttribute('data-target'));
+                    anime({
+                        targets: c, innerHTML: [0, target],
+                        round: 10, easing: 'easeOutExpo', duration: 2500
+                    });
+                });
+            }, 1300);
+        });
+
+        // 4. MOTEUR 3D (Cubes Rotatifs)
+        function init3D() {
+            const container = document.getElementById('canvas3d');
+            if(!container) return;
+            
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
+            camera.position.z = 5; camera.position.y = 2; camera.lookAt(0,0,0);
+            
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
+            
+            const ambient = new THREE.AmbientLight(0xffffff, 0.6); scene.add(ambient);
+            const light = new THREE.DirectionalLight(0xffffff, 1); light.position.set(5,5,5); scene.add(light);
+
+            const group = new THREE.Group();
+            const geo = new THREE.BoxGeometry(0.8, 0.8, 0.8);
+            
+            const matRed = new THREE.MeshStandardMaterial({ color: 0xE2001A });
+            const matGray = new THREE.MeshStandardMaterial({ color: 0x333333 });
+            const matWhite = new THREE.MeshStandardMaterial({ color: 0xffffff });
+
+            const c1 = new THREE.Mesh(geo, matRed); c1.position.x = -1.2; group.add(c1);
+            const c2 = new THREE.Mesh(geo, matGray); c2.position.x = 0; group.add(c2);
+            const c3 = new THREE.Mesh(geo, matWhite); c3.position.x = 1.2; group.add(c3);
+            const c4 = new THREE.Mesh(geo, matRed); c4.position.y = 1; group.add(c4);
+
+            scene.add(group);
+
+            function animate() {
+                requestAnimationFrame(animate);
+                group.rotation.y += 0.005;
+                group.rotation.x = Math.sin(Date.now() * 0.001) * 0.1;
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+        setTimeout(init3D, 500);
+
+        // 5. GRAPHIQUE
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(226, 0, 26, 0.5)');
+        gradient.addColorStop(1, 'rgba(226, 0, 26, 0)');
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'],
+                datasets: [{
+                    label: 'Productivité',
+                    data: [1200, 1500, 1100, 1800, 2000, 1600, 900],
+                    borderColor: '#E2001A', backgroundColor: gradient,
+                    fill: true, tension: 0.4
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } } } }
+        });
+    </script>
+</body>
+</html>
