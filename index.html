@@ -3,638 +3,487 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Les Mousquetaires - Portail QHSE 2026</title>
+    <title>Les Mousquetaires - Vision 2026</title>
     
-    <!-- Polices Premium -->
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
     
-    <!-- Icônes -->
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- Librairies (Chart.js + Three.js) -->
+    <!-- JS Engines -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 
     <style>
         /* ================= VARIABLES ================= */
         :root {
-            /* Couleurs Identité */
             --primary: #E2001A;
-            --primary-hover: #c40017;
-            --dark: #0f172a;
-            --sidebar-bg: #1e293b;
-            --bg-body: #f1f5f9;
-            --white: #ffffff;
-            --text-main: #334155;
-            --text-light: #64748b;
+            --primary-glow: rgba(226, 0, 26, 0.6);
+            --dark-bg: #0b0c10;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --gradient: linear-gradient(135deg, #E2001A 0%, #ff4757 100%);
             
-            /* Dimensions */
-            --sidebar-width: 260px;
-            --header-height: 70px;
-            
-            /* Effets */
-            --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            --shadow-card: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
-            --radius: 16px;
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --sidebar-width: 270px;
+            --header-height: 80px;
+            --radius: 20px;
+            --transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        /* ================= RESET & BASE ================= */
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        /* ================= BASE ================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; user-select: none; }
+        body { font-family: 'Outfit', sans-serif; background-color: var(--dark-bg); color: var(--text-main); overflow: hidden; height: 100vh; }
+
+        /* ================= LANDING PAGE (INTRO) ================= */
+        #landing-screen {
+            position: fixed; inset: 0; z-index: 10000;
+            background: radial-gradient(circle at center, #1a1c29 0%, #000000 100%);
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1), opacity 1s ease;
+        }
         
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-body);
-            color: var(--text-main);
-            overflow: hidden; /* Empêche le scroll global pour garder la structure */
+        #landing-canvas { position: absolute; inset: 0; z-index: 0; opacity: 0.6; }
+
+        .landing-content { z-index: 2; text-align: center; position: relative; }
+
+        .hero-logo {
+            width: 100px; margin-bottom: 30px;
+            filter: drop-shadow(0 0 20px rgba(226,0,26,0.5));
+            animation: float 6s ease-in-out infinite;
         }
 
-        /* ================= LOADER CINÉMATIQUE ================= */
-        #loader {
-            position: fixed; inset: 0; background: var(--dark);
-            z-index: 9999; display: flex; justify-content: center; align-items: center;
-            flex-direction: column; transition: opacity 0.5s ease, visibility 0.5s ease;
+        .hero-title {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 4vw; font-weight: 700; letter-spacing: 10px;
+            background: linear-gradient(to bottom, #fff, #aaa);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 10px; opacity: 0; transform: translateY(30px);
+            animation: fadeInUp 1s ease forwards 0.5s;
         }
-        #loader.hidden { opacity: 0; visibility: hidden; }
+
+        .hero-subtitle {
+            font-size: 1.2vw; color: var(--primary); letter-spacing: 5px; text-transform: uppercase;
+            margin-bottom: 60px; opacity: 0; transform: translateY(20px);
+            animation: fadeInUp 1s ease forwards 0.8s;
+        }
+
+        .enter-btn {
+            position: relative; padding: 20px 60px;
+            background: transparent; border: 1px solid rgba(255,255,255,0.2);
+            color: white; font-family: 'Syncopate', sans-serif; font-weight: 700;
+            letter-spacing: 2px; cursor: pointer; overflow: hidden;
+            transition: 0.4s; opacity: 0; animation: fadeIn 1s ease forwards 1.2s;
+        }
         
-        .loader-logo { font-size: 2rem; font-weight: 800; color: white; letter-spacing: 2px; margin-bottom: 20px; }
-        .loader-bar-bg { width: 200px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
-        .loader-bar { width: 0%; height: 100%; background: var(--primary); transition: width 0.4s ease; }
-
-        /* ================= LAYOUT GRID ================= */
-        .layout {
-            display: grid;
-            grid-template-columns: var(--sidebar-width) 1fr;
-            height: 100vh;
+        .enter-btn::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(226,0,26,0.8), transparent);
+            transition: 0.5s;
         }
+        
+        .enter-btn:hover { background: rgba(226,0,26,0.1); border-color: var(--primary); box-shadow: 0 0 30px var(--primary-glow); letter-spacing: 4px; }
+        .enter-btn:hover::before { left: 100%; }
+
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        /* Animation de sortie (Warp) */
+        .zoom-out { transform: scale(5); opacity: 0; pointer-events: none; }
+
+        /* ================= APP CONTAINER (Masqué au début) ================= */
+        #app-container { opacity: 0; transition: opacity 1s ease; display: none; height: 100vh; }
+        #app-container.visible { opacity: 1; display: flex; }
+
+        /* ================= LOADER INTERNE ================= */
+        .loader-bar-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 10001;
+            background: transparent; pointer-events: none;
+        }
+        .loader-bar { width: 0; height: 100%; background: var(--primary); box-shadow: 0 0 15px var(--primary); transition: width 0.4s ease; }
+
+        /* ================= BACKGROUND APP 3D ================= */
+        #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
         /* ================= SIDEBAR ================= */
         .sidebar {
-            background: var(--sidebar-bg);
-            color: var(--white);
-            display: flex;
-            flex-direction: column;
-            border-right: 1px solid rgba(255,255,255,0.05);
-            z-index: 100;
+            width: var(--sidebar-width); background: rgba(15, 16, 20, 0.85);
+            backdrop-filter: blur(20px); border-right: 1px solid var(--glass-border);
+            display: flex; flex-direction: column; z-index: 100; transition: var(--transition);
         }
-
-        .brand {
-            height: var(--header-height);
-            display: flex; align-items: center; gap: 12px;
-            padding: 0 24px;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .brand img { height: 32px; background: white; padding: 2px; border-radius: 6px; }
-        .brand span { font-weight: 700; font-size: 14px; letter-spacing: 0.5px; }
-
-        .menu { flex: 1; overflow-y: auto; padding: 20px 0; }
-        .menu::-webkit-scrollbar { width: 4px; }
-        .menu::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
-
-        .menu-title {
-            font-size: 11px; text-transform: uppercase; font-weight: 700;
-            color: rgba(255,255,255,0.4); margin: 20px 24px 10px;
-        }
-
+        .brand { padding: 30px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--glass-border); }
+        .brand img { width: 40px; background: white; padding: 4px; border-radius: 8px; }
+        .brand-text h1 { font-size: 14px; font-weight: 800; letter-spacing: 1px; color: white; }
+        .brand-text span { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
+        .menu { flex: 1; overflow-y: auto; padding: 20px 15px; }
         .nav-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 12px 24px; cursor: pointer;
-            color: rgba(255,255,255,0.7);
-            transition: var(--transition);
-            border-left: 3px solid transparent;
+            display: flex; align-items: center; gap: 15px; padding: 16px 20px;
+            margin-bottom: 8px; border-radius: 12px; color: var(--text-muted);
+            cursor: pointer; transition: var(--transition); position: relative; overflow: hidden;
         }
-        .nav-item:hover { background: rgba(255,255,255,0.05); color: white; }
-        .nav-item.active { background: rgba(226, 0, 26, 0.1); color: var(--primary); border-left-color: var(--primary); }
-        .nav-item i { width: 20px; text-align: center; }
-
-        /* Submenu */
-        .submenu { max-height: 0; overflow: hidden; transition: 0.3s ease; background: rgba(0,0,0,0.2); }
-        .submenu.open { max-height: 300px; }
-        .submenu .nav-item { padding-left: 54px; font-size: 13px; }
+        .nav-item:hover { background: rgba(255,255,255,0.05); color: white; transform: translateX(5px); }
+        .nav-item.active { background: var(--gradient); color: white; box-shadow: 0 10px 20px -5px var(--primary-glow); }
+        .submenu { max-height: 0; overflow: hidden; transition: 0.5s ease; background: rgba(0,0,0,0.2); border-radius: 10px; }
+        .submenu.open { max-height: 500px; }
+        .submenu .nav-item { padding-left: 50px; font-size: 13px; }
 
         /* ================= MAIN CONTENT ================= */
-        .main-content {
-            display: flex; flex-direction: column;
-            background: var(--bg-body);
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* HEADER */
+        .main-content { flex: 1; display: flex; flex-direction: column; position: relative; }
+        
         .header {
-            height: var(--header-height);
-            background: rgba(255,255,255,0.8);
-            backdrop-filter: blur(12px);
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0 30px;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            z-index: 50;
+            height: var(--header-height); display: flex; justify-content: space-between; align-items: center;
+            padding: 0 40px; background: rgba(15, 16, 20, 0.6); backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
         }
-
-        .header-title h1 { font-size: 18px; font-weight: 700; color: var(--dark); }
-        .header-title p { font-size: 12px; color: var(--text-light); }
-
-        .header-actions { display: flex; align-items: center; gap: 20px; }
-        
-        .icon-btn {
-            width: 40px; height: 40px; border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            color: var(--text-light); cursor: pointer;
-            transition: var(--transition);
-            position: relative;
+        .header-title h2 { font-size: 24px; font-weight: 700; color: white; }
+        .user-actions { display: flex; gap: 20px; align-items: center; }
+        .action-btn {
+            width: 45px; height: 45px; border-radius: 12px; background: var(--glass-bg);
+            border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center;
+            color: white; cursor: pointer; transition: 0.3s;
         }
-        .icon-btn:hover { background: white; color: var(--primary); box-shadow: var(--shadow-soft); }
-        .badge {
-            position: absolute; top: 8px; right: 8px; width: 8px; height: 8px;
-            background: var(--primary); border-radius: 50%;
-        }
+        .action-btn:hover { background: white; color: var(--primary); transform: scale(1.1); box-shadow: 0 0 15px rgba(255,255,255,0.3); }
 
-        .profile { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .avatar {
-            width: 36px; height: 36px; background: var(--dark);
-            color: white; border-radius: 10px;
-            display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px;
-        }
-
-        /* SCROLLABLE AREA */
-        .content-scroll {
-            flex: 1; overflow-y: auto; padding: 30px;
-            scroll-behavior: smooth;
-        }
-
-        /* PAGES */
-        .page { display: none; animation: fadeIn 0.4s ease; }
+        .content-area { flex: 1; padding: 40px; overflow-y: auto; }
+        .page { display: none; animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
         .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* CARDS */
-        .grid-stats {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px; margin-bottom: 30px;
-        }
-
-        .card {
-            background: white; border-radius: var(--radius);
-            padding: 24px; box-shadow: var(--shadow-soft);
-            transition: var(--transition); border: 1px solid rgba(0,0,0,0.02);
-            position: relative; overflow: hidden; cursor: pointer;
-        }
-        .card:hover { transform: translateY(-5px); box-shadow: var(--shadow-card); border-color: rgba(226,0,26,0.1); }
+        /* CARDS & GLASS PANELS */
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 30px; }
+        .grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; }
         
-        .card h3 { font-size: 14px; color: var(--text-light); font-weight: 600; margin-bottom: 10px; }
-        .card .value { font-size: 32px; font-weight: 800; color: var(--dark); margin-bottom: 5px; }
-        .card .trend { font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }
-        .trend.up { color: #10b981; } .trend.down { color: var(--primary); }
+        .card {
+            background: var(--glass-bg); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(20px); border-radius: var(--radius); padding: 30px;
+            position: relative; overflow: hidden; transition: var(--transition); cursor: pointer;
+        }
+        .card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .stat-val { font-size: 42px; font-weight: 800; text-shadow: 0 0 20px rgba(255,255,255,0.1); color: white; }
+        
+        /* 3D CANVAS IN DASHBOARD */
+        #canvas3d { width: 100%; height: 350px; border-radius: 15px; background: rgba(0,0,0,0.3); }
 
-        .card-icon {
-            position: absolute; top: 20px; right: 20px;
-            width: 48px; height: 48px; border-radius: 12px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 20px; opacity: 0.1;
+        /* RIPPLE EFFECT */
+        .ripple {
+            position: absolute; border-radius: 50%; transform: scale(0);
+            animation: ripple 0.6s linear; background-color: rgba(255, 255, 255, 0.3); pointer-events: none;
         }
-        .bg-red { background: var(--primary); color: var(--primary); }
-        .bg-blue { background: #3b82f6; color: #3b82f6; }
-        .bg-green { background: #10b981; color: #10b981; }
-        .bg-orange { background: #f59e0b; color: #f59e0b; }
-
-        /* DASHBOARD SPLIT */
-        .dashboard-split {
-            display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 30px;
-        }
-
-        .panel {
-            background: white; border-radius: var(--radius);
-            padding: 24px; box-shadow: var(--shadow-soft);
-            display: flex; flex-direction: column;
-        }
-        .panel-header {
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
-        }
-        .panel h3 { font-size: 16px; font-weight: 700; color: var(--dark); }
-
-        /* 3D CANVAS */
-        #canvas3d { width: 100%; height: 300px; border-radius: 12px; background: #f8fafc; }
-
-        /* LISTES */
-        .list-item {
-            display: flex; align-items: center; gap: 15px;
-            padding: 12px; border-radius: 10px;
-            transition: var(--transition); cursor: pointer;
-            border-bottom: 1px solid #f1f5f9;
-        }
-        .list-item:hover { background: #f8fafc; transform: translateX(5px); }
-        .list-icon {
-            width: 36px; height: 36px; border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 16px;
-        }
-        .pdf { background: #fee2e2; color: #ef4444; }
-        .xls { background: #dcfce7; color: #10b981; }
-
-        /* GRID LINKS */
-        .grid-links { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .quick-link {
-            background: #f8fafc; padding: 15px; border-radius: 12px;
-            text-align: center; cursor: pointer; transition: var(--transition);
-            border: 1px solid transparent;
-        }
-        .quick-link:hover { background: white; border-color: var(--primary); box-shadow: var(--shadow-soft); }
-        .quick-link i { font-size: 24px; color: var(--primary); margin-bottom: 8px; display: block; }
-        .quick-link span { font-size: 12px; font-weight: 600; color: var(--dark); }
-
-        /* ALERT */
-        .alert {
-            background: #fef2f2; border-left: 4px solid var(--primary);
-            padding: 15px; border-radius: 8px; margin-bottom: 20px;
-            display: flex; gap: 15px; align-items: flex-start;
-        }
-        .alert i { color: var(--primary); font-size: 18px; margin-top: 3px; }
-        .alert-content h4 { font-size: 14px; font-weight: 700; color: #991b1b; }
-        .alert-content p { font-size: 13px; color: #b91c1c; margin-top: 2px; }
+        @keyframes ripple { to { transform: scale(4); opacity: 0; } }
 
         /* RESPONSIVE */
         @media (max-width: 1024px) {
-            .layout { grid-template-columns: 1fr; }
-            .sidebar { position: fixed; left: -100%; top: 0; bottom: 0; width: 80%; transition: left 0.3s ease; }
-            .sidebar.show { left: 0; }
-            .dashboard-split { grid-template-columns: 1fr; }
-            .mobile-toggle { display: block !important; }
+            .layout { flex-direction: column; }
+            .sidebar { position: fixed; left: -100%; height: 100%; }
+            .sidebar.active { left: 0; }
+            .grid-2 { grid-template-columns: 1fr; }
         }
-        .mobile-toggle { display: none; font-size: 20px; cursor: pointer; margin-right: 15px; }
-
     </style>
 </head>
 <body>
 
-    <!-- 1. LOADER -->
-    <div id="loader">
-        <div class="loader-logo">LES MOUSQUETAIRES</div>
-        <div class="loader-bar-bg"><div class="loader-bar" id="loadBar"></div></div>
+    <!-- 1. LANDING PAGE (L'intro incroyable) -->
+    <div id="landing-screen">
+        <div id="landing-bg"></div> <!-- 3D Globe Container -->
+        <div class="landing-content">
+            <!-- Logo local avec fallback -->
+            <img src="logo-groupement.svg" onerror="this.src='https://upload.wikimedia.org/wikipedia/fr/thumb/8/84/Intermarch%C3%A9-logo.svg/1200px-Intermarch%C3%A9-logo.svg.png'" class="hero-logo">
+            
+            <h1 class="hero-title">MOUSQUETAIRES</h1>
+            <p class="hero-subtitle">BASE LOGISTIQUE INTELLIGENTE 2026</p>
+            
+            <button class="enter-btn ripple-btn" onclick="enterApp()">
+                ACCÉDER AU SYSTÈME
+            </button>
+        </div>
     </div>
 
-    <div class="layout">
+    <!-- 2. BARRE DE CHARGEMENT INTERNE -->
+    <div class="loader-bar-container"><div class="loader-bar" id="top-loader"></div></div>
+
+    <!-- 3. APPLICATION PRINCIPALE (Cachée au début) -->
+    <div class="layout" id="app-container">
         
-        <!-- 2. SIDEBAR -->
-        <aside class="sidebar" id="sidebar">
+        <!-- FOND ANIMÉ APP -->
+        <canvas id="canvas-bg"></canvas>
+
+        <!-- SIDEBAR -->
+        <nav class="sidebar" id="sidebar">
             <div class="brand">
-                <!-- Logo local avec fallback -->
-                <img src="logo-groupement.svg" onerror="this.src='https://upload.wikimedia.org/wikipedia/fr/thumb/8/84/Intermarch%C3%A9-logo.svg/1200px-Intermarch%C3%A9-logo.svg.png'" alt="Logo">
-                <span>LOGISTIQUE BRIGNOLES</span>
+                <img src="logo-groupement.svg" onerror="this.src='https://upload.wikimedia.org/wikipedia/fr/thumb/8/84/Intermarch%C3%A9-logo.svg/1200px-Intermarch%C3%A9-logo.svg.png'">
+                <div class="brand-text">
+                    <h1>MOUSQUETAIRES</h1>
+                    <span>QHSE Brignoles</span>
+                </div>
             </div>
 
             <div class="menu">
-                <div class="menu-title">GÉNÉRAL</div>
-                <div class="nav-item active" onclick="navTo('home', this)">
-                    <i class="fas fa-home"></i> <span>Vue d'ensemble</span>
+                <div class="nav-item active ripple-btn" onclick="nav('home', this)">
+                    <i class="fas fa-grid-2"></i> <span>Tableau de Bord</span>
                 </div>
-
-                <div class="menu-title">OPÉRATIONS</div>
-                <div class="nav-item" onclick="toggleSub(this)">
+                
+                <div class="nav-item ripple-btn" onclick="toggleSub(this)">
                     <i class="fas fa-clipboard-list"></i> <span>Procédures</span>
-                    <i class="fas fa-chevron-down" style="margin-left: auto; font-size: 10px;"></i>
+                    <i class="fas fa-chevron-down" style="margin-left:auto; font-size:10px;"></i>
                 </div>
                 <div class="submenu">
-                    <div class="nav-item" onclick="navTo('reception', this)">Réception</div>
-                    <div class="nav-item" onclick="navTo('stock', this)">Stock & Entrepôt</div>
-                    <div class="nav-item" onclick="navTo('expedition', this)">Expéditions</div>
+                    <div class="nav-item ripple-btn" onclick="nav('reception', this)">Réception</div>
+                    <div class="nav-item ripple-btn" onclick="nav('stock', this)">Stock</div>
+                    <div class="nav-item ripple-btn" onclick="nav('expedition', this)">Expéditions</div>
                 </div>
 
-                <div class="menu-title">QHSE</div>
-                <div class="nav-item" onclick="navTo('securite', this)">
-                    <i class="fas fa-shield-alt"></i> <span>Incendie & POI</span>
+                <div class="nav-item ripple-btn" onclick="nav('securite', this)">
+                    <i class="fas fa-shield-virus"></i> <span>Sécurité & Incendie</span>
                 </div>
-                <div class="nav-item" onclick="navTo('qualite', this)">
-                    <i class="fas fa-check-circle"></i> <span>Qualité & Hygiène</span>
+                <div class="nav-item ripple-btn" onclick="nav('qualite', this)">
+                    <i class="fas fa-microscope"></i> <span>Qualité</span>
                 </div>
-                <div class="nav-item" onclick="navTo('accidents', this)">
-                    <i class="fas fa-user-injured"></i> <span>Suivi Accidents</span>
+                <div class="nav-item ripple-btn" onclick="nav('accidents', this)">
+                    <i class="fas fa-user-injured"></i> <span>Accidents</span>
                 </div>
-
-                <div class="menu-title">PILOTAGE</div>
-                <div class="nav-item" onclick="navTo('stats', this)">
-                    <i class="fas fa-chart-pie"></i> <span>Indicateurs 2026</span>
+                <div class="nav-item ripple-btn" onclick="nav('stats', this)">
+                    <i class="fas fa-chart-pie"></i> <span>Indicateurs</span>
                 </div>
-                <div class="nav-item" onclick="navTo('docs', this)">
-                    <i class="fas fa-folder-open"></i> <span>GED Documentaire</span>
+                <div class="nav-item ripple-btn" onclick="nav('docs', this)">
+                    <i class="fas fa-folder-open"></i> <span>GED</span>
                 </div>
             </div>
-        </aside>
+        </nav>
 
-        <!-- 3. MAIN CONTENT -->
+        <!-- MAIN -->
         <main class="main-content">
             <header class="header">
-                <div style="display:flex; align-items:center;">
-                    <i class="fas fa-bars mobile-toggle" onclick="toggleSidebar()"></i>
-                    <div class="header-title">
-                        <h1 id="page-title">Tableau de Bord</h1>
-                        <p>Bienvenue sur le portail QHSE</p>
-                    </div>
+                <div class="header-title">
+                    <span id="date-display">2026</span>
+                    <h2 id="page-title">Vue d'ensemble</h2>
                 </div>
-
-                <div class="header-actions">
-                    <div class="icon-btn" onclick="navTo('qualite', null)">
+                <div class="user-actions">
+                    <div class="action-btn ripple-btn" onclick="nav('qualite', null)">
                         <i class="fas fa-bell"></i>
-                        <div class="badge"></div>
+                        <span class="badge">3</span>
                     </div>
-                    <div class="profile">
-                        <div style="text-align:right; font-size:12px;">
-                            <div style="font-weight:700;">Admin</div>
-                            <div style="color:var(--text-light);">Resp. QHSE</div>
-                        </div>
-                        <div class="avatar">AD</div>
+                    <div class="action-btn ripple-btn">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="font-weight:700; font-size:14px; color:white;">Admin</div>
+                        <div style="font-size:11px; color:var(--text-muted);">Resp. QHSE</div>
                     </div>
                 </div>
             </header>
 
-            <div class="content-scroll">
+            <div class="content-area">
                 
-                <!-- PAGE: HOME -->
+                <!-- HOME PAGE -->
                 <div id="home" class="page active">
-                    <!-- Cards -->
-                    <div class="grid-stats">
-                        <div class="card" onclick="navTo('qualite', null)">
-                            <div class="card-icon bg-green"><i class="fas fa-check"></i></div>
-                            <h3>Taux Conformité</h3>
-                            <div class="value">98.5%</div>
-                            <span class="trend up"><i class="fas fa-arrow-up"></i> +2.4%</span>
+                    <div class="grid-3">
+                        <div class="card ripple-btn" data-tilt onclick="nav('qualite', null)">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+                                <i class="fas fa-check-circle" style="color:#2ed573; font-size:24px;"></i>
+                                <i class="fas fa-ellipsis-h" style="color:rgba(255,255,255,0.3)"></i>
+                            </div>
+                            <div class="stat-val count-up" data-target="98.5">0</div>
+                            <p style="color:var(--text-muted); font-size:14px;">Taux Conformité</p>
                         </div>
-                        <div class="card" onclick="navTo('accidents', null)">
-                            <div class="card-icon bg-blue"><i class="fas fa-shield-alt"></i></div>
-                            <h3>Jours sans AT</h3>
-                            <div class="value">45</div>
-                            <span class="trend up"><i class="fas fa-trophy"></i> Record</span>
+                        
+                        <div class="card ripple-btn" data-tilt onclick="nav('accidents', null)">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+                                <i class="fas fa-shield-alt" style="color:#3b82f6; font-size:24px;"></i>
+                            </div>
+                            <div class="stat-val count-up" data-target="45">0</div>
+                            <p style="color:var(--text-muted); font-size:14px;">Jours sans AT</p>
                         </div>
-                        <div class="card" onclick="navTo('stats', null)">
-                            <div class="card-icon bg-orange"><i class="fas fa-boxes"></i></div>
-                            <h3>Palettes Réception</h3>
-                            <div class="value">1,250</div>
-                            <span class="trend up"><i class="fas fa-arrow-up"></i> +15%</span>
-                        </div>
-                        <div class="card" onclick="navTo('qualite', null)">
-                            <div class="card-icon bg-red"><i class="fas fa-exclamation-triangle"></i></div>
-                            <h3>Alerte Qualité</h3>
-                            <div class="value" style="color:var(--primary);">1</div>
-                            <span class="trend down">Action Requise</span>
+
+                        <div class="card ripple-btn" data-tilt onclick="nav('qualite', null)">
+                            <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
+                                <i class="fas fa-exclamation-triangle" style="color:#ff4757; font-size:24px;"></i>
+                            </div>
+                            <div class="stat-val" style="color:#ff4757">1</div>
+                            <p style="color:var(--text-muted); font-size:14px;">Alerte Qualité</p>
                         </div>
                     </div>
 
-                    <div class="dashboard-split">
-                        <!-- Chart & 3D -->
-                        <div class="panel">
-                            <div class="panel-header">
-                                <h3>📊 Performance & Flux</h3>
-                                <select style="padding:6px; border-radius:6px; border:1px solid #ddd;">
-                                    <option>Cette Semaine</option>
-                                    <option>Mois Dernier</option>
-                                </select>
-                            </div>
-                            <div style="height: 250px; margin-bottom: 20px;">
-                                <canvas id="chartMain"></canvas>
-                            </div>
-                            <!-- 3D Visualization -->
+                    <div class="grid-2">
+                        <div class="card">
+                            <h3 style="color:white; margin-bottom:20px;">Flux Entrepôt (3D Live)</h3>
                             <div id="canvas3d"></div>
                         </div>
-
-                        <!-- Quick Actions -->
-                        <div class="panel">
-                            <div class="panel-header">
-                                <h3>⚡ Accès Rapide</h3>
-                            </div>
-                            
-                            <div class="alert">
-                                <i class="fas fa-exclamation-circle"></i>
-                                <div class="alert-content">
-                                    <h4>Retrait Qualité Urgent</h4>
-                                    <p>Lot #4852 (Jambon) à isoler immédiatement.</p>
-                                </div>
-                            </div>
-
-                            <div class="grid-links">
-                                <div class="quick-link" onclick="navTo('reception', null)">
-                                    <i class="fas fa-truck-loading"></i>
-                                    <span>Réception</span>
-                                </div>
-                                <div class="quick-link" onclick="navTo('securite', null)">
-                                    <i class="fas fa-fire-extinguisher"></i>
-                                    <span>Incendie</span>
-                                </div>
-                                <div class="quick-link" onclick="navTo('docs', null)">
-                                    <i class="fas fa-flask"></i>
-                                    <span>Base FDS</span>
-                                </div>
-                                <div class="quick-link" onclick="navTo('docs', null)">
-                                    <i class="fas fa-graduation-cap"></i>
-                                    <span>Formation</span>
-                                </div>
-                            </div>
-
-                            <div style="margin-top: 20px;">
-                                <h4 style="font-size:13px; margin-bottom:10px; color:var(--text-light);">DOCUMENTS RÉCENTS</h4>
-                                <div class="list-item" onclick="alert('PDF ouvert')">
-                                    <div class="list-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                                    <div>
-                                        <div style="font-weight:600; font-size:13px;">Protocole Déchargement</div>
-                                        <div style="font-size:11px; color:#aaa;">Mis à jour hier</div>
-                                    </div>
-                                </div>
-                                <div class="list-item" onclick="alert('Excel ouvert')">
-                                    <div class="list-icon xls"><i class="fas fa-file-excel"></i></div>
-                                    <div>
-                                        <div style="font-weight:600; font-size:13px;">Suivi Litiges Transport</div>
-                                        <div style="font-size:11px; color:#aaa;">En cours</div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="card">
+                            <h3 style="color:white; margin-bottom:20px;">Performance</h3>
+                            <div style="height:250px;"><canvas id="mainChart"></canvas></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- PAGE: RECEPTION -->
+                <!-- RECEPTION PAGE -->
                 <div id="reception" class="page">
-                    <div class="panel">
-                        <div class="panel-header">
-                            <h3>Procédures Réception</h3>
-                            <button class="icon-btn" onclick="navTo('home', null)"><i class="fas fa-arrow-left"></i></button>
+                    <h2 style="color:white; margin-bottom:30px;">Procédures Réception</h2>
+                    <div class="grid-3">
+                        <div class="card ripple-btn" onclick="alert('Ouverture PDF')">
+                            <i class="fas fa-file-pdf" style="font-size:40px; color:#ff4757; margin-bottom:20px;"></i>
+                            <h4 style="color:white; margin-bottom:5px;">Protocole Déchargement</h4>
+                            <p style="color:var(--text-muted); font-size:12px;">Version 2026</p>
                         </div>
-                        <div class="doc-list">
-                            <div class="list-item" onclick="alert('Ouverture PDF')">
-                                <div class="list-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                                <div style="flex:1">
-                                    <div style="font-weight:600;">Protocole Déchargement 2026</div>
-                                    <div style="font-size:12px; color:#aaa;">Version 2.4 - Validée QHSE</div>
-                                </div>
-                                <i class="fas fa-chevron-right" style="color:#ddd"></i>
-                            </div>
-                            <div class="list-item">
-                                <div class="list-icon pdf"><i class="fas fa-file-pdf"></i></div>
-                                <div style="flex:1">
-                                    <div style="font-weight:600;">Contrôle Températures</div>
-                                    <div style="font-size:12px; color:#aaa;">Obligatoire à chaque quai</div>
-                                </div>
-                                <i class="fas fa-chevron-right" style="color:#ddd"></i>
-                            </div>
+                        <div class="card ripple-btn" onclick="alert('Ouverture PDF')">
+                            <i class="fas fa-thermometer-half" style="font-size:40px; color:#3b82f6; margin-bottom:20px;"></i>
+                            <h4 style="color:white; margin-bottom:5px;">Contrôle Températures</h4>
+                            <p style="color:var(--text-muted); font-size:12px;">Obligatoire</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Autres Pages (Template Simple) -->
-                <div id="stock" class="page"><div class="panel"><h3>Stock</h3><p>Contenu en construction...</p></div></div>
-                <div id="expedition" class="page"><div class="panel"><h3>Expéditions</h3><p>Contenu en construction...</p></div></div>
-                <div id="securite" class="page"><div class="panel"><h3>Sécurité Incendie</h3><p>Plans POI et extincteurs...</p></div></div>
-                <div id="qualite" class="page"><div class="panel"><h3>Qualité & Hygiène</h3><div class="alert"><i class="fas fa-check-circle"></i> Retrait #4852 en cours de traitement.</div></div></div>
-                <div id="accidents" class="page"><div class="panel"><h3>Suivi Accidents</h3><p>Aucun accident depuis 45 jours.</p></div></div>
-                <div id="stats" class="page"><div class="panel"><h3>Statistiques</h3><p>Tableaux de bord...</p></div></div>
-                <div id="docs" class="page"><div class="panel"><h3>GED</h3><p>Base documentaire...</p></div></div>
+                <!-- Autres Pages -->
+                <div id="stock" class="page"><h2 style="color:white">Stock & Entrepôt</h2></div>
+                <div id="expedition" class="page"><h2 style="color:white">Expéditions</h2></div>
+                <div id="securite" class="page"><h2 style="color:white">Sécurité Incendie</h2></div>
+                <div id="qualite" class="page"><h2 style="color:white">Qualité & Hygiène</h2><div class="card" style="border-color:#ff4757; margin-top:20px;"><h3 style="color:#ff4757">ALERTE : Retrait Lot #4852</h3></div></div>
+                <div id="accidents" class="page"><h2 style="color:white">Suivi Accidents</h2></div>
+                <div id="stats" class="page"><h2 style="color:white">Indicateurs</h2></div>
+                <div id="docs" class="page"><h2 style="color:white">GED Documentaire</h2></div>
 
             </div>
         </main>
     </div>
 
-    <!-- ================= LOGIC JS ================= -->
+    <!-- LOGIC -->
     <script>
-        // 1. NAVIGATION FLUIDE
-        function navTo(pageId, element) {
-            // Effet de chargement rapide
-            const loaderBar = document.getElementById('loadBar');
-            const loader = document.getElementById('loader');
+        // 1. TRANSITION D'ENTRÉE (LANDING -> APP)
+        function enterApp() {
+            const landing = document.getElementById('landing-screen');
+            const app = document.getElementById('app-container');
             
-            // Animation barre rouge en haut (optionnelle, ici on fait simple transition)
-            loaderBar.style.width = '100%';
+            // Effet Warp
+            landing.classList.add('zoom-out');
             
-            // Masquer pages
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            
-            // Afficher cible avec délai minime pour l'animation
             setTimeout(() => {
-                const target = document.getElementById(pageId) || document.getElementById('home');
-                target.classList.add('active');
+                landing.style.display = 'none';
+                app.style.display = 'flex';
+                // Trigger reflow
+                void app.offsetWidth;
+                app.classList.add('visible');
                 
-                // Reset scroll
-                document.querySelector('.content-scroll').scrollTo(0,0);
-                
-                // Titre
-                const titles = {'home':'Tableau de Bord', 'reception':'Réception', 'securite':'Sécurité', 'qualite':'Qualité'};
-                document.getElementById('page-title').innerText = titles[pageId] || "Section";
-
-                loaderBar.style.width = '0%';
-            }, 300);
-
-            // Gestion Menu
-            if(element) {
-                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-                if(!element.parentElement.classList.contains('submenu')) element.classList.add('active');
-            }
-
-            // Mobile : fermer sidebar
-            if(window.innerWidth <= 1024) document.getElementById('sidebar').classList.remove('show');
+                // Lancer les inits de l'app
+                initAppAnimations();
+            }, 800);
         }
 
-        function toggleSub(el) {
-            const sub = el.nextElementSibling;
-            sub.classList.toggle('open');
-            el.querySelector('.fa-chevron-down').style.transform = sub.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
-        }
-
-        function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('show');
-        }
-
-        // 2. INITIALISATION
-        window.addEventListener('load', () => {
-            const loader = document.getElementById('loader');
-            const bar = document.getElementById('loadBar');
+        // 2. 3D LANDING BACKGROUND (Globe de particules)
+        function initLanding3D() {
+            const container = document.getElementById('landing-bg');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
             
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            const geometry = new THREE.IcosahedronGeometry(2, 2);
+            const material = new THREE.PointsMaterial({ color: 0xE2001A, size: 0.03 });
+            const sphere = new THREE.Points(geometry, material);
+            scene.add(sphere);
+
+            camera.position.z = 5;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                sphere.rotation.y += 0.002;
+                sphere.rotation.x += 0.001;
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+        initLanding3D();
+
+        // 3. NAVIGATION & CHARGEMENT
+        function nav(pageId, btn) {
+            const bar = document.getElementById('top-loader');
             bar.style.width = '100%';
             
             setTimeout(() => {
-                loader.classList.add('hidden');
-                initChart();
-                init3D();
-            }, 1000);
-        });
+                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+                const target = document.getElementById(pageId) || document.getElementById('home');
+                target.classList.add('active');
+                
+                const titles = {'home':'Vue d\'ensemble', 'reception':'Réception', 'securite':'Sécurité', 'qualite':'Qualité'};
+                document.getElementById('page-title').innerText = titles[pageId] || "Dashboard";
+                
+                if(btn) {
+                    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                    if(!btn.parentElement.classList.contains('submenu')) btn.classList.add('active');
+                }
+                
+                bar.style.width = '0%';
+            }, 400);
+        }
 
-        // 3. CHART.JS
-        function initChart() {
-            const ctx = document.getElementById('chartMain').getContext('2d');
+        function toggleSub(el) {
+            el.nextElementSibling.classList.toggle('open');
+            el.querySelector('.fa-chevron-down').style.transform = el.nextElementSibling.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+        }
+
+        // 4. ANIMATIONS APP
+        function initAppAnimations() {
+            // Compteurs
+            document.querySelectorAll('.count-up').forEach(c => {
+                anime({ targets: c, innerHTML: [0, parseFloat(c.getAttribute('data-target'))], round: 10, easing: 'easeOutExpo', duration: 2500 });
+            });
+
+            // Graphique
+            const ctx = document.getElementById('mainChart').getContext('2d');
             new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
                     datasets: [{
-                        label: 'Colis Traités',
-                        data: [1200, 1900, 1500, 2200, 2000, 1100],
-                        borderColor: '#E2001A',
-                        backgroundColor: 'rgba(226,0,26,0.05)',
-                        fill: true,
-                        tension: 0.4,
-                        borderWidth: 2,
-                        pointRadius: 0
+                        label: 'Flux', data: [120, 190, 150, 250, 220, 300],
+                        borderColor: '#E2001A', backgroundColor: 'rgba(226,0,26,0.1)', fill: true, tension: 0.4
                     }]
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { grid: { display: false }, ticks: { font: { family: "'Plus Jakarta Sans'" } } },
-                        y: { grid: { borderDash: [4, 4] }, beginAtZero: true }
-                    }
-                }
+                options: { plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: 'rgba(255,255,255,0.1)' } } } }
             });
-        }
 
-        // 4. THREE.JS (Animation Légère)
-        function init3D() {
-            const container = document.getElementById('canvas3d');
-            if (!container) return;
-
+            // 3D Dashboard Cube
+            const canvas3d = document.getElementById('canvas3d');
             const scene = new THREE.Scene();
-            scene.background = new THREE.Color(0xf8fafc); // Fond gris clair cohérent
-
-            const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 1000);
-            camera.position.set(0, 2, 5);
-            camera.lookAt(0, 0, 0);
-
-            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-            renderer.setSize(container.clientWidth, container.clientHeight);
-            container.appendChild(renderer.domElement);
-
-            // Lumières
-            const light = new THREE.DirectionalLight(0xffffff, 1);
-            light.position.set(5, 5, 5);
-            scene.add(light);
-            scene.add(new THREE.AmbientLight(0xffffff, 0.5));
-
-            // Objet (Cube stylisé représentant un colis)
-            const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
-            const material = new THREE.MeshStandardMaterial({ color: 0xE2001A, roughness: 0.4 });
-            const cube = new THREE.Mesh(geometry, material);
+            const cam = new THREE.PerspectiveCamera(50, canvas3d.clientWidth / canvas3d.clientHeight, 0.1, 1000);
+            const ren = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            ren.setSize(canvas3d.clientWidth, canvas3d.clientHeight);
+            canvas3d.appendChild(ren.domElement);
+            
+            const geo = new THREE.BoxGeometry(1.5, 1.5, 1.5);
+            const mat = new THREE.MeshNormalMaterial({ wireframe: true });
+            const cube = new THREE.Mesh(geo, mat);
             scene.add(cube);
+            cam.position.z = 5;
 
-            // Sol ombre
-            const planeGeo = new THREE.PlaneGeometry(5, 5);
-            const planeMat = new THREE.MeshBasicMaterial({ color: 0x000000, opacity: 0.1, transparent: true });
-            const plane = new THREE.Mesh(planeGeo, planeMat);
-            plane.rotation.x = -Math.PI / 2;
-            plane.position.y = -1;
-            scene.add(plane);
-
-            function animate() {
-                requestAnimationFrame(animate);
-                cube.rotation.y += 0.005;
-                cube.position.y = Math.sin(Date.now() * 0.002) * 0.2; // Flottement
-                renderer.render(scene, camera);
+            function animCube() {
+                requestAnimationFrame(animCube);
+                cube.rotation.x += 0.01; cube.rotation.y += 0.01;
+                ren.render(scene, cam);
             }
-            animate();
-
-            window.addEventListener('resize', () => {
-                if(container.clientWidth > 0) {
-                    renderer.setSize(container.clientWidth, container.clientHeight);
-                    camera.aspect = container.clientWidth / container.clientHeight;
-                    camera.updateProjectionMatrix();
-                }
-            });
+            animCube();
         }
+
+        // Ripple Effect
+        document.addEventListener('click', e => {
+            if(e.target.closest('.ripple-btn')) {
+                const btn = e.target.closest('.ripple-btn');
+                const ripple = document.createElement('span');
+                const rect = btn.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = `${size}px`;
+                ripple.style.left = `${e.clientX - rect.left - size/2}px`;
+                ripple.style.top = `${e.clientY - rect.top - size/2}px`;
+                ripple.classList.add('ripple');
+                btn.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            }
+        });
     </script>
 </body>
 </html>
