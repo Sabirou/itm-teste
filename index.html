@@ -3,543 +3,522 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Les Mousquetaires - Portail QHSE</title>
+    <title>Les Mousquetaires - Base Logistique</title>
     
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Fonts Futuristes -->
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
     
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
-    <!-- JS Engines -->
+    <!-- Moteurs -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 
     <style>
-        /* ================= VARIABLES ================= */
+        /* ================= VARIABLES & THEME ================= */
         :root {
-            --primary: #E2001A;
-            --primary-glow: rgba(226, 0, 26, 0.6);
-            --dark-bg: #0b0c10;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
+            --primary: #E2001A; /* Rouge Mousquetaire */
+            --primary-glow: rgba(226, 0, 26, 0.7);
+            --secondary: #ffffff;
+            --bg-deep: #050505;
+            --bg-panel: rgba(20, 20, 25, 0.85); /* Plus opaque pour lisibilité */
+            --border: rgba(255, 255, 255, 0.15);
             --text-main: #ffffff;
-            --text-muted: #94a3b8;
-            --gradient: linear-gradient(135deg, #E2001A 0%, #ff4757 100%);
+            --text-dim: #a0a0a0;
             
-            --sidebar-width: 270px;
+            --sidebar-width: 280px;
             --header-height: 80px;
-            --radius: 20px;
-            --transition: 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            --radius: 16px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* ================= BASE ================= */
-        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; user-select: none; }
-        body { font-family: 'Outfit', sans-serif; background-color: var(--dark-bg); color: var(--text-main); overflow: hidden; height: 100vh; }
+        /* ================= RESET ================= */
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            overflow: hidden;
+            height: 100vh;
+            cursor: none; /* Curseur personnalisé */
+        }
 
-        /* ================= LANDING PAGE (INTRO) ================= */
-        #landing-screen {
+        /* ================= CURSEUR PERSONNALISÉ ================= */
+        #cursor {
+            width: 20px; height: 20px; border: 2px solid var(--primary);
+            border-radius: 50%; position: fixed; pointer-events: none;
+            z-index: 99999; transform: translate(-50%, -50%);
+            transition: width 0.2s, height 0.2s, background 0.2s;
+            mix-blend-mode: difference;
+        }
+        #cursor.hovered { width: 50px; height: 50px; background: rgba(226,0,26,0.2); border-color: white; }
+
+        /* ================= BACKGROUND TECH ================= */
+        #bg-grid {
+            position: fixed; top: 0; left: 0; width: 200%; height: 200%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
+            animation: gridMove 20s linear infinite;
+            z-index: -2; pointer-events: none;
+        }
+        @keyframes gridMove { 0% { transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px); } 100% { transform: perspective(500px) rotateX(60deg) translateY(40px) translateZ(-200px); } }
+
+        #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.6; }
+
+        /* ================= LANDING SCREEN ================= */
+        #landing {
             position: fixed; inset: 0; z-index: 10000;
-            background: radial-gradient(circle at center, #1a1c29 0%, #000000 100%);
+            background: black;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1), opacity 1s ease;
+            transition: 1s cubic-bezier(0.7, 0, 0.3, 1);
+        }
+        #landing.hidden { transform: scale(1.5); opacity: 0; pointer-events: none; }
+
+        .logo-glow {
+            width: 120px; filter: drop-shadow(0 0 30px var(--primary));
+            animation: float 4s ease-in-out infinite; margin-bottom: 40px;
         }
         
-        #landing-bg { position: absolute; inset: 0; z-index: 0; opacity: 0.6; }
+        .glitch-text {
+            font-family: 'Rajdhani', sans-serif; font-size: 4rem; font-weight: 700;
+            color: white; letter-spacing: 5px; text-transform: uppercase;
+            position: relative;
+        }
+        .glitch-text::before, .glitch-text::after {
+            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        }
+        .glitch-text::before { left: 2px; text-shadow: -1px 0 red; clip: rect(24px, 550px, 90px, 0); animation: glitch-anim-2 3s infinite linear alternate-reverse; }
+        .glitch-text::after { left: -2px; text-shadow: -1px 0 blue; clip: rect(85px, 550px, 140px, 0); animation: glitch-anim 2.5s infinite linear alternate-reverse; }
 
-        .landing-content { z-index: 2; text-align: center; position: relative; }
+        @keyframes glitch-anim { 0% { clip: rect(10px, 9999px, 30px, 0); } 100% { clip: rect(80px, 9999px, 100px, 0); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
-        .hero-logo {
-            width: 100px; margin-bottom: 30px;
-            filter: drop-shadow(0 0 20px rgba(226,0,26,0.5));
-            animation: float 6s ease-in-out infinite;
+        .start-btn {
+            margin-top: 50px; padding: 15px 50px;
+            background: transparent; border: 1px solid var(--primary);
+            color: var(--primary); font-family: 'Rajdhani', sans-serif;
+            font-size: 1.2rem; letter-spacing: 3px; font-weight: 700;
+            cursor: none; transition: 0.3s; position: relative; overflow: hidden;
+        }
+        .start-btn:hover { background: var(--primary); color: white; box-shadow: 0 0 30px var(--primary); }
+
+        .credit {
+            position: absolute; bottom: 30px; left: 30px;
+            font-family: 'Rajdhani', sans-serif; font-size: 14px;
+            color: rgba(255,255,255,0.3); border-left: 2px solid var(--primary);
+            padding-left: 10px;
         }
 
-        .hero-title {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 4vw; font-weight: 700; letter-spacing: 10px;
-            background: linear-gradient(to bottom, #fff, #aaa);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin-bottom: 10px; opacity: 0; transform: translateY(30px);
-            animation: fadeInUp 1s ease forwards 0.5s;
-        }
-
-        .hero-subtitle {
-            font-size: 1.2vw; color: var(--primary); letter-spacing: 5px; text-transform: uppercase;
-            margin-bottom: 60px; opacity: 0; transform: translateY(20px);
-            animation: fadeInUp 1s ease forwards 0.8s;
-        }
-
-        /* Crédit IAZZA Sabir */
-        .creator-credit {
-            position: absolute; bottom: 30px; left: 40px; z-index: 3;
-            font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 300;
-            color: rgba(255, 255, 255, 0.4); letter-spacing: 1px;
-            opacity: 0; animation: fadeIn 2s ease forwards 1.5s;
-            border-left: 2px solid var(--primary); padding-left: 10px;
-        }
-
-        .enter-btn {
-            position: relative; padding: 20px 60px;
-            background: transparent; border: 1px solid rgba(255,255,255,0.2);
-            color: white; font-family: 'Syncopate', sans-serif; font-weight: 700;
-            letter-spacing: 2px; cursor: pointer; overflow: hidden;
-            transition: 0.4s; opacity: 0; animation: fadeIn 1s ease forwards 1.2s;
-        }
-        
-        .enter-btn::before {
-            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(226,0,26,0.8), transparent);
-            transition: 0.5s;
-        }
-        
-        .enter-btn:hover { background: rgba(226,0,26,0.1); border-color: var(--primary); box-shadow: 0 0 30px var(--primary-glow); letter-spacing: 4px; }
-        .enter-btn:hover::before { left: 100%; }
-
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeIn { to { opacity: 1; } }
-
-        /* Animation de sortie (Warp) */
-        .zoom-out { transform: scale(5); opacity: 0; pointer-events: none; }
-
-        /* ================= APP CONTAINER ================= */
-        #app-container { opacity: 0; transition: opacity 1s ease; display: none; height: 100vh; }
-        #app-container.visible { opacity: 1; display: flex; }
-
-        /* LOADER INTERNE */
-        .loader-bar-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 10001;
-            background: transparent; pointer-events: none;
-        }
-        .loader-bar { width: 0; height: 100%; background: var(--primary); box-shadow: 0 0 15px var(--primary); transition: width 0.4s ease; }
-
-        /* BACKGROUND APP 3D */
-        #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        /* ================= APP LAYOUT ================= */
+        .app { display: flex; height: 100vh; opacity: 0; transition: opacity 1s 0.5s; }
+        .app.visible { opacity: 1; }
 
         /* SIDEBAR */
         .sidebar {
-            width: var(--sidebar-width); background: rgba(15, 16, 20, 0.85);
-            backdrop-filter: blur(20px); border-right: 1px solid var(--glass-border);
-            display: flex; flex-direction: column; z-index: 100; transition: var(--transition);
+            width: var(--sidebar-width); background: rgba(10, 10, 12, 0.95);
+            border-right: 1px solid var(--border); display: flex; flex-direction: column;
+            z-index: 100; backdrop-filter: blur(15px);
         }
-        .brand { padding: 30px; display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--glass-border); }
-        .brand img { width: 40px; background: white; padding: 4px; border-radius: 8px; }
-        .brand-text h1 { font-size: 14px; font-weight: 800; letter-spacing: 1px; color: white; }
-        .brand-text span { font-size: 10px; color: var(--text-muted); text-transform: uppercase; }
-        .menu { flex: 1; overflow-y: auto; padding: 20px 15px; }
-        .nav-item {
-            display: flex; align-items: center; gap: 15px; padding: 16px 20px;
-            margin-bottom: 8px; border-radius: 12px; color: var(--text-muted);
-            cursor: pointer; transition: var(--transition); position: relative; overflow: hidden;
+
+        .brand-box {
+            padding: 30px; display: flex; align-items: center; gap: 15px;
+            border-bottom: 1px solid var(--border);
         }
-        .nav-item:hover { background: rgba(255,255,255,0.05); color: white; transform: translateX(5px); }
-        .nav-item.active { background: var(--gradient); color: white; box-shadow: 0 10px 20px -5px var(--primary-glow); }
-        .submenu { max-height: 0; overflow: hidden; transition: 0.5s ease; background: rgba(0,0,0,0.2); border-radius: 10px; }
-        .submenu.open { max-height: 500px; }
-        .submenu .nav-item { padding-left: 50px; font-size: 13px; }
+        .brand-box img { width: 45px; background: white; padding: 5px; border-radius: 8px; }
+        
+        .menu { flex: 1; overflow-y: auto; padding: 20px; }
+        .menu-title { font-size: 10px; color: var(--primary); letter-spacing: 2px; text-transform: uppercase; margin: 20px 0 10px; font-weight: 700; }
+        
+        .nav-link {
+            display: flex; align-items: center; gap: 15px; padding: 14px 18px;
+            color: var(--text-dim); border-radius: 12px; margin-bottom: 5px;
+            transition: var(--transition); border: 1px solid transparent;
+            font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 500;
+        }
+        .nav-link:hover { background: rgba(255,255,255,0.05); color: white; border-color: var(--border); transform: translateX(5px); }
+        .nav-link.active {
+            background: linear-gradient(90deg, rgba(226,0,26,0.2), transparent);
+            border-left: 3px solid var(--primary); color: white;
+        }
+        .nav-link i { width: 25px; text-align: center; }
+
+        /* Submenu */
+        .submenu { max-height: 0; overflow: hidden; transition: 0.4s ease; padding-left: 20px; }
+        .submenu.open { max-height: 300px; }
+        .sub-link { font-size: 16px; padding: 10px; color: #888; display: block; transition: 0.2s; }
+        .sub-link:hover { color: white; padding-left: 15px; }
 
         /* MAIN CONTENT */
-        .main-content { flex: 1; display: flex; flex-direction: column; position: relative; }
-        
-        .header {
-            height: var(--header-height); display: flex; justify-content: space-between; align-items: center;
-            padding: 0 40px; background: rgba(15, 16, 20, 0.6); backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--glass-border);
-        }
-        .header-title h2 { font-size: 24px; font-weight: 700; color: white; }
-        .user-actions { display: flex; gap: 20px; align-items: center; }
-        .action-btn {
-            width: 45px; height: 45px; border-radius: 12px; background: var(--glass-bg);
-            border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center;
-            color: white; cursor: pointer; transition: 0.3s;
-        }
-        .action-btn:hover { background: white; color: var(--primary); transform: scale(1.1); box-shadow: 0 0 15px rgba(255,255,255,0.3); }
+        .main-content { flex: 1; display: flex; flex-direction: column; position: relative; overflow: hidden; }
 
-        .content-area { flex: 1; padding: 40px; overflow-y: auto; }
-        .page { display: none; animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-        .page.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        /* TOPBAR */
+        .topbar {
+            height: var(--header-height); display: flex; justify-content: space-between; align-items: center;
+            padding: 0 40px; border-bottom: 1px solid var(--border); background: rgba(5, 5, 5, 0.8);
+        }
+        .page-title h2 { font-size: 28px; font-weight: 700; color: white; font-family: 'Rajdhani', sans-serif; }
+        .page-title span { color: var(--primary); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
+
+        .actions { display: flex; gap: 20px; align-items: center; }
+        .btn-icon {
+            width: 45px; height: 45px; border-radius: 12px; border: 1px solid var(--border);
+            background: rgba(255,255,255,0.05); color: white; display: flex; align-items: center; justify-content: center;
+            transition: 0.3s; cursor: none; position: relative;
+        }
+        .btn-icon:hover { background: var(--primary); border-color: var(--primary); box-shadow: 0 0 15px var(--primary); }
+        .notif-badge { position: absolute; top: -5px; right: -5px; background: var(--primary); width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 10px var(--primary); }
+
+        /* SCROLL AREA */
+        .scroll-area { flex: 1; overflow-y: auto; padding: 40px; scroll-behavior: smooth; }
+        .scroll-area::-webkit-scrollbar { width: 6px; }
+        .scroll-area::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
 
         /* CARDS */
-        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 30px; }
-        .grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 30px; }
         
         .card {
-            background: var(--glass-bg); border: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px); border-radius: var(--radius); padding: 30px;
-            position: relative; overflow: hidden; transition: var(--transition); cursor: pointer;
+            background: var(--bg-panel); border: 1px solid var(--border);
+            padding: 25px; border-radius: var(--radius); position: relative;
+            overflow: hidden; transition: var(--transition); cursor: none;
         }
-        .card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-        .stat-val { font-size: 42px; font-weight: 800; text-shadow: 0 0 20px rgba(255,255,255,0.1); color: white; }
+        .card::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+            opacity: 0; transition: 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .card:hover::after { opacity: 1; }
+
+        .card-val { font-size: 42px; font-weight: 700; color: white; font-family: 'Rajdhani', sans-serif; margin: 10px 0; }
+        .card-label { color: var(--text-dim); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .icon-box { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 15px; }
         
-        /* DEV BOX (Zone en construction) */
-        .dev-box {
+        .bg-red { background: rgba(226,0,26,0.2); color: var(--primary); }
+        .bg-green { background: rgba(16,185,129,0.2); color: #10b981; }
+        .bg-blue { background: rgba(59,130,246,0.2); color: #3b82f6; }
+
+        /* DASHBOARD SPLIT */
+        .dashboard-split { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; margin-bottom: 30px; }
+        .panel { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 25px; display: flex; flex-direction: column; }
+        .panel h3 { color: white; font-family: 'Rajdhani', sans-serif; font-size: 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        
+        /* 3D CANVAS */
+        #canvas-entrepôt { width: 100%; height: 300px; border-radius: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); }
+
+        /* QUICK LINKS */
+        .quick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .quick-btn {
+            background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px;
+            text-align: center; border: 1px solid transparent; transition: 0.3s;
+        }
+        .quick-btn:hover { background: var(--primary); border-color: white; transform: scale(1.05); color: white; }
+        .quick-btn i { font-size: 24px; margin-bottom: 10px; display: block; }
+
+        /* DEV PAGE */
+        .dev-page {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 300px; border: 2px dashed var(--glass-border); border-radius: 20px;
-            color: var(--text-muted); background: rgba(0,0,0,0.2);
+            height: 100%; color: var(--text-dim); text-align: center; border: 2px dashed var(--border); border-radius: var(--radius); padding: 50px;
         }
-        .dev-box i { font-size: 40px; color: var(--primary); opacity: 0.5; margin-bottom: 15px; }
-        .dev-box span { font-size: 14px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+        .dev-page i { font-size: 50px; color: var(--primary); margin-bottom: 20px; animation: pulse 2s infinite; }
+        
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; text-shadow: 0 0 20px var(--primary); } 100% { opacity: 0.5; } }
 
-        /* 3D CANVAS IN DASHBOARD */
-        #canvas3d { width: 100%; height: 350px; border-radius: 15px; background: rgba(0,0,0,0.3); }
-
-        /* RIPPLE EFFECT */
-        .ripple {
-            position: absolute; border-radius: 50%; transform: scale(0);
-            animation: ripple 0.6s linear; background-color: rgba(255, 255, 255, 0.3); pointer-events: none;
-        }
-        @keyframes ripple { to { transform: scale(4); opacity: 0; } }
-
-        /* RESPONSIVE */
+        /* RESPONSIVE MOBILE */
         @media (max-width: 1024px) {
-            .layout { flex-direction: column; }
-            .sidebar { position: fixed; left: -100%; height: 100%; }
-            .sidebar.active { left: 0; }
-            .grid-2 { grid-template-columns: 1fr; }
-            .hero-title { font-size: 8vw; }
-            .hero-subtitle { font-size: 3vw; }
+            .app { flex-direction: column; }
+            .sidebar {
+                position: fixed; bottom: 0; left: 0; width: 100%; height: 70px;
+                flex-direction: row; align-items: center; padding: 0 20px;
+                border-top: 1px solid var(--border); border-right: none;
+                justify-content: space-between; overflow: hidden;
+            }
+            .brand-box, .menu-title { display: none; }
+            .menu { display: flex; flex-direction: row; padding: 0; width: 100%; justify-content: space-between; }
+            .nav-link { flex-direction: column; gap: 5px; font-size: 10px; padding: 10px; border: none; margin: 0; background: transparent !important; }
+            .nav-link i { font-size: 20px; }
+            .nav-link span { display: block; }
+            .nav-link.active { color: var(--primary); border: none; }
+            .submenu { position: fixed; bottom: 70px; left: 0; width: 100%; background: #1a1a1a; padding: 20px; border-top: 1px solid var(--primary); }
+            
+            .main-content { margin-bottom: 70px; }
+            .dashboard-split { grid-template-columns: 1fr; }
+            .topbar { padding: 0 20px; }
+            .hero-title { font-size: 10vw; }
+            .cursor { display: none; } /* Pas de curseur sur mobile */
         }
+
+        /* PAGES LOGIC */
+        .page { display: none; animation: slideUp 0.5s ease; }
+        .page.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
     </style>
 </head>
 <body>
 
-    <!-- 1. LANDING PAGE -->
-    <div id="landing-screen">
-        <div id="landing-bg"></div> <!-- 3D Globe -->
-        
-        <div class="landing-content">
-            <img src="logo-groupement.svg" onerror="this.src='https://upload.wikimedia.org/wikipedia/fr/thumb/8/84/Intermarch%C3%A9-logo.svg/1200px-Intermarch%C3%A9-logo.svg.png'" class="hero-logo">
-            
-            <h1 class="hero-title">MOUSQUETAIRES</h1>
-            <p class="hero-subtitle">BASE LOGISTIQUE</p>
-            
-            <button class="enter-btn ripple-btn" onclick="enterApp()">
-                ENTRER
-            </button>
-        </div>
+    <!-- CUSTOM CURSOR -->
+    <div id="cursor"></div>
 
-        <!-- CRÉDIT -->
-        <div class="creator-credit">
-            Fait par IAZZA Sabir
-        </div>
+    <!-- BACKGROUND ANIMÉ -->
+    <div id="bg-grid"></div>
+    <canvas id="canvas-bg"></canvas>
+
+    <!-- LANDING SCREEN -->
+    <div id="landing">
+        <img src="logo-groupement.svg" onerror="this.src='https://upload.wikimedia.org/wikipedia/fr/thumb/8/84/Intermarch%C3%A9-logo.svg/1200px-Intermarch%C3%A9-logo.svg.png'" class="logo-glow">
+        <h1 class="glitch-text" data-text="MOUSQUETAIRES">MOUSQUETAIRES</h1>
+        <p style="letter-spacing: 5px; color: var(--primary); margin-bottom: 40px;">BASE LOGISTIQUE</p>
+        
+        <button class="start-btn" onclick="startApp()">INITIALISER SYSTÈME</button>
+        
+        <div class="credit">FAIT PAR IAZZA SABIR</div>
     </div>
 
-    <!-- 2. BARRE DE CHARGEMENT -->
-    <div class="loader-bar-container"><div class="loader-bar" id="top-loader"></div></div>
-
-    <!-- 3. APPLICATION -->
-    <div class="layout" id="app-container">
+    <!-- APP CONTAINER -->
+    <div class="app" id="app">
         
-        <!-- FOND ANIMÉ -->
-        <canvas id="canvas-bg"></canvas>
-
         <!-- SIDEBAR -->
-        <nav class="sidebar" id="sidebar">
-            <div class="brand">
+        <nav class="sidebar">
+            <div class="brand-box">
                 <img src="logo-groupement.svg" onerror="this.src='https://upload.wikimedia.org/wikipedia/fr/thumb/8/84/Intermarch%C3%A9-logo.svg/1200px-Intermarch%C3%A9-logo.svg.png'">
-                <div class="brand-text">
-                    <h1>MOUSQUETAIRES</h1>
-                    <span>QHSE Brignoles</span>
+                <div>
+                    <h2 style="font-family:'Rajdhani'; font-weight:700; line-height:1;">BRIGNOLES</h2>
+                    <span style="font-size:10px; color:var(--text-dim);">LOGISTIQUE & QHSE</span>
                 </div>
             </div>
 
             <div class="menu">
-                <div class="nav-item active ripple-btn" onclick="nav('home', this)">
-                    <i class="fas fa-grid-2"></i> <span>Tableau de Bord</span>
-                </div>
-                
-                <div class="nav-item ripple-btn" onclick="toggleSub(this)">
-                    <i class="fas fa-clipboard-list"></i> <span>Procédures</span>
-                    <i class="fas fa-chevron-down" style="margin-left:auto; font-size:10px;"></i>
-                </div>
-                <div class="submenu">
-                    <div class="nav-item ripple-btn" onclick="nav('reception', this)">Réception</div>
-                    <div class="nav-item ripple-btn" onclick="nav('stock', this)">Stock</div>
-                    <div class="nav-item ripple-btn" onclick="nav('expedition', this)">Expéditions</div>
+                <div class="nav-link active" onclick="nav('home', this)">
+                    <i class="fas fa-chart-line"></i> <span>Dashboard</span>
                 </div>
 
-                <div class="nav-item ripple-btn" onclick="nav('securite', this)">
-                    <i class="fas fa-shield-virus"></i> <span>Sécurité & Incendie</span>
+                <div class="nav-link" onclick="toggleSub(this)">
+                    <i class="fas fa-boxes"></i> <span>Opérations</span>
                 </div>
-                <div class="nav-item ripple-btn" onclick="nav('qualite', this)">
-                    <i class="fas fa-microscope"></i> <span>Qualité</span>
+                <div class="submenu">
+                    <span class="sub-link" onclick="nav('reception', null)">Réception</span>
+                    <span class="sub-link" onclick="nav('stock', null)">Stock</span>
+                    <span class="sub-link" onclick="nav('expedition', null)">Expéditions</span>
                 </div>
-                <div class="nav-item ripple-btn" onclick="nav('accidents', this)">
-                    <i class="fas fa-user-injured"></i> <span>Accidents</span>
+
+                <div class="nav-link" onclick="nav('qualite', this)">
+                    <i class="fas fa-check-double"></i> <span>Qualité</span>
                 </div>
-                <div class="nav-item ripple-btn" onclick="nav('stats', this)">
-                    <i class="fas fa-chart-pie"></i> <span>Indicateurs</span>
+                <div class="nav-item-mobile-only nav-link" onclick="nav('securite', this)">
+                    <i class="fas fa-shield-alt"></i> <span>Sécurité</span>
                 </div>
-                <div class="nav-item ripple-btn" onclick="nav('docs', this)">
-                    <i class="fas fa-folder-open"></i> <span>GED</span>
+                <div class="nav-link" onclick="nav('docs', this)">
+                    <i class="fas fa-folder"></i> <span>GED</span>
                 </div>
             </div>
         </nav>
 
         <!-- MAIN -->
         <main class="main-content">
-            <header class="header">
-                <div class="header-title">
-                    <span id="date-display">2026</span>
-                    <h2 id="page-title">Vue d'ensemble</h2>
+            <header class="topbar">
+                <div class="page-title">
+                    <span id="date-now">2026</span>
+                    <h2 id="title-display">Vue d'ensemble</h2>
                 </div>
-                <div class="user-actions">
-                    <div class="action-btn ripple-btn" onclick="nav('qualite', null)">
+                <div class="actions">
+                    <div class="btn-icon" onclick="nav('qualite', null)">
                         <i class="fas fa-bell"></i>
-                        <span class="badge">3</span>
+                        <div class="notif-badge"></div>
                     </div>
-                    <div class="action-btn ripple-btn">
-                        <i class="fas fa-search"></i>
-                    </div>
-                    <div style="text-align:right;">
-                        <div style="font-weight:700; font-size:14px; color:white;">Admin</div>
-                        <div style="font-size:11px; color:var(--text-muted);">Resp. QHSE</div>
+                    <div style="text-align:right; display:none; @media(min-width:1024px){display:block;}">
+                        <div style="font-weight:700; font-family:'Rajdhani'; font-size:18px;">ADMINISTRATEUR</div>
+                        <div style="font-size:11px; color:var(--primary);">RESPONSABLE QHSE</div>
                     </div>
                 </div>
             </header>
 
-            <div class="content-area">
+            <div class="scroll-area">
                 
-                <!-- HOME PAGE -->
+                <!-- HOME -->
                 <div id="home" class="page active">
-                    <div class="grid-3">
-                        <div class="card ripple-btn" data-tilt onclick="nav('qualite', null)">
-                            <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
-                                <i class="fas fa-check-circle" style="color:#2ed573; font-size:24px;"></i>
-                                <i class="fas fa-ellipsis-h" style="color:rgba(255,255,255,0.3)"></i>
-                            </div>
-                            <div class="stat-val count-up" data-target="98.5">0</div>
-                            <p style="color:var(--text-muted); font-size:14px;">Taux Conformité</p>
+                    <div class="card-grid">
+                        <div class="card" onclick="nav('qualite', null)" data-tilt>
+                            <div class="icon-box bg-green"><i class="fas fa-check"></i></div>
+                            <div class="card-val count-up" data-target="98.5">0</div>
+                            <div class="card-label">Conformité Globale</div>
                         </div>
-                        
-                        <div class="card ripple-btn" data-tilt onclick="nav('accidents', null)">
-                            <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
-                                <i class="fas fa-shield-alt" style="color:#3b82f6; font-size:24px;"></i>
-                            </div>
-                            <div class="stat-val count-up" data-target="45">0</div>
-                            <p style="color:var(--text-muted); font-size:14px;">Jours sans AT</p>
+                        <div class="card" onclick="nav('accidents', null)" data-tilt>
+                            <div class="icon-box bg-blue"><i class="fas fa-user-shield"></i></div>
+                            <div class="card-val count-up" data-target="45">0</div>
+                            <div class="card-label">Jours sans Accident</div>
                         </div>
-
-                        <div class="card ripple-btn" data-tilt onclick="nav('qualite', null)">
-                            <div style="display:flex; justify-content:space-between; margin-bottom:15px;">
-                                <i class="fas fa-exclamation-triangle" style="color:#ff4757; font-size:24px;"></i>
-                            </div>
-                            <div class="stat-val" style="color:#ff4757">1</div>
-                            <p style="color:var(--text-muted); font-size:14px;">Alerte Qualité</p>
+                        <div class="card" onclick="nav('qualite', null)" data-tilt style="border-color:var(--primary);">
+                            <div class="icon-box bg-red"><i class="fas fa-exclamation-triangle"></i></div>
+                            <div class="card-val" style="color:var(--primary)">1</div>
+                            <div class="card-label" style="color:var(--primary)">ALERTE QUALITÉ</div>
                         </div>
                     </div>
 
-                    <div class="grid-2">
-                        <div class="card">
-                            <h3 style="color:white; margin-bottom:20px;">Flux Entrepôt</h3>
-                            <div id="canvas3d"></div>
+                    <div class="dashboard-split">
+                        <div class="panel">
+                            <h3><i class="fas fa-cube"></i> FLUX ENTREPÔT (LIVE)</h3>
+                            <div id="canvas-entrepôt"></div>
                         </div>
-                        <div class="card">
-                            <h3 style="color:white; margin-bottom:20px;">Performance</h3>
-                            <div style="height:250px;"><canvas id="mainChart"></canvas></div>
+                        <div class="panel">
+                            <h3><i class="fas fa-bolt"></i> ACTIONS RAPIDES</h3>
+                            <div class="quick-grid">
+                                <div class="quick-btn" onclick="nav('reception', null)"><i class="fas fa-truck-loading"></i>Réception</div>
+                                <div class="quick-btn" onclick="nav('securite', null)"><i class="fas fa-fire-extinguisher"></i>Incendie</div>
+                                <div class="quick-btn" onclick="nav('docs', null)"><i class="fas fa-flask"></i>FDS</div>
+                                <div class="quick-btn" onclick="nav('stats', null)"><i class="fas fa-chart-pie"></i>Stats</div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- RECEPTION PAGE -->
+                <!-- RECEPTION -->
                 <div id="reception" class="page">
-                    <h2 style="color:white; margin-bottom:30px;">Procédures Réception</h2>
-                    <div class="grid-3">
-                        <div class="card ripple-btn" onclick="alert('Ouverture PDF')">
-                            <i class="fas fa-file-pdf" style="font-size:40px; color:#ff4757; margin-bottom:20px;"></i>
-                            <h4 style="color:white; margin-bottom:5px;">Protocole Déchargement</h4>
-                            <p style="color:var(--text-muted); font-size:12px;">Version 2026</p>
+                    <div class="panel">
+                        <h3><i class="fas fa-truck-loading"></i> PROCÉDURES RÉCEPTION</h3>
+                        <div style="display:flex; flex-direction:column; gap:10px;">
+                            <div class="card" style="padding:15px; display:flex; align-items:center; gap:15px;" onclick="alert('PDF Ouvert')">
+                                <i class="fas fa-file-pdf" style="font-size:30px; color:#ef4444;"></i>
+                                <div><h4 style="color:white;">Protocole Déchargement</h4><span style="color:#888; font-size:12px;">PDF - V2.4</span></div>
+                            </div>
+                            <div class="card" style="padding:15px; display:flex; align-items:center; gap:15px;" onclick="alert('PDF Ouvert')">
+                                <i class="fas fa-temperature-low" style="font-size:30px; color:#3b82f6;"></i>
+                                <div><h4 style="color:white;">Contrôle Température</h4><span style="color:#888; font-size:12px;">Obligatoire</span></div>
+                            </div>
                         </div>
-                        <div class="card ripple-btn" onclick="alert('Ouverture PDF')">
-                            <i class="fas fa-thermometer-half" style="font-size:40px; color:#3b82f6; margin-bottom:20px;"></i>
-                            <h4 style="color:white; margin-bottom:5px;">Contrôle Températures</h4>
-                            <p style="color:var(--text-muted); font-size:12px;">Obligatoire</p>
-                        </div>
+                    </div>
+                </div>
+
+                <!-- QUALITE -->
+                <div id="qualite" class="page">
+                    <div class="panel" style="border-left:4px solid var(--primary);">
+                        <h3 style="color:var(--primary);"><i class="fas fa-radiation"></i> ALERTE RETRAIT PRODUIT</h3>
+                        <p style="color:white; margin-bottom:10px; font-size:18px;">LOT #4852 - Jambon Supérieur</p>
+                        <p style="color:#ccc;">Action : Isoler immédiatement en zone quarantaine.</p>
+                        <button class="start-btn" style="margin-top:20px; font-size:14px;" onclick="alert('Retrait Confirmé')">CONFIRMER ISOLATION</button>
                     </div>
                 </div>
 
                 <!-- PAGES "EN DÉVELOPPEMENT" -->
-                <div id="stock" class="page">
-                    <h2 style="color:white; margin-bottom:20px;">Stock & Entrepôt</h2>
-                    <div class="dev-box">
-                        <i class="fas fa-code"></i>
-                        <span>Site en développement</span>
-                    </div>
-                </div>
-                
-                <div id="expedition" class="page">
-                    <h2 style="color:white; margin-bottom:20px;">Expéditions</h2>
-                    <div class="dev-box"><i class="fas fa-truck"></i><span>Site en développement</span></div>
-                </div>
-                
-                <div id="securite" class="page">
-                    <h2 style="color:white; margin-bottom:20px;">Sécurité Incendie</h2>
-                    <div class="dev-box"><i class="fas fa-fire-extinguisher"></i><span>Site en développement</span></div>
-                </div>
-                
-                <div id="qualite" class="page">
-                    <h2 style="color:white; margin-bottom:20px;">Qualité & Hygiène</h2>
-                    <div class="card" style="border-color:#ff4757; margin-bottom:20px;">
-                        <h3 style="color:#ff4757">ALERTE : Retrait Lot #4852</h3>
-                        <p style="color:#cbd5e1; margin-top:10px;">Action immédiate requise.</p>
-                    </div>
-                    <div class="dev-box"><i class="fas fa-microscope"></i><span>Reste du site en développement</span></div>
-                </div>
-                
-                <div id="accidents" class="page">
-                    <h2 style="color:white; margin-bottom:20px;">Suivi Accidents</h2>
-                    <div class="dev-box"><i class="fas fa-user-injured"></i><span>Site en développement</span></div>
-                </div>
-                
-                <div id="stats" class="page">
-                    <h2 style="color:white; margin-bottom:20px;">Indicateurs</h2>
-                    <div class="dev-box"><i class="fas fa-chart-line"></i><span>Site en développement</span></div>
-                </div>
-                
-                <div id="docs" class="page">
-                    <h2 style="color:white; margin-bottom:20px;">GED Documentaire</h2>
-                    <div class="dev-box"><i class="fas fa-folder-open"></i><span>Site en développement</span></div>
-                </div>
+                <div id="stock" class="page"><div class="dev-page"><i class="fas fa-code"></i><h2>STOCK</h2><p>Module en développement</p></div></div>
+                <div id="expedition" class="page"><div class="dev-page"><i class="fas fa-shipping-fast"></i><h2>EXPÉDITIONS</h2><p>Module en développement</p></div></div>
+                <div id="securite" class="page"><div class="dev-page"><i class="fas fa-fire"></i><h2>SÉCURITÉ</h2><p>Module en développement</p></div></div>
+                <div id="accidents" class="page"><div class="dev-page"><i class="fas fa-user-injured"></i><h2>ACCIDENTS</h2><p>Module en développement</p></div></div>
+                <div id="stats" class="page"><div class="dev-page"><i class="fas fa-chart-area"></i><h2>INDICATEURS</h2><p>Module en développement</p></div></div>
+                <div id="docs" class="page"><div class="dev-page"><i class="fas fa-folder-open"></i><h2>GED</h2><p>Module en développement</p></div></div>
 
             </div>
         </main>
     </div>
 
-    <!-- SCRIPTS -->
+    <!-- SCRIPT -->
     <script>
-        // 1. TRANSITION D'ENTRÉE
-        function enterApp() {
-            const landing = document.getElementById('landing-screen');
-            const app = document.getElementById('app-container');
-            
-            landing.classList.add('zoom-out');
-            
+        // 1. CURSEUR
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', e => {
+            cursor.style.top = e.clientY + 'px';
+            cursor.style.left = e.clientX + 'px';
+        });
+        document.querySelectorAll('a, button, .nav-link, .card, .quick-btn').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+        });
+
+        // 2. START APP
+        function startApp() {
+            document.getElementById('landing').classList.add('hidden');
             setTimeout(() => {
-                landing.style.display = 'none';
-                app.style.display = 'flex';
-                void app.offsetWidth;
-                app.classList.add('visible');
-                
-                initAppAnimations();
+                document.getElementById('landing').style.display = 'none';
+                document.getElementById('app').classList.add('visible');
+                init3D();
+                initBackground();
+                animateNumbers();
             }, 800);
         }
 
-        // 2. 3D LANDING BACKGROUND (Globe)
-        function initLanding3D() {
-            const container = document.getElementById('landing-bg');
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-            
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            container.appendChild(renderer.domElement);
-
-            const geometry = new THREE.IcosahedronGeometry(2, 2);
-            const material = new THREE.PointsMaterial({ color: 0xE2001A, size: 0.03 });
-            const sphere = new THREE.Points(geometry, material);
-            scene.add(sphere);
-
-            camera.position.z = 5;
-
-            function animate() {
-                requestAnimationFrame(animate);
-                sphere.rotation.y += 0.002;
-                sphere.rotation.x += 0.001;
-                renderer.render(scene, camera);
-            }
-            animate();
-        }
-        initLanding3D();
-
         // 3. NAVIGATION
-        function nav(pageId, btn) {
-            const bar = document.getElementById('top-loader');
-            bar.style.width = '100%';
+        function nav(id, el) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const target = document.getElementById(id);
+            if(target) target.classList.add('active');
             
-            setTimeout(() => {
-                document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-                const target = document.getElementById(pageId) || document.getElementById('home');
-                target.classList.add('active');
-                
-                const titles = {'home':'Vue d\'ensemble', 'reception':'Réception', 'securite':'Sécurité', 'qualite':'Qualité'};
-                document.getElementById('page-title').innerText = titles[pageId] || "Dashboard";
-                
-                if(btn) {
-                    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-                    if(!btn.parentElement.classList.contains('submenu')) btn.classList.add('active');
-                }
-                
-                bar.style.width = '0%';
-            }, 400);
+            // Titre
+            const titles = {'home':'Vue d\'ensemble', 'reception':'Réception', 'qualite':'Qualité'};
+            document.getElementById('title-display').innerText = titles[id] || id.toUpperCase();
+
+            // Menu Active
+            if(el) {
+                document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+                if(!el.classList.contains('sub-link')) el.classList.add('active');
+            }
         }
 
         function toggleSub(el) {
             el.nextElementSibling.classList.toggle('open');
-            el.querySelector('.fa-chevron-down').style.transform = el.nextElementSibling.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
         }
 
-        // 4. ANIMATIONS APP
-        function initAppAnimations() {
-            // Compteurs
+        // 4. ANIMATION CHIFFRES
+        function animateNumbers() {
             document.querySelectorAll('.count-up').forEach(c => {
-                anime({ targets: c, innerHTML: [0, parseFloat(c.getAttribute('data-target'))], round: 10, easing: 'easeOutExpo', duration: 2500 });
+                anime({ targets: c, innerHTML: [0, parseFloat(c.getAttribute('data-target'))], round: 10, easing: 'easeOutExpo', duration: 2000 });
             });
-
-            // Graphique
-            const ctx = document.getElementById('mainChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
-                    datasets: [{
-                        label: 'Flux', data: [120, 190, 150, 250, 220, 300],
-                        borderColor: '#E2001A', backgroundColor: 'rgba(226,0,26,0.1)', fill: true, tension: 0.4
-                    }]
-                },
-                options: { plugins: { legend: { display: false } }, scales: { x: { grid: { display: false } }, y: { grid: { color: 'rgba(255,255,255,0.1)' } } } }
-            });
-
-            // 3D Dashboard Cube
-            const canvas3d = document.getElementById('canvas3d');
-            const scene = new THREE.Scene();
-            const cam = new THREE.PerspectiveCamera(50, canvas3d.clientWidth / canvas3d.clientHeight, 0.1, 1000);
-            const ren = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-            ren.setSize(canvas3d.clientWidth, canvas3d.clientHeight);
-            canvas3d.appendChild(ren.domElement);
-            
-            const geo = new THREE.BoxGeometry(1.5, 1.5, 1.5);
-            const mat = new THREE.MeshNormalMaterial({ wireframe: true });
-            const cube = new THREE.Mesh(geo, mat);
-            scene.add(cube);
-            cam.position.z = 5;
-
-            function animCube() {
-                requestAnimationFrame(animCube);
-                cube.rotation.x += 0.01; cube.rotation.y += 0.01;
-                ren.render(scene, cam);
-            }
-            animCube();
         }
 
-        // Ripple Effect
-        document.addEventListener('click', e => {
-            if(e.target.closest('.ripple-btn')) {
-                const btn = e.target.closest('.ripple-btn');
-                const ripple = document.createElement('span');
-                const rect = btn.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                ripple.style.width = ripple.style.height = `${size}px`;
-                ripple.style.left = `${e.clientX - rect.left - size/2}px`;
-                ripple.style.top = `${e.clientY - rect.top - size/2}px`;
-                ripple.classList.add('ripple');
-                btn.appendChild(ripple);
-                setTimeout(() => ripple.remove(), 600);
+        // 5. BACKGROUND PARTICLES
+        function initBackground() {
+            const canvas = document.getElementById('canvas-bg');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            const geometry = new THREE.BufferGeometry();
+            const count = 500;
+            const pos = new Float32Array(count * 3);
+            for(let i=0; i<count*3; i++) pos[i] = (Math.random()-0.5) * 10;
+            geometry.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+            
+            const material = new THREE.PointsMaterial({ size: 0.02, color: 0xE2001A });
+            const mesh = new THREE.Points(geometry, material);
+            scene.add(mesh);
+            camera.position.z = 2;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                mesh.rotation.y += 0.001;
+                renderer.render(scene, camera);
             }
-        });
+            animate();
+        }
+
+        // 6. 3D CUBE ENTREPOT
+        function init3D() {
+            const container = document.getElementById('canvas-entrepôt');
+            if(!container) return;
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(50, container.clientWidth/container.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
+            
+            const geometry = new THREE.BoxGeometry(1, 1, 1);
+            const material = new THREE.MeshBasicMaterial({ color: 0xE2001A, wireframe: true });
+            const cube = new THREE.Mesh(geometry, material);
+            scene.add(cube);
+            camera.position.z = 3;
+
+            function animate() {
+                requestAnimationFrame(animate);
+                cube.rotation.x += 0.01; cube.rotation.y += 0.01;
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
     </script>
 </body>
 </html>
