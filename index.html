@@ -2,11 +2,11 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Les Mousquetaires - Base Logistique</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Les Mousquetaires - Vision 2026</title>
     
     <!-- Fonts Futuristes -->
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
     
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -18,16 +18,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
 
     <style>
-        /* ================= VARIABLES & THEME ================= */
+        /* ================= VARIABLES ================= */
         :root {
             --primary: #E2001A; /* Rouge Mousquetaire */
-            --primary-glow: rgba(226, 0, 26, 0.7);
-            --secondary: #ffffff;
-            --bg-deep: #050505;
-            --bg-panel: rgba(20, 20, 25, 0.85); /* Plus opaque pour lisibilité */
-            --border: rgba(255, 255, 255, 0.15);
+            --primary-glow: rgba(226, 0, 26, 0.8); /* Lueur plus intense */
+            --bg-deep: #020203;
+            --bg-panel: rgba(20, 20, 25, 0.9);
+            --border: rgba(226, 0, 26, 0.3); /* Bordures légèrement rouges */
             --text-main: #ffffff;
-            --text-dim: #a0a0a0;
+            --text-dim: #b0b0b0;
             
             --sidebar-width: 280px;
             --header-height: 80px;
@@ -37,98 +36,122 @@
 
         /* ================= RESET ================= */
         * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+        
         body {
             font-family: 'Outfit', sans-serif;
             background-color: var(--bg-deep);
             color: var(--text-main);
             overflow: hidden;
             height: 100vh;
-            cursor: none; /* Curseur personnalisé */
+            width: 100vw;
         }
 
-        /* ================= CURSEUR PERSONNALISÉ ================= */
-        #cursor {
-            width: 20px; height: 20px; border: 2px solid var(--primary);
-            border-radius: 50%; position: fixed; pointer-events: none;
-            z-index: 99999; transform: translate(-50%, -50%);
-            transition: width 0.2s, height 0.2s, background 0.2s;
-            mix-blend-mode: difference;
-        }
-        #cursor.hovered { width: 50px; height: 50px; background: rgba(226,0,26,0.2); border-color: white; }
-
-        /* ================= BACKGROUND TECH ================= */
+        /* ================= BACKGROUND ANIMÉ (Rouge & Tech) ================= */
         #bg-grid {
             position: fixed; top: 0; left: 0; width: 200%; height: 200%;
             background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
+                linear-gradient(rgba(226, 0, 26, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(226, 0, 26, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
             transform: perspective(500px) rotateX(60deg) translateY(-100px) translateZ(-200px);
             animation: gridMove 20s linear infinite;
             z-index: -2; pointer-events: none;
         }
-        @keyframes gridMove { 0% { transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px); } 100% { transform: perspective(500px) rotateX(60deg) translateY(40px) translateZ(-200px); } }
+        @keyframes gridMove { 
+            0% { transform: perspective(500px) rotateX(60deg) translateY(0) translateZ(-200px); } 
+            100% { transform: perspective(500px) rotateX(60deg) translateY(50px) translateZ(-200px); } 
+        }
 
-        #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.6; }
+        /* Particules 3D */
+        #canvas-bg { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            z-index: -1; pointer-events: none; opacity: 0.8; /* Plus visible */
+        }
+
+        /* ================= CURSEUR (PC Uniquement) ================= */
+        @media (min-width: 1025px) {
+            body { cursor: none; }
+            #cursor {
+                width: 20px; height: 20px; border: 2px solid var(--primary);
+                border-radius: 50%; position: fixed; pointer-events: none;
+                z-index: 99999; transform: translate(-50%, -50%);
+                transition: width 0.2s, height 0.2s, background 0.2s;
+                mix-blend-mode: screen;
+                box-shadow: 0 0 15px var(--primary);
+            }
+            #cursor.hovered { width: 60px; height: 60px; background: rgba(226,0,26,0.1); border-color: white; }
+        }
 
         /* ================= LANDING SCREEN ================= */
         #landing {
             position: fixed; inset: 0; z-index: 10000;
-            background: black;
+            background: radial-gradient(circle at center, #1a0505 0%, #000000 100%);
             display: flex; flex-direction: column; justify-content: center; align-items: center;
             transition: 1s cubic-bezier(0.7, 0, 0.3, 1);
+            padding: 20px; text-align: center;
         }
         #landing.hidden { transform: scale(1.5); opacity: 0; pointer-events: none; }
 
         .logo-glow {
-            width: 120px; filter: drop-shadow(0 0 30px var(--primary));
-            animation: float 4s ease-in-out infinite; margin-bottom: 40px;
+            width: 100px; filter: drop-shadow(0 0 40px var(--primary));
+            animation: float 4s ease-in-out infinite; margin-bottom: 30px;
         }
         
+        /* Titre corrigé : Responsive et Entier */
         .glitch-text {
-            font-family: 'Rajdhani', sans-serif; font-size: 4rem; font-weight: 700;
-            color: white; letter-spacing: 5px; text-transform: uppercase;
-            position: relative;
+            font-family: 'Rajdhani', sans-serif; 
+            font-weight: 700; color: white; 
+            text-transform: uppercase; position: relative;
+            /* Clamp permet d'adapter la taille entre 30px et 80px selon l'écran */
+            font-size: clamp(30px, 8vw, 80px);
+            line-height: 1.1;
+            letter-spacing: 2px;
+            text-align: center;
+            text-shadow: 0 0 20px var(--primary-glow);
         }
-        .glitch-text::before, .glitch-text::after {
-            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        
+        .hero-subtitle {
+            margin-top: 15px;
+            font-size: clamp(12px, 3vw, 18px); 
+            color: var(--primary); letter-spacing: 4px; font-weight: 700;
+            text-transform: uppercase;
         }
-        .glitch-text::before { left: 2px; text-shadow: -1px 0 red; clip: rect(24px, 550px, 90px, 0); animation: glitch-anim-2 3s infinite linear alternate-reverse; }
-        .glitch-text::after { left: -2px; text-shadow: -1px 0 blue; clip: rect(85px, 550px, 140px, 0); animation: glitch-anim 2.5s infinite linear alternate-reverse; }
-
-        @keyframes glitch-anim { 0% { clip: rect(10px, 9999px, 30px, 0); } 100% { clip: rect(80px, 9999px, 100px, 0); } }
-        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
 
         .start-btn {
-            margin-top: 50px; padding: 15px 50px;
-            background: transparent; border: 1px solid var(--primary);
-            color: var(--primary); font-family: 'Rajdhani', sans-serif;
-            font-size: 1.2rem; letter-spacing: 3px; font-weight: 700;
-            cursor: none; transition: 0.3s; position: relative; overflow: hidden;
+            margin-top: 60px; padding: 15px 40px;
+            background: rgba(226, 0, 26, 0.1); 
+            border: 1px solid var(--primary);
+            color: white; font-family: 'Rajdhani', sans-serif;
+            font-size: 16px; letter-spacing: 3px; font-weight: 700;
+            cursor: pointer; transition: 0.3s;
+            box-shadow: 0 0 20px rgba(226, 0, 26, 0.2);
         }
-        .start-btn:hover { background: var(--primary); color: white; box-shadow: 0 0 30px var(--primary); }
+        .start-btn:hover { 
+            background: var(--primary); box-shadow: 0 0 50px var(--primary); transform: scale(1.05);
+        }
 
         .credit {
             position: absolute; bottom: 30px; left: 30px;
             font-family: 'Rajdhani', sans-serif; font-size: 14px;
-            color: rgba(255,255,255,0.3); border-left: 2px solid var(--primary);
-            padding-left: 10px;
+            color: rgba(255,255,255,0.5); border-left: 3px solid var(--primary);
+            padding-left: 15px;
         }
 
         /* ================= APP LAYOUT ================= */
-        .app { display: flex; height: 100vh; opacity: 0; transition: opacity 1s 0.5s; }
+        .app { display: flex; height: 100vh; opacity: 0; transition: opacity 1s 0.5s; width: 100%; }
         .app.visible { opacity: 1; }
 
         /* SIDEBAR */
         .sidebar {
-            width: var(--sidebar-width); background: rgba(10, 10, 12, 0.95);
+            width: var(--sidebar-width); background: rgba(5, 5, 5, 0.9);
             border-right: 1px solid var(--border); display: flex; flex-direction: column;
-            z-index: 100; backdrop-filter: blur(15px);
+            z-index: 100; backdrop-filter: blur(10px);
         }
 
         .brand-box {
             padding: 30px; display: flex; align-items: center; gap: 15px;
             border-bottom: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         .brand-box img { width: 45px; background: white; padding: 5px; border-radius: 8px; }
         
@@ -137,22 +160,22 @@
         
         .nav-link {
             display: flex; align-items: center; gap: 15px; padding: 14px 18px;
-            color: var(--text-dim); border-radius: 12px; margin-bottom: 5px;
+            color: var(--text-dim); border-radius: 12px; margin-bottom: 8px;
             transition: var(--transition); border: 1px solid transparent;
-            font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 500;
+            font-family: 'Rajdhani', sans-serif; font-size: 18px; font-weight: 600;
         }
-        .nav-link:hover { background: rgba(255,255,255,0.05); color: white; border-color: var(--border); transform: translateX(5px); }
+        .nav-link:hover { background: rgba(255,255,255,0.05); color: white; border-color: var(--primary); transform: translateX(5px); }
         .nav-link.active {
-            background: linear-gradient(90deg, rgba(226,0,26,0.2), transparent);
+            background: linear-gradient(90deg, rgba(226,0,26,0.3), transparent);
             border-left: 3px solid var(--primary); color: white;
+            text-shadow: 0 0 10px var(--primary);
         }
-        .nav-link i { width: 25px; text-align: center; }
+        .nav-link i { width: 25px; text-align: center; font-size: 20px; }
 
-        /* Submenu */
         .submenu { max-height: 0; overflow: hidden; transition: 0.4s ease; padding-left: 20px; }
         .submenu.open { max-height: 300px; }
-        .sub-link { font-size: 16px; padding: 10px; color: #888; display: block; transition: 0.2s; }
-        .sub-link:hover { color: white; padding-left: 15px; }
+        .sub-link { font-size: 16px; padding: 10px; color: #888; display: block; transition: 0.2s; cursor: pointer; }
+        .sub-link:hover { color: var(--primary); padding-left: 15px; }
 
         /* MAIN CONTENT */
         .main-content { flex: 1; display: flex; flex-direction: column; position: relative; overflow: hidden; }
@@ -162,16 +185,14 @@
             height: var(--header-height); display: flex; justify-content: space-between; align-items: center;
             padding: 0 40px; border-bottom: 1px solid var(--border); background: rgba(5, 5, 5, 0.8);
         }
-        .page-title h2 { font-size: 28px; font-weight: 700; color: white; font-family: 'Rajdhani', sans-serif; }
-        .page-title span { color: var(--primary); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; }
-
+        .page-title h2 { font-size: 28px; font-weight: 700; color: white; font-family: 'Rajdhani', sans-serif; text-transform: uppercase; }
         .actions { display: flex; gap: 20px; align-items: center; }
         .btn-icon {
             width: 45px; height: 45px; border-radius: 12px; border: 1px solid var(--border);
             background: rgba(255,255,255,0.05); color: white; display: flex; align-items: center; justify-content: center;
-            transition: 0.3s; cursor: none; position: relative;
+            transition: 0.3s; cursor: pointer; position: relative;
         }
-        .btn-icon:hover { background: var(--primary); border-color: var(--primary); box-shadow: 0 0 15px var(--primary); }
+        .btn-icon:hover { background: var(--primary); box-shadow: 0 0 20px var(--primary); }
         .notif-badge { position: absolute; top: -5px; right: -5px; background: var(--primary); width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 10px var(--primary); }
 
         /* SCROLL AREA */
@@ -185,17 +206,11 @@
         .card {
             background: var(--bg-panel); border: 1px solid var(--border);
             padding: 25px; border-radius: var(--radius); position: relative;
-            overflow: hidden; transition: var(--transition); cursor: none;
+            overflow: hidden; transition: var(--transition); cursor: pointer;
         }
-        .card::after {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
-            opacity: 0; transition: 0.3s;
-        }
-        .card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .card:hover::after { opacity: 1; }
-
-        .card-val { font-size: 42px; font-weight: 700; color: white; font-family: 'Rajdhani', sans-serif; margin: 10px 0; }
+        .card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 40px rgba(226, 0, 26, 0.2); }
+        
+        .card-val { font-size: 42px; font-weight: 700; color: white; font-family: 'Rajdhani', sans-serif; margin: 10px 0; text-shadow: 0 0 15px rgba(255,255,255,0.2); }
         .card-label { color: var(--text-dim); font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
         .icon-box { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 15px; }
         
@@ -206,51 +221,65 @@
         /* DASHBOARD SPLIT */
         .dashboard-split { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; margin-bottom: 30px; }
         .panel { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 25px; display: flex; flex-direction: column; }
-        .panel h3 { color: white; font-family: 'Rajdhani', sans-serif; font-size: 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .panel h3 { color: white; font-family: 'Rajdhani', sans-serif; font-size: 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
         
         /* 3D CANVAS */
-        #canvas-entrepôt { width: 100%; height: 300px; border-radius: 12px; background: rgba(0,0,0,0.3); border: 1px solid var(--border); }
+        #canvas-entrepôt { width: 100%; height: 300px; border-radius: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--border); }
 
         /* QUICK LINKS */
         .quick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         .quick-btn {
             background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px;
-            text-align: center; border: 1px solid transparent; transition: 0.3s;
+            text-align: center; border: 1px solid transparent; transition: 0.3s; cursor: pointer;
         }
-        .quick-btn:hover { background: var(--primary); border-color: white; transform: scale(1.05); color: white; }
-        .quick-btn i { font-size: 24px; margin-bottom: 10px; display: block; }
+        .quick-btn:hover { background: var(--primary); border-color: white; transform: scale(1.05); color: white; box-shadow: 0 0 20px var(--primary); }
+        .quick-btn i { font-size: 28px; margin-bottom: 10px; display: block; }
 
         /* DEV PAGE */
         .dev-page {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            height: 100%; color: var(--text-dim); text-align: center; border: 2px dashed var(--border); border-radius: var(--radius); padding: 50px;
+            height: 100%; color: var(--text-dim); text-align: center; border: 2px dashed var(--border); border-radius: var(--radius); padding: 50px; background: rgba(0,0,0,0.3);
         }
-        .dev-page i { font-size: 50px; color: var(--primary); margin-bottom: 20px; animation: pulse 2s infinite; }
+        .dev-page i { font-size: 60px; color: var(--primary); margin-bottom: 20px; animation: pulse 2s infinite; }
         
-        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; text-shadow: 0 0 20px var(--primary); } 100% { opacity: 0.5; } }
+        @keyframes pulse { 0% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.1); text-shadow: 0 0 30px var(--primary); } 100% { opacity: 0.5; transform: scale(1); } }
 
-        /* RESPONSIVE MOBILE */
+        /* RESPONSIVE MOBILE (La grosse amélioration) */
         @media (max-width: 1024px) {
-            .app { flex-direction: column; }
+            .app { flex-direction: column; height: 100vh; }
+            
+            /* Sidebar devient Bottom Bar */
             .sidebar {
                 position: fixed; bottom: 0; left: 0; width: 100%; height: 70px;
-                flex-direction: row; align-items: center; padding: 0 20px;
-                border-top: 1px solid var(--border); border-right: none;
-                justify-content: space-between; overflow: hidden;
+                flex-direction: row; align-items: center; padding: 0;
+                border-top: 1px solid var(--primary); border-right: none;
+                justify-content: space-around; overflow: visible;
+                background: #000; box-shadow: 0 -5px 20px rgba(226,0,26,0.3);
             }
             .brand-box, .menu-title { display: none; }
-            .menu { display: flex; flex-direction: row; padding: 0; width: 100%; justify-content: space-between; }
-            .nav-link { flex-direction: column; gap: 5px; font-size: 10px; padding: 10px; border: none; margin: 0; background: transparent !important; }
-            .nav-link i { font-size: 20px; }
-            .nav-link span { display: block; }
-            .nav-link.active { color: var(--primary); border: none; }
-            .submenu { position: fixed; bottom: 70px; left: 0; width: 100%; background: #1a1a1a; padding: 20px; border-top: 1px solid var(--primary); }
+            .menu { display: flex; flex-direction: row; padding: 0; width: 100%; justify-content: space-around; align-items: center; }
             
-            .main-content { margin-bottom: 70px; }
+            .nav-link { 
+                flex-direction: column; gap: 4px; font-size: 10px; padding: 8px; 
+                border: none; margin: 0; background: transparent !important; 
+                width: 60px; justify-content: center;
+            }
+            .nav-link i { font-size: 22px; margin-bottom: 2px; }
+            .nav-link span { display: block; font-family: 'Outfit'; font-weight: 600; }
+            .nav-link.active { color: var(--primary); text-shadow: 0 0 15px var(--primary); transform: translateY(-5px); }
+            
+            /* Sous-menu Mobile */
+            .submenu { position: fixed; bottom: 75px; left: 10px; right: 10px; background: rgba(20,20,20,0.95); padding: 15px; border: 1px solid var(--primary); border-radius: 15px; z-index: 200; backdrop-filter: blur(10px); }
+            
+            .main-content { margin-bottom: 70px; height: calc(100vh - 70px); }
             .dashboard-split { grid-template-columns: 1fr; }
-            .topbar { padding: 0 20px; }
-            .hero-title { font-size: 10vw; }
-            .cursor { display: none; } /* Pas de curseur sur mobile */
+            .topbar { padding: 0 20px; height: 60px; }
+            .page-title h2 { font-size: 20px; }
+            .scroll-area { padding: 20px; }
+            .credit { font-size: 10px; bottom: 20px; left: 20px; }
+            
+            /* Cacher curseur sur mobile */
+            #cursor { display: none; }
         }
 
         /* PAGES LOGIC */
@@ -262,20 +291,21 @@
 </head>
 <body>
 
-    <!-- CUSTOM CURSOR -->
+    <!-- CUSTOM CURSOR (PC) -->
     <div id="cursor"></div>
 
-    <!-- BACKGROUND ANIMÉ -->
+    <!-- BACKGROUND ANIMÉ (Partout) -->
     <div id="bg-grid"></div>
     <canvas id="canvas-bg"></canvas>
 
     <!-- LANDING SCREEN -->
     <div id="landing">
         <img src="logo-groupement.svg" onerror="this.src='https://upload.wikimedia.org/wikipedia/fr/thumb/8/84/Intermarch%C3%A9-logo.svg/1200px-Intermarch%C3%A9-logo.svg.png'" class="logo-glow">
-        <h1 class="glitch-text" data-text="MOUSQUETAIRES">MOUSQUETAIRES</h1>
-        <p style="letter-spacing: 5px; color: var(--primary); margin-bottom: 40px;">BASE LOGISTIQUE</p>
         
-        <button class="start-btn" onclick="startApp()">INITIALISER SYSTÈME</button>
+        <h1 class="glitch-text">MOUSQUETAIRES</h1>
+        <p class="hero-subtitle">BASE LOGISTIQUE</p>
+        
+        <button class="start-btn" onclick="startApp()">ACCÉDER AU SYSTÈME</button>
         
         <div class="credit">FAIT PAR IAZZA SABIR</div>
     </div>
@@ -283,7 +313,7 @@
     <!-- APP CONTAINER -->
     <div class="app" id="app">
         
-        <!-- SIDEBAR -->
+        <!-- SIDEBAR (Left on PC, Bottom on Mobile) -->
         <nav class="sidebar">
             <div class="brand-box">
                 <img src="logo-groupement.svg" onerror="this.src='https://upload.wikimedia.org/wikipedia/fr/thumb/8/84/Intermarch%C3%A9-logo.svg/1200px-Intermarch%C3%A9-logo.svg.png'">
@@ -295,12 +325,13 @@
 
             <div class="menu">
                 <div class="nav-link active" onclick="nav('home', this)">
-                    <i class="fas fa-chart-line"></i> <span>Dashboard</span>
+                    <i class="fas fa-home"></i> <span>Accueil</span>
                 </div>
 
                 <div class="nav-link" onclick="toggleSub(this)">
                     <i class="fas fa-boxes"></i> <span>Opérations</span>
                 </div>
+                <!-- Submenu (Popup on mobile) -->
                 <div class="submenu">
                     <span class="sub-link" onclick="nav('reception', null)">Réception</span>
                     <span class="sub-link" onclick="nav('stock', null)">Stock</span>
@@ -308,13 +339,13 @@
                 </div>
 
                 <div class="nav-link" onclick="nav('qualite', this)">
-                    <i class="fas fa-check-double"></i> <span>Qualité</span>
+                    <i class="fas fa-check-circle"></i> <span>Qualité</span>
                 </div>
-                <div class="nav-item-mobile-only nav-link" onclick="nav('securite', this)">
+                <div class="nav-link" onclick="nav('securite', this)">
                     <i class="fas fa-shield-alt"></i> <span>Sécurité</span>
                 </div>
                 <div class="nav-link" onclick="nav('docs', this)">
-                    <i class="fas fa-folder"></i> <span>GED</span>
+                    <i class="fas fa-folder-open"></i> <span>GED</span>
                 </div>
             </div>
         </nav>
@@ -330,10 +361,6 @@
                     <div class="btn-icon" onclick="nav('qualite', null)">
                         <i class="fas fa-bell"></i>
                         <div class="notif-badge"></div>
-                    </div>
-                    <div style="text-align:right; display:none; @media(min-width:1024px){display:block;}">
-                        <div style="font-weight:700; font-family:'Rajdhani'; font-size:18px;">ADMINISTRATEUR</div>
-                        <div style="font-size:11px; color:var(--primary);">RESPONSABLE QHSE</div>
                     </div>
                 </div>
             </header>
@@ -353,7 +380,7 @@
                             <div class="card-val count-up" data-target="45">0</div>
                             <div class="card-label">Jours sans Accident</div>
                         </div>
-                        <div class="card" onclick="nav('qualite', null)" data-tilt style="border-color:var(--primary);">
+                        <div class="card" onclick="nav('qualite', null)" data-tilt style="border-color:var(--primary); box-shadow: 0 0 20px rgba(226,0,26,0.2);">
                             <div class="icon-box bg-red"><i class="fas fa-exclamation-triangle"></i></div>
                             <div class="card-val" style="color:var(--primary)">1</div>
                             <div class="card-label" style="color:var(--primary)">ALERTE QUALITÉ</div>
@@ -400,17 +427,17 @@
                         <h3 style="color:var(--primary);"><i class="fas fa-radiation"></i> ALERTE RETRAIT PRODUIT</h3>
                         <p style="color:white; margin-bottom:10px; font-size:18px;">LOT #4852 - Jambon Supérieur</p>
                         <p style="color:#ccc;">Action : Isoler immédiatement en zone quarantaine.</p>
-                        <button class="start-btn" style="margin-top:20px; font-size:14px;" onclick="alert('Retrait Confirmé')">CONFIRMER ISOLATION</button>
+                        <button class="start-btn" style="margin-top:20px; font-size:14px; width:100%;" onclick="alert('Retrait Confirmé')">CONFIRMER ISOLATION</button>
                     </div>
                 </div>
 
                 <!-- PAGES "EN DÉVELOPPEMENT" -->
-                <div id="stock" class="page"><div class="dev-page"><i class="fas fa-code"></i><h2>STOCK</h2><p>Module en développement</p></div></div>
-                <div id="expedition" class="page"><div class="dev-page"><i class="fas fa-shipping-fast"></i><h2>EXPÉDITIONS</h2><p>Module en développement</p></div></div>
-                <div id="securite" class="page"><div class="dev-page"><i class="fas fa-fire"></i><h2>SÉCURITÉ</h2><p>Module en développement</p></div></div>
-                <div id="accidents" class="page"><div class="dev-page"><i class="fas fa-user-injured"></i><h2>ACCIDENTS</h2><p>Module en développement</p></div></div>
-                <div id="stats" class="page"><div class="dev-page"><i class="fas fa-chart-area"></i><h2>INDICATEURS</h2><p>Module en développement</p></div></div>
-                <div id="docs" class="page"><div class="dev-page"><i class="fas fa-folder-open"></i><h2>GED</h2><p>Module en développement</p></div></div>
+                <div id="stock" class="page"><div class="dev-page"><i class="fas fa-code"></i><h2>STOCK</h2><p>Site en développement</p></div></div>
+                <div id="expedition" class="page"><div class="dev-page"><i class="fas fa-shipping-fast"></i><h2>EXPÉDITIONS</h2><p>Site en développement</p></div></div>
+                <div id="securite" class="page"><div class="dev-page"><i class="fas fa-fire"></i><h2>SÉCURITÉ</h2><p>Site en développement</p></div></div>
+                <div id="accidents" class="page"><div class="dev-page"><i class="fas fa-user-injured"></i><h2>ACCIDENTS</h2><p>Site en développement</p></div></div>
+                <div id="stats" class="page"><div class="dev-page"><i class="fas fa-chart-area"></i><h2>INDICATEURS</h2><p>Site en développement</p></div></div>
+                <div id="docs" class="page"><div class="dev-page"><i class="fas fa-folder-open"></i><h2>GED</h2><p>Site en développement</p></div></div>
 
             </div>
         </main>
@@ -418,16 +445,18 @@
 
     <!-- SCRIPT -->
     <script>
-        // 1. CURSEUR
+        // 1. CURSEUR MAGNÉTIQUE (PC)
         const cursor = document.getElementById('cursor');
-        document.addEventListener('mousemove', e => {
-            cursor.style.top = e.clientY + 'px';
-            cursor.style.left = e.clientX + 'px';
-        });
-        document.querySelectorAll('a, button, .nav-link, .card, .quick-btn').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
-        });
+        if (window.matchMedia("(min-width: 1025px)").matches) {
+            document.addEventListener('mousemove', e => {
+                cursor.style.top = e.clientY + 'px';
+                cursor.style.left = e.clientX + 'px';
+            });
+            document.querySelectorAll('a, button, .nav-link, .card, .quick-btn').forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hovered'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hovered'));
+            });
+        }
 
         // 2. START APP
         function startApp() {
@@ -456,20 +485,27 @@
                 document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
                 if(!el.classList.contains('sub-link')) el.classList.add('active');
             }
+
+            // Fermer sous-menu sur mobile après clic
+            if (window.innerWidth <= 1024) {
+                document.querySelectorAll('.submenu').forEach(s => s.classList.remove('open'));
+            }
         }
 
         function toggleSub(el) {
+            // Fermer les autres sous-menus si ouvert
+            document.querySelectorAll('.submenu').forEach(s => s.classList.remove('open'));
             el.nextElementSibling.classList.toggle('open');
         }
 
         // 4. ANIMATION CHIFFRES
         function animateNumbers() {
             document.querySelectorAll('.count-up').forEach(c => {
-                anime({ targets: c, innerHTML: [0, parseFloat(c.getAttribute('data-target'))], round: 10, easing: 'easeOutExpo', duration: 2000 });
+                anime({ targets: c, innerHTML: [0, parseFloat(c.getAttribute('data-target'))], round: 10, easing: 'easeOutExpo', duration: 2500 });
             });
         }
 
-        // 5. BACKGROUND PARTICLES
+        // 5. BACKGROUND PARTICLES (Rouge Mousquetaire Intense)
         function initBackground() {
             const canvas = document.getElementById('canvas-bg');
             const scene = new THREE.Scene();
@@ -478,22 +514,40 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
 
             const geometry = new THREE.BufferGeometry();
-            const count = 500;
+            const count = 800; // Plus de particules
             const pos = new Float32Array(count * 3);
-            for(let i=0; i<count*3; i++) pos[i] = (Math.random()-0.5) * 10;
+            for(let i=0; i<count*3; i++) pos[i] = (Math.random()-0.5) * 15;
             geometry.setAttribute('position', new THREE.BufferAttribute(pos, 3));
             
-            const material = new THREE.PointsMaterial({ size: 0.02, color: 0xE2001A });
+            // COULEUR ROUGE INTENSE
+            const material = new THREE.PointsMaterial({ size: 0.03, color: 0xE2001A });
             const mesh = new THREE.Points(geometry, material);
             scene.add(mesh);
-            camera.position.z = 2;
+            camera.position.z = 3;
+
+            // Interaction Souris
+            let mouseX = 0, mouseY = 0;
+            document.addEventListener('mousemove', (event) => {
+                mouseX = event.clientX / window.innerWidth - 0.5;
+                mouseY = event.clientY / window.innerHeight - 0.5;
+            });
 
             function animate() {
                 requestAnimationFrame(animate);
                 mesh.rotation.y += 0.001;
+                // Léger mouvement avec la souris
+                mesh.rotation.x += (mouseY * 0.5 - mesh.rotation.x) * 0.05;
+                mesh.rotation.y += (mouseX * 0.5 - mesh.rotation.y) * 0.05;
                 renderer.render(scene, camera);
             }
             animate();
+            
+            // Resize
+            window.addEventListener('resize', () => {
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+            });
         }
 
         // 6. 3D CUBE ENTREPOT
@@ -506,7 +560,8 @@
             renderer.setSize(container.clientWidth, container.clientHeight);
             container.appendChild(renderer.domElement);
             
-            const geometry = new THREE.BoxGeometry(1, 1, 1);
+            const geometry = new THREE.BoxGeometry(1.2, 1.2, 1.2);
+            // Fil de fer Rouge pour le style Tech
             const material = new THREE.MeshBasicMaterial({ color: 0xE2001A, wireframe: true });
             const cube = new THREE.Mesh(geometry, material);
             scene.add(cube);
@@ -514,7 +569,7 @@
 
             function animate() {
                 requestAnimationFrame(animate);
-                cube.rotation.x += 0.01; cube.rotation.y += 0.01;
+                cube.rotation.x += 0.005; cube.rotation.y += 0.01;
                 renderer.render(scene, camera);
             }
             animate();
