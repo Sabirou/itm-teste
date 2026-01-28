@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Les Mousquetaires - Vision 2026</title>
+    <title>Les Mousquetaires - Portail QHSE</title>
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;700;900&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
@@ -47,7 +47,7 @@
             transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1), opacity 1s ease;
         }
         
-        #landing-canvas { position: absolute; inset: 0; z-index: 0; opacity: 0.6; }
+        #landing-bg { position: absolute; inset: 0; z-index: 0; opacity: 0.6; }
 
         .landing-content { z-index: 2; text-align: center; position: relative; }
 
@@ -70,6 +70,15 @@
             font-size: 1.2vw; color: var(--primary); letter-spacing: 5px; text-transform: uppercase;
             margin-bottom: 60px; opacity: 0; transform: translateY(20px);
             animation: fadeInUp 1s ease forwards 0.8s;
+        }
+
+        /* Crédit IAZZA Sabir */
+        .creator-credit {
+            position: absolute; bottom: 30px; left: 40px; z-index: 3;
+            font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 300;
+            color: rgba(255, 255, 255, 0.4); letter-spacing: 1px;
+            opacity: 0; animation: fadeIn 2s ease forwards 1.5s;
+            border-left: 2px solid var(--primary); padding-left: 10px;
         }
 
         .enter-btn {
@@ -96,21 +105,21 @@
         /* Animation de sortie (Warp) */
         .zoom-out { transform: scale(5); opacity: 0; pointer-events: none; }
 
-        /* ================= APP CONTAINER (Masqué au début) ================= */
+        /* ================= APP CONTAINER ================= */
         #app-container { opacity: 0; transition: opacity 1s ease; display: none; height: 100vh; }
         #app-container.visible { opacity: 1; display: flex; }
 
-        /* ================= LOADER INTERNE ================= */
+        /* LOADER INTERNE */
         .loader-bar-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 10001;
             background: transparent; pointer-events: none;
         }
         .loader-bar { width: 0; height: 100%; background: var(--primary); box-shadow: 0 0 15px var(--primary); transition: width 0.4s ease; }
 
-        /* ================= BACKGROUND APP 3D ================= */
+        /* BACKGROUND APP 3D */
         #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
-        /* ================= SIDEBAR ================= */
+        /* SIDEBAR */
         .sidebar {
             width: var(--sidebar-width); background: rgba(15, 16, 20, 0.85);
             backdrop-filter: blur(20px); border-right: 1px solid var(--glass-border);
@@ -132,7 +141,7 @@
         .submenu.open { max-height: 500px; }
         .submenu .nav-item { padding-left: 50px; font-size: 13px; }
 
-        /* ================= MAIN CONTENT ================= */
+        /* MAIN CONTENT */
         .main-content { flex: 1; display: flex; flex-direction: column; position: relative; }
         
         .header {
@@ -154,7 +163,7 @@
         .page.active { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* CARDS & GLASS PANELS */
+        /* CARDS */
         .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 30px; }
         .grid-2 { display: grid; grid-template-columns: 2fr 1fr; gap: 25px; }
         
@@ -166,6 +175,15 @@
         .card:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.2); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
         .stat-val { font-size: 42px; font-weight: 800; text-shadow: 0 0 20px rgba(255,255,255,0.1); color: white; }
         
+        /* DEV BOX (Zone en construction) */
+        .dev-box {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            height: 300px; border: 2px dashed var(--glass-border); border-radius: 20px;
+            color: var(--text-muted); background: rgba(0,0,0,0.2);
+        }
+        .dev-box i { font-size: 40px; color: var(--primary); opacity: 0.5; margin-bottom: 15px; }
+        .dev-box span { font-size: 14px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+
         /* 3D CANVAS IN DASHBOARD */
         #canvas3d { width: 100%; height: 350px; border-radius: 15px; background: rgba(0,0,0,0.3); }
 
@@ -182,34 +200,41 @@
             .sidebar { position: fixed; left: -100%; height: 100%; }
             .sidebar.active { left: 0; }
             .grid-2 { grid-template-columns: 1fr; }
+            .hero-title { font-size: 8vw; }
+            .hero-subtitle { font-size: 3vw; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 1. LANDING PAGE (L'intro incroyable) -->
+    <!-- 1. LANDING PAGE -->
     <div id="landing-screen">
-        <div id="landing-bg"></div> <!-- 3D Globe Container -->
+        <div id="landing-bg"></div> <!-- 3D Globe -->
+        
         <div class="landing-content">
-            <!-- Logo local avec fallback -->
             <img src="logo-groupement.svg" onerror="this.src='https://upload.wikimedia.org/wikipedia/fr/thumb/8/84/Intermarch%C3%A9-logo.svg/1200px-Intermarch%C3%A9-logo.svg.png'" class="hero-logo">
             
             <h1 class="hero-title">MOUSQUETAIRES</h1>
-            <p class="hero-subtitle">BASE LOGISTIQUE INTELLIGENTE 2026</p>
+            <p class="hero-subtitle">BASE LOGISTIQUE</p>
             
             <button class="enter-btn ripple-btn" onclick="enterApp()">
-                ACCÉDER AU SYSTÈME
+                ENTRER
             </button>
+        </div>
+
+        <!-- CRÉDIT -->
+        <div class="creator-credit">
+            Fait par IAZZA Sabir
         </div>
     </div>
 
-    <!-- 2. BARRE DE CHARGEMENT INTERNE -->
+    <!-- 2. BARRE DE CHARGEMENT -->
     <div class="loader-bar-container"><div class="loader-bar" id="top-loader"></div></div>
 
-    <!-- 3. APPLICATION PRINCIPALE (Cachée au début) -->
+    <!-- 3. APPLICATION -->
     <div class="layout" id="app-container">
         
-        <!-- FOND ANIMÉ APP -->
+        <!-- FOND ANIMÉ -->
         <canvas id="canvas-bg"></canvas>
 
         <!-- SIDEBAR -->
@@ -310,7 +335,7 @@
 
                     <div class="grid-2">
                         <div class="card">
-                            <h3 style="color:white; margin-bottom:20px;">Flux Entrepôt (3D Live)</h3>
+                            <h3 style="color:white; margin-bottom:20px;">Flux Entrepôt</h3>
                             <div id="canvas3d"></div>
                         </div>
                         <div class="card">
@@ -337,42 +362,73 @@
                     </div>
                 </div>
 
-                <!-- Autres Pages -->
-                <div id="stock" class="page"><h2 style="color:white">Stock & Entrepôt</h2></div>
-                <div id="expedition" class="page"><h2 style="color:white">Expéditions</h2></div>
-                <div id="securite" class="page"><h2 style="color:white">Sécurité Incendie</h2></div>
-                <div id="qualite" class="page"><h2 style="color:white">Qualité & Hygiène</h2><div class="card" style="border-color:#ff4757; margin-top:20px;"><h3 style="color:#ff4757">ALERTE : Retrait Lot #4852</h3></div></div>
-                <div id="accidents" class="page"><h2 style="color:white">Suivi Accidents</h2></div>
-                <div id="stats" class="page"><h2 style="color:white">Indicateurs</h2></div>
-                <div id="docs" class="page"><h2 style="color:white">GED Documentaire</h2></div>
+                <!-- PAGES "EN DÉVELOPPEMENT" -->
+                <div id="stock" class="page">
+                    <h2 style="color:white; margin-bottom:20px;">Stock & Entrepôt</h2>
+                    <div class="dev-box">
+                        <i class="fas fa-code"></i>
+                        <span>Site en développement</span>
+                    </div>
+                </div>
+                
+                <div id="expedition" class="page">
+                    <h2 style="color:white; margin-bottom:20px;">Expéditions</h2>
+                    <div class="dev-box"><i class="fas fa-truck"></i><span>Site en développement</span></div>
+                </div>
+                
+                <div id="securite" class="page">
+                    <h2 style="color:white; margin-bottom:20px;">Sécurité Incendie</h2>
+                    <div class="dev-box"><i class="fas fa-fire-extinguisher"></i><span>Site en développement</span></div>
+                </div>
+                
+                <div id="qualite" class="page">
+                    <h2 style="color:white; margin-bottom:20px;">Qualité & Hygiène</h2>
+                    <div class="card" style="border-color:#ff4757; margin-bottom:20px;">
+                        <h3 style="color:#ff4757">ALERTE : Retrait Lot #4852</h3>
+                        <p style="color:#cbd5e1; margin-top:10px;">Action immédiate requise.</p>
+                    </div>
+                    <div class="dev-box"><i class="fas fa-microscope"></i><span>Reste du site en développement</span></div>
+                </div>
+                
+                <div id="accidents" class="page">
+                    <h2 style="color:white; margin-bottom:20px;">Suivi Accidents</h2>
+                    <div class="dev-box"><i class="fas fa-user-injured"></i><span>Site en développement</span></div>
+                </div>
+                
+                <div id="stats" class="page">
+                    <h2 style="color:white; margin-bottom:20px;">Indicateurs</h2>
+                    <div class="dev-box"><i class="fas fa-chart-line"></i><span>Site en développement</span></div>
+                </div>
+                
+                <div id="docs" class="page">
+                    <h2 style="color:white; margin-bottom:20px;">GED Documentaire</h2>
+                    <div class="dev-box"><i class="fas fa-folder-open"></i><span>Site en développement</span></div>
+                </div>
 
             </div>
         </main>
     </div>
 
-    <!-- LOGIC -->
+    <!-- SCRIPTS -->
     <script>
-        // 1. TRANSITION D'ENTRÉE (LANDING -> APP)
+        // 1. TRANSITION D'ENTRÉE
         function enterApp() {
             const landing = document.getElementById('landing-screen');
             const app = document.getElementById('app-container');
             
-            // Effet Warp
             landing.classList.add('zoom-out');
             
             setTimeout(() => {
                 landing.style.display = 'none';
                 app.style.display = 'flex';
-                // Trigger reflow
                 void app.offsetWidth;
                 app.classList.add('visible');
                 
-                // Lancer les inits de l'app
                 initAppAnimations();
             }, 800);
         }
 
-        // 2. 3D LANDING BACKGROUND (Globe de particules)
+        // 2. 3D LANDING BACKGROUND (Globe)
         function initLanding3D() {
             const container = document.getElementById('landing-bg');
             const scene = new THREE.Scene();
@@ -399,7 +455,7 @@
         }
         initLanding3D();
 
-        // 3. NAVIGATION & CHARGEMENT
+        // 3. NAVIGATION
         function nav(pageId, btn) {
             const bar = document.getElementById('top-loader');
             bar.style.width = '100%';
