@@ -23,8 +23,8 @@
             --primary: #E2001A;
             --primary-glow: rgba(226, 0, 26, 0.8);
             --bg-deep: #020203;
-            --bg-panel: rgba(30, 30, 35, 0.95); /* Plus clair pour PC */
-            --border: rgba(255, 255, 255, 0.15); /* Plus visible */
+            --bg-panel: rgba(30, 30, 35, 0.95);
+            --border: rgba(255, 255, 255, 0.15);
             --text-main: #ffffff;
             --text-dim: #b0b0b0;
             
@@ -64,7 +64,7 @@
 
         #canvas-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: 0.8; }
 
-        /* ================= CURSEUR (PC) ================= */
+        /* ================= CURSEUR ================= */
         @media (min-width: 1025px) {
             body { cursor: none; }
             #cursor {
@@ -188,14 +188,14 @@
         .scroll-area::-webkit-scrollbar { width: 6px; }
         .scroll-area::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 3px; }
 
-        /* CARDS - Visibilité améliorée */
+        /* CARDS */
         .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 30px; }
         
         .card {
             background: var(--bg-panel); border: 1px solid var(--border);
             padding: 25px; border-radius: var(--radius); position: relative;
             overflow: hidden; transition: var(--transition); cursor: pointer;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3); /* Ombre pour détacher du fond */
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
         }
         .card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 40px rgba(226, 0, 26, 0.2); background: rgba(30, 30, 35, 1); }
         
@@ -211,13 +211,13 @@
         .panel { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 25px; display: flex; flex-direction: column; }
         .panel h3 { color: white; font-family: 'Rajdhani', sans-serif; font-size: 20px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
         
-        /* 3D CANVAS - Fixé */
+        /* 3D CANVAS - CORRIGÉ */
         #canvas-entrepôt { 
             width: 100%; height: 300px; 
             border-radius: 12px; 
             background: rgba(0,0,0,0.5); 
             border: 1px solid var(--border); 
-            position: relative; /* Important pour Three.js */
+            display: block; /* Force l'affichage */
         }
 
         .quick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
@@ -236,7 +236,7 @@
         
         @keyframes pulse { 0% { opacity: 0.5; transform: scale(1); } 50% { opacity: 1; transform: scale(1.1); text-shadow: 0 0 30px var(--primary); } 100% { opacity: 0.5; transform: scale(1); } }
 
-        /* MOBILE OPTIMIZATIONS */
+        /* MOBILE */
         @media (max-width: 1024px) {
             .app { flex-direction: column; height: 100vh; }
             .sidebar {
@@ -273,7 +273,6 @@
         .page.active { display: block; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Loader Bar */
         .loader-bar-container { position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 10001; }
         .loader-bar { width: 0; height: 100%; background: var(--primary); box-shadow: 0 0 15px var(--primary); transition: width 0.4s ease; }
 
@@ -281,10 +280,10 @@
 </head>
 <body>
 
-    <!-- CUSTOM CURSOR (PC) -->
+    <!-- CUSTOM CURSOR -->
     <div id="cursor"></div>
 
-    <!-- BACKGROUND ANIMÉ (Partout) -->
+    <!-- BACKGROUND -->
     <div id="bg-grid"></div>
     <canvas id="canvas-bg"></canvas>
 
@@ -300,10 +299,10 @@
         <div class="credit">FAIT PAR IAZZA SABIR</div>
     </div>
 
-    <!-- LOADER -->
+    <!-- LOADER BAR -->
     <div class="loader-bar-container"><div class="loader-bar" id="top-loader"></div></div>
 
-    <!-- APP -->
+    <!-- APP CONTAINER -->
     <div class="app" id="app">
         
         <!-- SIDEBAR -->
@@ -435,8 +434,9 @@
         </main>
     </div>
 
+    <!-- SCRIPT -->
     <script>
-        // 1. CURSEUR MAGNÉTIQUE (PC)
+        // 1. CURSEUR
         const cursor = document.getElementById('cursor');
         if (window.matchMedia("(min-width: 1025px)").matches) {
             document.addEventListener('mousemove', e => {
@@ -455,9 +455,9 @@
             setTimeout(() => {
                 document.getElementById('landing').style.display = 'none';
                 document.getElementById('app').classList.add('visible');
-                // Lancer les moteurs
+                // IMPORTANT: Init après visibilité pour corriger le bug de la taille
                 initBackground();
-                init3D();
+                setTimeout(init3D, 100); 
                 animateNumbers();
             }, 800);
         }
@@ -492,7 +492,7 @@
             });
         }
 
-        // 4. BACKGROUND PARTICLES (Visibles sur PC et Mobile)
+        // 4. BACKGROUND PARTICLES
         function initBackground() {
             const canvas = document.getElementById('canvas-bg');
             const scene = new THREE.Scene();
@@ -506,23 +506,14 @@
             for(let i=0; i<count*3; i++) pos[i] = (Math.random()-0.5) * 15;
             geometry.setAttribute('position', new THREE.BufferAttribute(pos, 3));
             
-            // Rouge Mousquetaire Intense
             const material = new THREE.PointsMaterial({ size: 0.03, color: 0xE2001A, transparent: true, opacity: 0.8 });
             const mesh = new THREE.Points(geometry, material);
             scene.add(mesh);
             camera.position.z = 3;
 
-            let mouseX = 0, mouseY = 0;
-            document.addEventListener('mousemove', (event) => {
-                mouseX = event.clientX / window.innerWidth - 0.5;
-                mouseY = event.clientY / window.innerHeight - 0.5;
-            });
-
             function animate() {
                 requestAnimationFrame(animate);
-                mesh.rotation.y += 0.001; // Rotation auto
-                // Interaction légère
-                mesh.rotation.x += (mouseY * 0.5 - mesh.rotation.x) * 0.05;
+                mesh.rotation.y += 0.001;
                 renderer.render(scene, camera);
             }
             animate();
@@ -534,7 +525,7 @@
             });
         }
 
-        // 5. CUBE 3D (Le correctif pour PC)
+        // 5. CUBE 3D (AVEC OBSERVER POUR FIX PC)
         function init3D() {
             const container = document.getElementById('canvas-entrepôt');
             if(!container) return;
@@ -546,6 +537,7 @@
             container.appendChild(renderer.domElement);
             
             const geometry = new THREE.BoxGeometry(1.2, 1.2, 1.2);
+            // Lumière intégrée au matériau pour être visible
             const material = new THREE.MeshBasicMaterial({ color: 0xE2001A, wireframe: true });
             const cube = new THREE.Mesh(geometry, material);
             scene.add(cube);
@@ -558,21 +550,17 @@
             }
             animate();
 
-            // Correctif Redimensionnement PC
-            window.addEventListener('resize', () => {
-                if(container.clientWidth > 0) {
-                    camera.aspect = container.clientWidth / container.clientHeight;
+            // Resize Observer : La solution ultime
+            const resizeObserver = new ResizeObserver(() => {
+                const width = container.clientWidth;
+                const height = container.clientHeight;
+                if(width > 0 && height > 0) {
+                    renderer.setSize(width, height);
+                    camera.aspect = width / height;
                     camera.updateProjectionMatrix();
-                    renderer.setSize(container.clientWidth, container.clientHeight);
                 }
             });
-            
-            // Force le redimensionnement au démarrage (Fix du bug d'affichage PC)
-            setTimeout(() => {
-                renderer.setSize(container.clientWidth, container.clientHeight);
-                camera.aspect = container.clientWidth / container.clientHeight;
-                camera.updateProjectionMatrix();
-            }, 1000);
+            resizeObserver.observe(container);
         }
     </script>
 </body>
