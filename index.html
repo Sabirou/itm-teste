@@ -7,13 +7,16 @@
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Text:wght@400;500;600;700&family=Proza+Libre:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     
     <style>
         /* ============================
@@ -23,26 +26,37 @@
             /* Couleurs Mousquetaires */
             --rouge-cavalier: #820720;
             --rouge-mousquetaires: #E2001A;
+            --rouge-light: #ff4757;
             --violine-velours: #6B2D5B;
-            --noir: #1a1a1a;
-            --noir-85: #2d2d2d;
-            --noir-65: #595959;
+            --noir: #0a0a0a;
+            --noir-85: #1a1a1a;
+            --noir-65: #404040;
+            --noir-45: #737373;
             --blanc: #ffffff;
             --sable: #F5F3EF;
-            --sable-25: #FAF9F7;
-            --acier: #E8E8E8;
-            --acier-45: #F0F0F0;
-            --acier-85: #F8F8F8;
+            --sable-25: #FAFAFA;
+            --acier: #E5E7EB;
+            --acier-45: #F3F4F6;
+            --acier-85: #F9FAFB;
             
             /* Couleurs fonctionnelles */
-            --success: #28a745;
-            --warning: #ffc107;
-            --danger: #dc3545;
-            --info: #17a2b8;
+            --success: #10B981;
+            --success-light: #D1FAE5;
+            --warning: #F59E0B;
+            --warning-light: #FEF3C7;
+            --danger: #EF4444;
+            --danger-light: #FEE2E2;
+            --info: #3B82F6;
+            --info-light: #DBEAFE;
+            
+            /* Dégradés */
+            --gradient-primary: linear-gradient(135deg, #E2001A 0%, #820720 100%);
+            --gradient-dark: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
             
             /* Typographie */
-            --font-primary: 'Red Hat Text', sans-serif;
-            --font-heading: 'Proza Libre', serif;
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-heading: 'Poppins', sans-serif;
             
             /* Espacements */
             --spacing-xs: 0.25rem;
@@ -50,28 +64,43 @@
             --spacing-md: 1rem;
             --spacing-lg: 1.5rem;
             --spacing-xl: 2rem;
-            --spacing-xxl: 3rem;
+            --spacing-2xl: 3rem;
+            --spacing-3xl: 4rem;
             
             /* Bordures */
-            --border-radius: 8px;
-            --border-radius-lg: 16px;
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --radius-full: 9999px;
             
-            /* Ombres */
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
-            --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
-            --shadow-xl: 0 12px 48px rgba(0,0,0,0.15);
+            /* Ombres 3D */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --shadow-3d: 0 20px 60px rgba(0, 0, 0, 0.15), 0 8px 25px rgba(0, 0, 0, 0.1);
+            --shadow-glow: 0 0 40px rgba(226, 0, 26, 0.3);
+            --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-card-hover: 0 12px 40px rgba(0, 0, 0, 0.15);
             
-            /* Sidebar */
+            /* Layout */
             --sidebar-width: 280px;
-            --sidebar-collapsed: 70px;
-            --topbar-height: 70px;
+            --sidebar-collapsed: 80px;
+            --topbar-height: 72px;
+            
+            /* Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         /* ============================
            RESET & BASE
         ============================ */
-        * {
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -79,39 +108,202 @@
 
         html {
             scroll-behavior: smooth;
+            font-size: 16px;
         }
 
         body {
             font-family: var(--font-primary);
-            background: var(--sable-25);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ec 100%);
             color: var(--noir);
             line-height: 1.6;
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
         }
 
         h1, h2, h3, h4, h5, h6 {
             font-family: var(--font-heading);
-            font-weight: 600;
-            line-height: 1.3;
+            font-weight: 700;
+            line-height: 1.2;
             letter-spacing: -0.02em;
         }
 
         a {
             text-decoration: none;
             color: inherit;
-            transition: all 0.3s ease;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
+            transition: var(--transition-normal);
         }
 
         button {
             cursor: pointer;
             font-family: inherit;
+            border: none;
+            background: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        ul, ol {
+            list-style: none;
+        }
+
+        /* Selection */
+        ::selection {
+            background: var(--rouge-mousquetaires);
+            color: var(--blanc);
+        }
+
+        /* Scrollbar personnalisée */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--acier-45);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--noir-45);
+            border-radius: var(--radius-full);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--noir-65);
+        }
+
+        /* ============================
+           ANIMATIONS KEYFRAMES
+        ============================ */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes slideInFromLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        @keyframes rotate3d {
+            from { transform: rotateY(0deg); }
+            to { transform: rotateY(360deg); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(226, 0, 26, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(226, 0, 26, 0.6); }
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 53%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         /* ============================
@@ -120,6 +312,7 @@
         .wrapper {
             display: flex;
             min-height: 100vh;
+            position: relative;
         }
 
         /* ============================
@@ -127,7 +320,7 @@
         ============================ */
         .sidebar {
             width: var(--sidebar-width);
-            background: linear-gradient(180deg, var(--noir) 0%, var(--noir-85) 100%);
+            background: var(--gradient-dark);
             color: var(--blanc);
             position: fixed;
             top: 0;
@@ -136,13 +329,23 @@
             overflow-y: auto;
             overflow-x: hidden;
             z-index: 1000;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            scrollbar-width: thin;
-            scrollbar-color: rgba(255,255,255,0.2) transparent;
+            transition: var(--transition-normal);
+            box-shadow: 4px 0 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
         }
 
         .sidebar::-webkit-scrollbar {
-            width: 6px;
+            width: 4px;
         }
 
         .sidebar::-webkit-scrollbar-track {
@@ -150,12 +353,8 @@
         }
 
         .sidebar::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.2);
-            border-radius: 3px;
-        }
-
-        .sidebar::-webkit-scrollbar-thumb:hover {
-            background: rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: var(--radius-full);
         }
 
         /* Brand / Logo */
@@ -163,43 +362,65 @@
             display: flex;
             align-items: center;
             gap: var(--spacing-md);
-            padding: var(--spacing-lg);
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            background: rgba(0,0,0,0.2);
+            padding: var(--spacing-lg) var(--spacing-lg);
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             position: sticky;
             top: 0;
             z-index: 10;
+            backdrop-filter: blur(10px);
         }
 
-        .brand img {
+        .brand-logo {
             width: 50px;
             height: 50px;
-            object-fit: contain;
             background: var(--blanc);
-            padding: 5px;
-            border-radius: var(--border-radius);
+            border-radius: var(--radius-md);
+            padding: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition-bounce);
         }
 
-        .brand h2 {
+        .brand-logo:hover {
+            transform: rotate(-5deg) scale(1.1);
+        }
+
+        .brand-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .brand-text h2 {
             font-size: 1rem;
             font-weight: 700;
             color: var(--blanc);
             margin-bottom: 2px;
         }
 
-        .brand span {
+        .brand-text span {
             font-size: 11px;
             font-weight: 500;
-            color: rgba(255,255,255,0.6);
+            color: rgba(255, 255, 255, 0.6);
+            display: block;
         }
 
         /* Menu Navigation */
+        .sidebar-menu {
+            padding: var(--spacing-md) 0;
+            position: relative;
+            z-index: 1;
+        }
+
         .menu-title {
             font-size: 10px;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: rgba(255,255,255,0.4);
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.4);
             padding: var(--spacing-lg) var(--spacing-lg) var(--spacing-sm);
             margin-top: var(--spacing-sm);
         }
@@ -208,54 +429,98 @@
             display: flex;
             align-items: center;
             gap: var(--spacing-md);
-            padding: 12px var(--spacing-lg);
+            padding: 14px var(--spacing-lg);
             cursor: pointer;
-            transition: all 0.2s ease;
-            border-left: 3px solid transparent;
+            transition: var(--transition-normal);
+            border-left: 4px solid transparent;
             font-size: 14px;
             font-weight: 500;
-            color: rgba(255,255,255,0.75);
+            color: rgba(255, 255, 255, 0.7);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(226, 0, 26, 0.2) 0%, transparent 100%);
+            transform: translateX(-100%);
+            transition: var(--transition-normal);
         }
 
         .nav-item:hover {
-            background: rgba(255,255,255,0.08);
             color: var(--blanc);
-            border-left-color: rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-item:hover::before {
+            transform: translateX(0);
+        }
+
+        .nav-item:hover i {
+            transform: scale(1.2);
+            color: var(--rouge-mousquetaires);
         }
 
         .nav-item.active {
-            background: linear-gradient(90deg, rgba(226,0,26,0.2) 0%, transparent 100%);
+            background: rgba(226, 0, 26, 0.15);
             color: var(--blanc);
             border-left-color: var(--rouge-mousquetaires);
         }
 
-        .nav-item i {
-            width: 20px;
-            text-align: center;
-            font-size: 15px;
-            opacity: 0.8;
+        .nav-item.active::before {
+            transform: translateX(0);
         }
 
         .nav-item.active i {
-            opacity: 1;
             color: var(--rouge-mousquetaires);
+        }
+
+        .nav-item i {
+            width: 22px;
+            height: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: var(--transition-normal);
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-item span {
+            position: relative;
+            z-index: 1;
         }
 
         /* Sous-menu */
         .nav-submenu {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease;
-            background: rgba(0,0,0,0.15);
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .nav-submenu.open {
-            max-height: 500px;
+            max-height: 600px;
         }
 
         .nav-submenu .nav-item {
-            padding-left: 52px;
+            padding-left: 54px;
             font-size: 13px;
+            border-left: none;
+        }
+
+        .nav-submenu .nav-item::before {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.05) 0%, transparent 100%);
+        }
+
+        .nav-item.has-submenu {
+            justify-content: flex-start;
         }
 
         .nav-item.has-submenu::after {
@@ -264,11 +529,27 @@
             font-weight: 900;
             font-size: 10px;
             margin-left: auto;
-            transition: transform 0.3s ease;
+            transition: var(--transition-normal);
+            position: relative;
+            z-index: 1;
         }
 
         .nav-item.has-submenu.open::after {
             transform: rotate(180deg);
+        }
+
+        /* Badge notification sidebar */
+        .nav-badge {
+            background: var(--rouge-mousquetaires);
+            color: var(--blanc);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 2px 8px;
+            border-radius: var(--radius-full);
+            margin-left: auto;
+            animation: pulse 2s infinite;
+            position: relative;
+            z-index: 1;
         }
 
         /* ============================
@@ -280,6 +561,7 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            transition: var(--transition-normal);
         }
 
         /* ============================
@@ -297,134 +579,217 @@
             top: 0;
             z-index: 100;
             box-shadow: var(--shadow-sm);
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        #mobileMenuBtn {
+            display: none;
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-md);
+            background: var(--acier-45);
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--noir);
+            transition: var(--transition-normal);
+        }
+
+        #mobileMenuBtn:hover {
+            background: var(--acier);
+            transform: scale(1.05);
         }
 
         .header-title h1 {
             font-size: 1.25rem;
+            font-weight: 700;
             color: var(--noir);
             margin-bottom: 2px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .header-title p {
             font-size: 12px;
-            color: var(--noir-65);
+            color: var(--noir-45);
+            font-weight: 500;
         }
 
         /* Recherche */
         .search-wrapper {
             position: relative;
             flex: 1;
-            max-width: 400px;
-            margin: 0 var(--spacing-xl);
+            max-width: 450px;
+            margin: 0 var(--spacing-2xl);
         }
 
         .search-wrapper i {
             position: absolute;
-            left: 15px;
+            left: 18px;
             top: 50%;
             transform: translateY(-50%);
-            color: var(--noir-65);
-            font-size: 14px;
+            color: var(--noir-45);
+            font-size: 15px;
+            transition: var(--transition-normal);
         }
 
         .search-wrapper input {
             width: 100%;
-            padding: 10px 15px 10px 42px;
+            padding: 12px 18px 12px 48px;
             border: 2px solid var(--acier);
-            border-radius: 25px;
+            border-radius: var(--radius-full);
             font-size: 14px;
-            transition: all 0.3s ease;
-            background: var(--sable-25);
+            font-weight: 500;
+            transition: var(--transition-normal);
+            background: var(--acier-45);
         }
 
         .search-wrapper input:focus {
             outline: none;
             border-color: var(--rouge-mousquetaires);
             background: var(--blanc);
-            box-shadow: 0 0 0 4px rgba(226,0,26,0.1);
+            box-shadow: 0 0 0 4px rgba(226, 0, 26, 0.1);
+        }
+
+        .search-wrapper input:focus + i,
+        .search-wrapper:focus-within i {
+            color: var(--rouge-mousquetaires);
+        }
+
+        .search-wrapper input::placeholder {
+            color: var(--noir-45);
         }
 
         /* Actions utilisateur */
         .user-actions {
             display: flex;
             align-items: center;
-            gap: var(--spacing-md);
+            gap: var(--spacing-sm);
             position: relative;
         }
 
         .icon-btn {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: var(--sable-25);
-            border: 1px solid var(--acier);
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-lg);
+            background: var(--acier-45);
+            border: 1px solid transparent;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: var(--transition-normal);
             position: relative;
         }
 
         .icon-btn:hover {
-            background: var(--acier-45);
+            background: var(--blanc);
+            border-color: var(--acier);
             transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .icon-btn:hover i {
+            color: var(--rouge-mousquetaires);
+            transform: scale(1.1);
         }
 
         .icon-btn i {
-            font-size: 16px;
+            font-size: 18px;
             color: var(--noir-65);
+            transition: var(--transition-normal);
         }
 
         .icon-btn .badge {
             position: absolute;
-            top: -2px;
-            right: -2px;
-            background: var(--rouge-mousquetaires);
+            top: -4px;
+            right: -4px;
+            background: var(--gradient-primary);
             color: var(--blanc);
             font-size: 10px;
             font-weight: 700;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
+            min-width: 20px;
+            height: 20px;
+            border-radius: var(--radius-full);
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 2px 8px rgba(226, 0, 26, 0.4);
+            animation: pulse 2s infinite;
         }
 
         /* Menu notifications */
         .dropdown-menu {
             position: absolute;
-            top: 100%;
+            top: calc(100% + 10px);
             right: 0;
-            margin-top: 10px;
             background: var(--blanc);
-            border-radius: var(--border-radius-lg);
-            box-shadow: var(--shadow-xl);
-            min-width: 320px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-2xl);
+            min-width: 360px;
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
+            transform: translateY(-15px) scale(0.95);
+            transition: var(--transition-normal);
             z-index: 1000;
             border: 1px solid var(--acier);
+            overflow: hidden;
         }
 
         .dropdown-menu.show {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0);
+            transform: translateY(0) scale(1);
+        }
+
+        .dropdown-header {
+            padding: var(--spacing-md) var(--spacing-lg);
+            background: var(--gradient-dark);
+            color: var(--blanc);
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
         }
 
         .notif-item {
-            padding: var(--spacing-md);
+            padding: var(--spacing-md) var(--spacing-lg);
             border-bottom: 1px solid var(--acier-45);
             cursor: pointer;
-            transition: background 0.2s ease;
+            transition: var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notif-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--rouge-mousquetaires);
+            transform: scaleY(0);
+            transition: var(--transition-normal);
         }
 
         .notif-item:hover {
             background: var(--sable-25);
+            padding-left: calc(var(--spacing-lg) + 8px);
+        }
+
+        .notif-item:hover::before {
+            transform: scaleY(1);
         }
 
         .notif-item:last-child {
@@ -438,15 +803,27 @@
             display: flex;
             align-items: center;
             gap: 8px;
+            color: var(--noir);
         }
 
         .notif-title i {
             color: var(--rouge-mousquetaires);
+            font-size: 14px;
         }
 
         .notif-text {
             font-size: 12px;
-            color: var(--noir-65);
+            color: var(--noir-45);
+            line-height: 1.4;
+        }
+
+        .notif-time {
+            font-size: 11px;
+            color: var(--noir-45);
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         /* Profil utilisateur */
@@ -457,6 +834,14 @@
             margin-left: var(--spacing-md);
             padding-left: var(--spacing-md);
             border-left: 1px solid var(--acier);
+            cursor: pointer;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-lg);
+            transition: var(--transition-normal);
+        }
+
+        .user-profile:hover {
+            background: var(--acier-45);
         }
 
         .user-info {
@@ -471,20 +856,28 @@
 
         .user-role {
             font-size: 11px;
-            color: var(--noir-65);
+            color: var(--noir-45);
+            font-weight: 500;
         }
 
         .user-avatar {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, var(--rouge-cavalier), var(--rouge-mousquetaires));
-            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            background: var(--gradient-primary);
+            border-radius: var(--radius-lg);
             color: var(--blanc);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
             font-size: 14px;
+            box-shadow: 0 4px 12px rgba(226, 0, 26, 0.3);
+            transition: var(--transition-normal);
+        }
+
+        .user-profile:hover .user-avatar {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(226, 0, 26, 0.4);
         }
 
         /* ============================
@@ -494,483 +887,626 @@
             display: none;
             padding: var(--spacing-xl);
             flex: 1;
-            animation: fadeIn 0.4s ease;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
         .page-content.active {
             display: block;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            animation: fadeInUp 0.5s ease forwards;
         }
 
         /* ============================
-           PAGE ACCUEIL - DASHBOARD
+           CARDS STATISTIQUES 3D
         ============================ */
-        
-        /* Section Header */
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .section-header h2 {
-            font-size: 1.5rem;
-            color: var(--noir);
-        }
-
-        .section-header h3 {
-            font-size: 1.1rem;
-            color: var(--noir);
-        }
-
-        /* Stats Cards Container */
         .stats-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
             gap: var(--spacing-lg);
             margin-bottom: var(--spacing-xl);
         }
 
-        /* Card 3D Effect */
-        .card-3d {
+        .stat-card {
             background: var(--blanc);
-            border-radius: var(--border-radius-lg);
-            padding: var(--spacing-lg);
-            box-shadow: var(--shadow-md);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            border: 1px solid transparent;
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-xl);
             position: relative;
             overflow: hidden;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            border: 1px solid transparent;
+            box-shadow: var(--shadow-card);
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
 
-        .card-3d::before {
+        .stat-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
             height: 4px;
-            background: linear-gradient(90deg, var(--rouge-mousquetaires), var(--rouge-cavalier));
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: var(--transition-normal);
         }
 
-        .card-3d:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-xl);
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(226, 0, 26, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(30%, -30%);
+            transition: var(--transition-slow);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px) rotateX(2deg);
+            box-shadow: var(--shadow-card-hover);
             border-color: var(--acier);
         }
 
-        .card-3d:hover::before {
-            opacity: 1;
+        .stat-card:hover::before {
+            transform: scaleX(1);
         }
 
-        .card-header {
+        .stat-card:hover::after {
+            transform: translate(20%, -20%) scale(1.2);
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .stat-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
+            position: relative;
+            z-index: 1;
         }
 
-        .card-value {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--noir);
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             line-height: 1;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
 
-        .card-label {
-            font-size: 13px;
-            color: var(--noir-65);
-            font-weight: 500;
+        .stat-label {
+            font-size: 14px;
+            color: var(--noir-45);
+            font-weight: 600;
         }
 
-        .card-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: var(--border-radius);
-            background: var(--acier-45);
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-lg);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
-            color: var(--noir-65);
+            font-size: 24px;
+            transition: var(--transition-bounce);
         }
 
-        .card-icon.green {
-            background: rgba(40, 167, 69, 0.1);
+        .stat-icon.green {
+            background: var(--success-light);
             color: var(--success);
         }
 
-        .card-icon.orange {
-            background: rgba(255, 193, 7, 0.15);
-            color: #f39c12;
+        .stat-icon.orange {
+            background: var(--warning-light);
+            color: var(--warning);
         }
 
-        .card-icon.red {
-            background: rgba(226, 0, 26, 0.1);
-            color: var(--rouge-mousquetaires);
+        .stat-icon.red {
+            background: var(--danger-light);
+            color: var(--danger);
         }
 
-        .card-icon.blue {
-            background: rgba(23, 162, 184, 0.1);
+        .stat-icon.blue {
+            background: var(--info-light);
             color: var(--info);
         }
 
-        .card-trend {
+        .stat-trend {
             margin-top: var(--spacing-md);
-            padding: 6px 12px;
-            border-radius: 20px;
+            padding: 8px 14px;
+            border-radius: var(--radius-full);
             font-size: 12px;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
+            position: relative;
+            z-index: 1;
         }
 
-        .trend-up {
-            background: rgba(40, 167, 69, 0.1);
+        .stat-trend.up {
+            background: var(--success-light);
             color: var(--success);
         }
 
-        .trend-down {
-            background: rgba(226, 0, 26, 0.1);
-            color: var(--rouge-mousquetaires);
+        .stat-trend.down {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        .stat-trend.warning {
+            background: var(--warning-light);
+            color: #b45309;
         }
 
         /* ============================
-           GRILLE ACCÈS RAPIDE
+           SECTION ACCÈS RAPIDE
         ============================ */
-        .quick-access-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: var(--spacing-md);
-            margin-bottom: var(--spacing-xl);
-        }
-
-        .quick-access-card {
-            background: var(--blanc);
-            border-radius: var(--border-radius-lg);
-            padding: var(--spacing-lg);
-            text-align: center;
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-
-        .quick-access-card:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--rouge-mousquetaires);
-        }
-
-        .quick-access-card i {
-            font-size: 2rem;
-            color: var(--rouge-mousquetaires);
-            margin-bottom: var(--spacing-sm);
-            display: block;
-        }
-
-        .quick-access-card span {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--noir);
-            display: block;
-        }
-
-        /* ============================
-           SECTIONS GRAPHIQUES
-        ============================ */
-        .charts-row {
-            display: flex;
-            gap: var(--spacing-xl);
-            flex-wrap: wrap;
-            margin-bottom: var(--spacing-xl);
-        }
-
-        .chart-section {
-            background: var(--blanc);
-            border-radius: var(--border-radius-lg);
-            padding: var(--spacing-lg);
-            box-shadow: var(--shadow-md);
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .chart-section h3 {
-            margin-bottom: var(--spacing-md);
-            font-size: 1rem;
-        }
-
-        /* ============================
-           GRILLE DE LIENS
-        ============================ */
-        .link-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: var(--spacing-md);
-        }
-
-        .link-card {
-            background: var(--blanc);
-            border-radius: var(--border-radius);
-            padding: var(--spacing-lg);
+        .section-title {
             display: flex;
             align-items: center;
             gap: var(--spacing-md);
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 1px solid var(--acier);
+            margin-bottom: var(--spacing-lg);
         }
 
-        .link-card:hover {
-            transform: translateX(5px);
-            box-shadow: var(--shadow-md);
-            border-left: 3px solid var(--rouge-mousquetaires);
-        }
-
-        .link-card i {
+        .section-title h2 {
             font-size: 1.5rem;
-            color: var(--rouge-mousquetaires);
-            width: 40px;
-            text-align: center;
-        }
-
-        .link-card span {
-            font-size: 14px;
-            font-weight: 500;
+            font-weight: 700;
             color: var(--noir);
         }
 
-        /* ============================
-           PAGES DE CONTENU
-        ============================ */
-        .page-header {
-            margin-bottom: var(--spacing-xl);
-            padding-bottom: var(--spacing-lg);
-            border-bottom: 2px solid var(--acier);
+        .section-title i {
+            font-size: 1.25rem;
+            color: var(--rouge-mousquetaires);
         }
 
-        .page-header h2 {
-            font-size: 1.75rem;
+        .quick-access-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .quick-card {
+            background: var(--blanc);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-lg);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            border: 2px solid transparent;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quick-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-primary);
+            opacity: 0;
+            transition: var(--transition-normal);
+        }
+
+        .quick-card:hover {
+            transform: translateY(-6px) scale(1.02);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--rouge-mousquetaires);
+        }
+
+        .quick-card:hover::before {
+            opacity: 0.03;
+        }
+
+        .quick-card:hover .quick-icon {
+            transform: scale(1.15) rotate(-5deg);
+            background: var(--gradient-primary);
+            color: var(--blanc);
+            box-shadow: 0 8px 25px rgba(226, 0, 26, 0.3);
+        }
+
+        .quick-card:hover .quick-label {
+            color: var(--rouge-mousquetaires);
+        }
+
+        .quick-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-lg);
+            background: var(--acier-45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--spacing-md);
+            font-size: 24px;
+            color: var(--rouge-mousquetaires);
+            transition: var(--transition-bounce);
+            position: relative;
+            z-index: 1;
+        }
+
+        .quick-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--noir);
+            transition: var(--transition-normal);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ============================
+           SECTIONS & CARDS CONTENU
+        ============================ */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: var(--spacing-xl);
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .content-card {
+            background: var(--blanc);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition-normal);
+        }
+
+        .content-card:hover {
+            box-shadow: var(--shadow-card-hover);
+        }
+
+        .card-header {
+            padding: var(--spacing-lg);
+            background: var(--sable-25);
+            border-bottom: 1px solid var(--acier);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--noir);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .card-header h3 i {
+            color: var(--rouge-mousquetaires);
+        }
+
+        .card-body {
+            padding: var(--spacing-lg);
+        }
+
+        /* ============================
+           LISTE DE DOCUMENTS
+        ============================ */
+        .doc-list {
+            list-style: none;
+        }
+
+        .doc-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition-normal);
+            border: 1px solid transparent;
             margin-bottom: var(--spacing-xs);
         }
 
-        .page-header p {
-            color: var(--noir-65);
+        .doc-item:hover {
+            background: var(--sable-25);
+            border-color: var(--acier);
+            transform: translateX(8px);
+        }
+
+        .doc-item:hover .doc-icon {
+            transform: scale(1.1);
+        }
+
+        .doc-item:active {
+            transform: translateX(8px) scale(0.98);
+        }
+
+        .doc-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: var(--transition-normal);
+            flex-shrink: 0;
+        }
+
+        .doc-icon.pdf {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .doc-icon.excel {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .doc-icon.word {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .doc-icon.folder {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .doc-icon.default {
+            background: var(--acier-45);
+            color: var(--noir-45);
+        }
+
+        .doc-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .doc-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--noir);
+            margin-bottom: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .doc-meta {
+            font-size: 12px;
+            color: var(--noir-45);
+        }
+
+        .doc-action {
+            opacity: 0;
+            transition: var(--transition-normal);
+        }
+
+        .doc-item:hover .doc-action {
+            opacity: 1;
+        }
+
+        .doc-action i {
+            color: var(--noir-45);
             font-size: 14px;
         }
 
-        /* Breadcrumb */
+        /* ============================
+           ALERTES
+        ============================ */
+        .alert {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            margin-bottom: var(--spacing-md);
+            border-left: 4px solid;
+            animation: fadeInLeft 0.4s ease;
+        }
+
+        .alert-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-title {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .alert-text {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .alert-danger {
+            background: var(--danger-light);
+            border-color: var(--danger);
+            color: #991b1b;
+        }
+
+        .alert-danger .alert-icon {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+
+        .alert-warning {
+            background: var(--warning-light);
+            border-color: var(--warning);
+            color: #92400e;
+        }
+
+        .alert-warning .alert-icon {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+
+        .alert-success {
+            background: var(--success-light);
+            border-color: var(--success);
+            color: #065f46;
+        }
+
+        .alert-success .alert-icon {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+
+        .alert-info {
+            background: var(--info-light);
+            border-color: var(--info);
+            color: #1e40af;
+        }
+
+        .alert-info .alert-icon {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--info);
+        }
+
+        /* ============================
+           BREADCRUMB
+        ============================ */
         .breadcrumb {
             display: flex;
             align-items: center;
             gap: var(--spacing-sm);
             font-size: 13px;
-            color: var(--noir-65);
-            margin-bottom: var(--spacing-md);
+            color: var(--noir-45);
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-sm) 0;
         }
 
         .breadcrumb a {
             color: var(--rouge-mousquetaires);
+            font-weight: 500;
+            transition: var(--transition-normal);
         }
 
         .breadcrumb a:hover {
             text-decoration: underline;
         }
 
-        /* Section Content */
-        .content-section {
-            background: var(--blanc);
-            border-radius: var(--border-radius-lg);
-            padding: var(--spacing-xl);
-            margin-bottom: var(--spacing-lg);
-            box-shadow: var(--shadow-sm);
+        .breadcrumb i {
+            font-size: 10px;
+            opacity: 0.5;
         }
 
-        .content-section h3 {
-            font-size: 1.1rem;
-            margin-bottom: var(--spacing-lg);
-            padding-bottom: var(--spacing-sm);
-            border-bottom: 2px solid var(--rouge-mousquetaires);
-            display: inline-block;
+        .breadcrumb span {
+            font-weight: 500;
         }
 
-        /* Liste de documents */
-        .doc-list {
-            list-style: none;
+        /* ============================
+           PAGE HEADER
+        ============================ */
+        .page-header {
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-lg);
+            border-bottom: 2px solid var(--acier);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
         }
 
-        .doc-list li {
-            padding: var(--spacing-md);
-            border-bottom: 1px solid var(--acier-45);
+        .page-header-content h2 {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: var(--noir);
             display: flex;
             align-items: center;
             gap: var(--spacing-md);
-            transition: all 0.2s ease;
-            cursor: pointer;
+            margin-bottom: var(--spacing-xs);
         }
 
-        .doc-list li:hover {
-            background: var(--sable-25);
-            padding-left: var(--spacing-lg);
-        }
-
-        .doc-list li:last-child {
-            border-bottom: none;
-        }
-
-        .doc-list i {
-            font-size: 1.25rem;
-            width: 30px;
-            text-align: center;
-        }
-
-        .doc-list .fa-file-pdf { color: #e74c3c; }
-        .doc-list .fa-file-excel { color: #27ae60; }
-        .doc-list .fa-file-word { color: #3498db; }
-        .doc-list .fa-file-alt { color: var(--noir-65); }
-        .doc-list .fa-folder { color: #f39c12; }
-
-        /* ============================
-           TABLEAUX
-        ============================ */
-        .data-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: var(--spacing-md);
-        }
-
-        .data-table th,
-        .data-table td {
-            padding: var(--spacing-md);
-            text-align: left;
-            border-bottom: 1px solid var(--acier);
-        }
-
-        .data-table th {
-            background: var(--sable-25);
-            font-weight: 600;
-            font-size: 13px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--noir-65);
-        }
-
-        .data-table tr:hover {
-            background: var(--sable-25);
-        }
-
-        .data-table .status {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .status.active { background: rgba(40, 167, 69, 0.1); color: var(--success); }
-        .status.pending { background: rgba(255, 193, 7, 0.15); color: #f39c12; }
-        .status.urgent { background: rgba(226, 0, 26, 0.1); color: var(--rouge-mousquetaires); }
-
-        /* ============================
-           TABS
-        ============================ */
-        .tabs {
-            display: flex;
-            gap: var(--spacing-xs);
-            margin-bottom: var(--spacing-lg);
-            border-bottom: 2px solid var(--acier);
-            padding-bottom: 2px;
-        }
-
-        .tab {
-            padding: var(--spacing-md) var(--spacing-lg);
-            background: transparent;
-            border: none;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--noir-65);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            position: relative;
-        }
-
-        .tab:hover {
-            color: var(--noir);
-        }
-
-        .tab.active {
+        .page-header-content h2 i {
             color: var(--rouge-mousquetaires);
         }
 
-        .tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--rouge-mousquetaires);
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
+        .page-header-content p {
+            color: var(--noir-45);
+            font-size: 14px;
+            font-weight: 500;
         }
 
         /* ============================
-           BUTTONS
+           BOUTONS
         ============================ */
         .btn {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: var(--spacing-sm);
-            padding: 10px 20px;
-            border-radius: var(--border-radius);
+            padding: 12px 24px;
+            border-radius: var(--radius-lg);
             font-size: 14px;
             font-weight: 600;
             border: none;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: width 0.6s ease, height 0.6s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .btn:active::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--rouge-mousquetaires), var(--rouge-cavalier));
+            background: var(--gradient-primary);
             color: var(--blanc);
-            box-shadow: 0 4px 14px rgba(226, 0, 26, 0.3);
+            box-shadow: 0 4px 15px rgba(226, 0, 26, 0.3);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(226, 0, 26, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(226, 0, 26, 0.4);
         }
 
         .btn-secondary {
-            background: var(--sable-25);
+            background: var(--acier-45);
             color: var(--noir);
             border: 1px solid var(--acier);
         }
 
         .btn-secondary:hover {
-            background: var(--acier-45);
+            background: var(--acier);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         .btn-outline {
@@ -982,77 +1518,257 @@
         .btn-outline:hover {
             background: var(--rouge-mousquetaires);
             color: var(--blanc);
+            transform: translateY(-2px);
         }
 
-        /* ============================
-           FORMULAIRES
-        ============================ */
-        .form-group {
-            margin-bottom: var(--spacing-lg);
-        }
-
-        .form-group label {
-            display: block;
+        .btn-sm {
+            padding: 8px 16px;
             font-size: 13px;
-            font-weight: 600;
-            color: var(--noir);
-            margin-bottom: var(--spacing-sm);
         }
 
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid var(--acier);
-            border-radius: var(--border-radius);
-            font-size: 14px;
-            font-family: inherit;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group select:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--rouge-mousquetaires);
-            box-shadow: 0 0 0 4px rgba(226, 0, 26, 0.1);
+        .btn-lg {
+            padding: 16px 32px;
+            font-size: 16px;
         }
 
         /* ============================
-           ALERTES & NOTIFICATIONS
+           GRAPHIQUES
         ============================ */
-        .alert {
-            padding: var(--spacing-md) var(--spacing-lg);
-            border-radius: var(--border-radius);
-            margin-bottom: var(--spacing-md);
-            display: flex;
-            align-items: center;
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+        }
+
+        /* ============================
+           TEMPERATURE CARDS
+        ============================ */
+        .temp-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: var(--spacing-md);
         }
 
-        .alert-danger {
-            background: rgba(226, 0, 26, 0.1);
-            border-left: 4px solid var(--rouge-mousquetaires);
-            color: var(--rouge-cavalier);
+        .temp-card {
+            background: var(--blanc);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-lg);
+            text-align: center;
+            box-shadow: var(--shadow-card);
+            transition: var(--transition-normal);
+            border: 2px solid transparent;
         }
 
-        .alert-warning {
-            background: rgba(255, 193, 7, 0.15);
-            border-left: 4px solid var(--warning);
-            color: #856404;
+        .temp-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-card-hover);
         }
 
-        .alert-success {
-            background: rgba(40, 167, 69, 0.1);
-            border-left: 4px solid var(--success);
-            color: #155724;
+        .temp-card.ok {
+            border-color: var(--success);
         }
 
-        .alert-info {
-            background: rgba(23, 162, 184, 0.1);
-            border-left: 4px solid var(--info);
-            color: #0c5460;
+        .temp-card.warning {
+            border-color: var(--warning);
+        }
+
+        .temp-card.danger {
+            border-color: var(--danger);
+        }
+
+        .temp-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .temp-card.ok .temp-value { color: var(--success); }
+        .temp-card.warning .temp-value { color: var(--warning); }
+        .temp-card.danger .temp-value { color: var(--danger); }
+
+        .temp-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--noir-45);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .temp-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .temp-card.ok .temp-status {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .temp-card.warning .temp-status {
+            background: var(--warning-light);
+            color: #b45309;
+        }
+
+        .temp-card.danger .temp-status {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        /* ============================
+           TABLEAUX
+        ============================ */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--acier);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: var(--spacing-md) var(--spacing-lg);
+            text-align: left;
+        }
+
+        .data-table th {
+            background: var(--sable-25);
+            font-weight: 600;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--noir-45);
+            border-bottom: 2px solid var(--acier);
+        }
+
+        .data-table td {
+            border-bottom: 1px solid var(--acier-45);
+            font-size: 14px;
+        }
+
+        .data-table tbody tr {
+            transition: var(--transition-normal);
+        }
+
+        .data-table tbody tr:hover {
+            background: var(--sable-25);
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-badge.active {
+            background: var(--success-light);
+            color: var(--success);
+        }
+
+        .status-badge.pending {
+            background: var(--warning-light);
+            color: #b45309;
+        }
+
+        .status-badge.urgent {
+            background: var(--danger-light);
+            color: var(--danger);
+        }
+
+        /* ============================
+           OVERLAY MOBILE
+        ============================ */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            opacity: 0;
+            transition: var(--transition-normal);
+            backdrop-filter: blur(4px);
+        }
+
+        .overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* ============================
+           LOADING SPINNER
+        ============================ */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-2xl);
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--acier);
+            border-top-color: var(--rouge-mousquetaires);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* ============================
+           TOOLTIP
+        ============================ */
+        [data-tooltip] {
+            position: relative;
+        }
+
+        [data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%) scale(0.8);
+            background: var(--noir);
+            color: var(--blanc);
+            padding: 8px 12px;
+            border-radius: var(--radius-md);
+            font-size: 12px;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: var(--transition-normal);
+            z-index: 1000;
+        }
+
+        [data-tooltip]:hover::after {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) scale(1);
+        }
+
+        /* ============================
+           FOOTER PAGE INFO
+        ============================ */
+        .page-footer {
+            margin-top: auto;
+            padding: var(--spacing-lg);
+            text-align: center;
+            font-size: 12px;
+            color: var(--noir-45);
+            border-top: 1px solid var(--acier);
+            background: var(--blanc);
         }
 
         /* ============================
@@ -1072,7 +1788,7 @@
             }
 
             #mobileMenuBtn {
-                display: block !important;
+                display: flex;
             }
 
             .search-wrapper {
@@ -1081,6 +1797,10 @@
 
             .user-info {
                 display: none;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -1098,6 +1818,10 @@
                 font-size: 1rem;
             }
 
+            .header-title p {
+                display: none;
+            }
+
             .stats-container {
                 grid-template-columns: 1fr;
             }
@@ -1106,54 +1830,69 @@
                 grid-template-columns: repeat(2, 1fr);
             }
 
-            .charts-row {
-                flex-direction: column;
+            .page-header-content h2 {
+                font-size: 1.25rem;
+            }
+
+            .stat-value {
+                font-size: 2rem;
             }
         }
 
         @media (max-width: 480px) {
             .quick-access-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--spacing-sm);
             }
 
-            .link-grid {
-                grid-template-columns: 1fr;
+            .quick-card {
+                padding: var(--spacing-md);
+            }
+
+            .quick-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 20px;
+            }
+
+            .quick-label {
+                font-size: 11px;
+            }
+
+            .user-profile {
+                padding: var(--spacing-xs);
+                margin-left: var(--spacing-sm);
+            }
+
+            .user-avatar {
+                width: 38px;
+                height: 38px;
             }
         }
 
         /* ============================
-           UTILITAIRES
+           PRINT STYLES
         ============================ */
-        .text-center { text-align: center; }
-        .text-right { text-align: right; }
-        .mt-1 { margin-top: var(--spacing-sm); }
-        .mt-2 { margin-top: var(--spacing-md); }
-        .mt-3 { margin-top: var(--spacing-lg); }
-        .mb-1 { margin-bottom: var(--spacing-sm); }
-        .mb-2 { margin-bottom: var(--spacing-md); }
-        .mb-3 { margin-bottom: var(--spacing-lg); }
-        .hidden { display: none !important; }
+        @media print {
+            .sidebar,
+            .top-bar,
+            .overlay {
+                display: none !important;
+            }
 
-        /* Overlay mobile */
-        .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 999;
-        }
+            .main {
+                margin-left: 0 !important;
+            }
 
-        .overlay.active {
-            display: block;
+            .page-content {
+                padding: 0 !important;
+            }
         }
     </style>
 </head>
 <body>
     <!-- Overlay Mobile -->
-    <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+    <div class="overlay" id="overlay"></div>
 
     <div class="wrapper">
         <!-- ============================
@@ -1161,119 +1900,152 @@
         ============================ -->
         <nav class="sidebar" id="sidebar">
             <div class="brand">
-                <img src="https://upload.wikimedia.org/wikipedia/fr/thumb/8/84/Intermarch%C3%A9-logo.svg/1200px-Intermarch%C3%A9-logo.svg.png" alt="Logo Mousquetaires">
-                <div>
+                <div class="brand-logo">
+                    <img src="https://upload.wikimedia.org/wikipedia/fr/thumb/8/84/Intermarch%C3%A9-logo.svg/1200px-Intermarch%C3%A9-logo.svg.png" alt="Logo">
+                </div>
+                <div class="brand-text">
                     <h2>Les Mousquetaires</h2>
                     <span>Base Logistique Brignoles</span>
                 </div>
             </div>
 
-            <!-- TABLEAU DE BORD -->
-            <div class="menu-title">TABLEAU DE BORD</div>
-            <div class="nav-item active" onclick="showPage('home', this)">
-                <i class="fas fa-th-large"></i> Vue d'ensemble
-            </div>
+            <div class="sidebar-menu">
+                <!-- TABLEAU DE BORD -->
+                <div class="menu-title">Tableau de bord</div>
+                <div class="nav-item active" data-page="home">
+                    <i class="fas fa-th-large"></i>
+                    <span>Vue d'ensemble</span>
+                </div>
 
-            <!-- PROCÉDURES OPÉRATIONNELLES -->
-            <div class="menu-title">PROCÉDURES</div>
-            <div class="nav-item has-submenu" onclick="toggleSubmenu(this)">
-                <i class="fas fa-clipboard-list"></i> Exploitation Logistique
-            </div>
-            <div class="nav-submenu">
-                <div class="nav-item" onclick="showPage('proc-reception', this)">
-                    <i class="fas fa-truck-loading"></i> Réception
+                <!-- PROCÉDURES -->
+                <div class="menu-title">Procédures</div>
+                <div class="nav-item has-submenu" data-submenu="exploitation">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>Exploitation Logistique</span>
                 </div>
-                <div class="nav-item" onclick="showPage('proc-stock', this)">
-                    <i class="fas fa-boxes"></i> Stock
+                <div class="nav-submenu" id="submenu-exploitation">
+                    <div class="nav-item" data-page="proc-reception">
+                        <i class="fas fa-truck-loading"></i>
+                        <span>Réception</span>
+                    </div>
+                    <div class="nav-item" data-page="proc-stock">
+                        <i class="fas fa-boxes"></i>
+                        <span>Stock</span>
+                    </div>
+                    <div class="nav-item" data-page="proc-preparation">
+                        <i class="fas fa-dolly"></i>
+                        <span>Préparation</span>
+                    </div>
+                    <div class="nav-item" data-page="proc-chargement">
+                        <i class="fas fa-truck"></i>
+                        <span>Chargement</span>
+                    </div>
+                    <div class="nav-item" data-page="proc-transport">
+                        <i class="fas fa-shipping-fast"></i>
+                        <span>Transport</span>
+                    </div>
+                    <div class="nav-item" data-page="proc-spdv">
+                        <i class="fas fa-store"></i>
+                        <span>Service PDV</span>
+                    </div>
                 </div>
-                <div class="nav-item" onclick="showPage('proc-preparation', this)">
-                    <i class="fas fa-dolly"></i> Préparation
-                </div>
-                <div class="nav-item" onclick="showPage('proc-chargement', this)">
-                    <i class="fas fa-truck"></i> Chargement
-                </div>
-                <div class="nav-item" onclick="showPage('proc-transport', this)">
-                    <i class="fas fa-shipping-fast"></i> Transport
-                </div>
-                <div class="nav-item" onclick="showPage('proc-spdv', this)">
-                    <i class="fas fa-store"></i> Service PDV
-                </div>
-            </div>
 
-            <div class="nav-item has-submenu" onclick="toggleSubmenu(this)">
-                <i class="fas fa-broom"></i> Qualité / Hygiène
-            </div>
-            <div class="nav-submenu">
-                <div class="nav-item" onclick="showPage('qualite-controle', this)">
-                    <i class="fas fa-clipboard-check"></i> Contrôles
+                <div class="nav-item has-submenu" data-submenu="qualite">
+                    <i class="fas fa-broom"></i>
+                    <span>Qualité / Hygiène</span>
                 </div>
-                <div class="nav-item" onclick="showPage('qualite-temperature', this)">
-                    <i class="fas fa-thermometer-half"></i> Températures
+                <div class="nav-submenu" id="submenu-qualite">
+                    <div class="nav-item" data-page="qualite-controle">
+                        <i class="fas fa-clipboard-check"></i>
+                        <span>Contrôles</span>
+                    </div>
+                    <div class="nav-item" data-page="qualite-temperature">
+                        <i class="fas fa-thermometer-half"></i>
+                        <span>Températures</span>
+                    </div>
+                    <div class="nav-item" data-page="qualite-nettoyage">
+                        <i class="fas fa-spray-can"></i>
+                        <span>Nettoyage</span>
+                    </div>
+                    <div class="nav-item" data-page="qualite-retrait">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Retrait Qualité</span>
+                        <span class="nav-badge">1</span>
+                    </div>
                 </div>
-                <div class="nav-item" onclick="showPage('qualite-nettoyage', this)">
-                    <i class="fas fa-spray-can"></i> Nettoyage
+
+                <div class="nav-item" data-page="proc-securite">
+                    <i class="fas fa-hard-hat"></i>
+                    <span>Sécurité</span>
                 </div>
-                <div class="nav-item" onclick="showPage('qualite-retrait', this)">
-                    <i class="fas fa-exclamation-triangle"></i> Retrait Qualité
+                <div class="nav-item" data-page="proc-rh">
+                    <i class="fas fa-users"></i>
+                    <span>Ressources Humaines</span>
                 </div>
-            </div>
+                <div class="nav-item" data-page="proc-technique">
+                    <i class="fas fa-tools"></i>
+                    <span>Technique / Maintenance</span>
+                </div>
 
-            <div class="nav-item" onclick="showPage('proc-securite', this)">
-                <i class="fas fa-hard-hat"></i> Sécurité
-            </div>
-            <div class="nav-item" onclick="showPage('proc-rh', this)">
-                <i class="fas fa-users"></i> Ressources Humaines
-            </div>
-            <div class="nav-item" onclick="showPage('proc-technique', this)">
-                <i class="fas fa-tools"></i> Technique / Maintenance
-            </div>
+                <!-- QHSE & SÉCURITÉ -->
+                <div class="menu-title">QHSE & Sécurité</div>
+                <div class="nav-item" data-page="incendie-poi">
+                    <i class="fas fa-fire-extinguisher"></i>
+                    <span>Incendie / POI</span>
+                </div>
+                <div class="nav-item" data-page="accidents">
+                    <i class="fas fa-user-injured"></i>
+                    <span>Accidents (AT)</span>
+                </div>
+                <div class="nav-item" data-page="dechets">
+                    <i class="fas fa-recycle"></i>
+                    <span>Déchets & Environnement</span>
+                </div>
 
-            <!-- QHSE & SÉCURITÉ -->
-            <div class="menu-title">QHSE & SÉCURITÉ</div>
-            <div class="nav-item" onclick="showPage('incendie-poi', this)">
-                <i class="fas fa-fire-extinguisher"></i> Incendie / POI
-            </div>
-            <div class="nav-item" onclick="showPage('accidents', this)">
-                <i class="fas fa-user-injured"></i> Accidents (AT)
-            </div>
-            <div class="nav-item" onclick="showPage('dechets', this)">
-                <i class="fas fa-recycle"></i> Déchets & Environnement
-            </div>
+                <!-- PILOTAGE -->
+                <div class="menu-title">Pilotage</div>
+                <div class="nav-item" data-page="indicateurs">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Indicateurs</span>
+                </div>
+                <div class="nav-item" data-page="evaluation">
+                    <i class="fas fa-user-check"></i>
+                    <span>Évaluation Personnel</span>
+                </div>
+                <div class="nav-item" data-page="audits">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>Audits & Revue Direction</span>
+                </div>
 
-            <!-- INDICATEURS -->
-            <div class="menu-title">PILOTAGE</div>
-            <div class="nav-item" onclick="showPage('indicateurs', this)">
-                <i class="fas fa-chart-line"></i> Indicateurs
-            </div>
-            <div class="nav-item" onclick="showPage('evaluation', this)">
-                <i class="fas fa-user-check"></i> Évaluation Personnel
-            </div>
-            <div class="nav-item" onclick="showPage('audits', this)">
-                <i class="fas fa-clipboard-list"></i> Audits & Revue Direction
-            </div>
+                <!-- RÉFÉRENTIELS -->
+                <div class="menu-title">Référentiels</div>
+                <div class="nav-item" data-page="referentiels">
+                    <i class="fas fa-book"></i>
+                    <span>Tous les Référentiels</span>
+                </div>
+                <div class="nav-item" data-page="formation">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Formation</span>
+                </div>
+                <div class="nav-item" data-page="fds">
+                    <i class="fas fa-flask"></i>
+                    <span>Fiches de Sécurité</span>
+                </div>
 
-            <!-- RÉFÉRENTIELS -->
-            <div class="menu-title">RÉFÉRENTIELS</div>
-            <div class="nav-item" onclick="showPage('referentiels', this)">
-                <i class="fas fa-book"></i> Tous les Référentiels
-            </div>
-            <div class="nav-item" onclick="showPage('formation', this)">
-                <i class="fas fa-graduation-cap"></i> Formation
-            </div>
-            <div class="nav-item" onclick="showPage('fds', this)">
-                <i class="fas fa-flask"></i> Fiches de Sécurité (FDS)
-            </div>
-
-            <!-- OUTILS -->
-            <div class="menu-title">OUTILS</div>
-            <div class="nav-item" onclick="showPage('affichage', this)">
-                <i class="fas fa-image"></i> Affichage
-            </div>
-            <div class="nav-item" onclick="showPage('coordonnees', this)">
-                <i class="fas fa-address-book"></i> Coordonnées & Plans
-            </div>
-            <div class="nav-item" onclick="showPage('reglementation', this)">
-                <i class="fas fa-gavel"></i> Réglementation
+                <!-- OUTILS -->
+                <div class="menu-title">Outils</div>
+                <div class="nav-item" data-page="affichage">
+                    <i class="fas fa-image"></i>
+                    <span>Affichage</span>
+                </div>
+                <div class="nav-item" data-page="coordonnees">
+                    <i class="fas fa-address-book"></i>
+                    <span>Coordonnées & Plans</span>
+                </div>
+                <div class="nav-item" data-page="reglementation">
+                    <i class="fas fa-gavel"></i>
+                    <span>Réglementation</span>
+                </div>
             </div>
         </nav>
 
@@ -1283,43 +2055,58 @@
         <div class="main">
             <!-- BARRE DU HAUT -->
             <div class="top-bar">
-                <div class="header-title">
-                    <button onclick="toggleSidebar()" id="mobileMenuBtn" style="background:none; border:none; font-size:24px; cursor:pointer; margin-right:15px; color:var(--noir); display:none;">
+                <div class="header-left">
+                    <button id="mobileMenuBtn">
                         <i class="fas fa-bars"></i>
                     </button>
-                    <h1 id="pageTitle">Les Mousquetaires Brignoles</h1>
-                    <p>Portail de gestion QHSE & Logistique</p>
+                    <div class="header-title">
+                        <h1>Les Mousquetaires Brignoles</h1>
+                        <p>Portail de gestion QHSE & Logistique - 2026</p>
+                    </div>
                 </div>
 
                 <div class="search-wrapper">
+                    <input type="text" id="globalSearch" placeholder="Rechercher une procédure, un document...">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="globalSearch" placeholder="Rechercher (procédure, document, indicateur...)" onkeyup="liveSearch()">
                 </div>
 
                 <div class="user-actions">
-                    <div class="icon-btn" onclick="toggleNotif()">
+                    <div class="icon-btn" id="notifBtn" data-tooltip="Notifications">
                         <i class="fas fa-bell"></i>
                         <span class="badge">3</span>
                     </div>
                     <div class="dropdown-menu" id="notifMenu">
-                        <div style="padding:15px; border-bottom:1px solid var(--acier); font-weight:bold;">
-                            <i class="fas fa-bell"></i> Notifications
+                        <div class="dropdown-header">
+                            <i class="fas fa-bell"></i>
+                            Notifications
                         </div>
-                        <div class="notif-item" onclick="showPage('qualite-retrait')">
-                            <div class="notif-title"><i class="fas fa-exclamation-circle"></i> Retrait Qualité</div>
+                        <div class="notif-item" data-page="qualite-retrait">
+                            <div class="notif-title">
+                                <i class="fas fa-exclamation-circle"></i>
+                                Retrait Qualité Urgent
+                            </div>
                             <div class="notif-text">Lot #4852 à bloquer immédiatement.</div>
+                            <div class="notif-time"><i class="fas fa-clock"></i> Il y a 15 min</div>
                         </div>
-                        <div class="notif-item">
-                            <div class="notif-title"><i class="fas fa-calendar-check"></i> Audit Prévu</div>
-                            <div class="notif-text">Audit certification dans 5 jours.</div>
+                        <div class="notif-item" data-page="audits">
+                            <div class="notif-title">
+                                <i class="fas fa-calendar-check"></i>
+                                Audit Prévu
+                            </div>
+                            <div class="notif-text">Audit certification prévu le 20/02/2026</div>
+                            <div class="notif-time"><i class="fas fa-clock"></i> Il y a 2h</div>
                         </div>
-                        <div class="notif-item">
-                            <div class="notif-title"><i class="fas fa-file-alt"></i> Nouvelle Procédure</div>
-                            <div class="notif-text">Mise à jour procédure réception v2.3</div>
+                        <div class="notif-item" data-page="proc-reception">
+                            <div class="notif-title">
+                                <i class="fas fa-file-alt"></i>
+                                Nouvelle Procédure
+                            </div>
+                            <div class="notif-text">Mise à jour procédure réception v2.4</div>
+                            <div class="notif-time"><i class="fas fa-clock"></i> Hier</div>
                         </div>
                     </div>
 
-                    <div class="icon-btn">
+                    <div class="icon-btn" data-tooltip="Paramètres">
                         <i class="fas fa-cog"></i>
                     </div>
 
@@ -1334,675 +2121,159 @@
             </div>
 
             <!-- ============================
-                 PAGE 1: ACCUEIL / DASHBOARD
+                 PAGE: ACCUEIL / DASHBOARD
             ============================ -->
             <div id="home" class="page-content active">
                 <!-- Stats Cards -->
                 <div class="stats-container">
-                    <div class="card-3d searchable-item" onclick="showPage('indicateurs')">
-                        <div class="card-header">
+                    <div class="stat-card" data-page="indicateurs">
+                        <div class="stat-header">
                             <div>
-                                <div class="card-value">98.5%</div>
-                                <div class="card-label">Taux Conformité</div>
+                                <div class="stat-value">98.5%</div>
+                                <div class="stat-label">Taux Conformité</div>
                             </div>
-                            <div class="card-icon green"><i class="fas fa-check-circle"></i></div>
+                            <div class="stat-icon green">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
                         </div>
-                        <div class="card-trend trend-up"><i class="fas fa-arrow-up"></i> +2.4% vs M-1</div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-arrow-up"></i> +2.4% vs M-1
+                        </div>
                     </div>
 
-                    <div class="card-3d searchable-item" onclick="showPage('accidents')">
-                        <div class="card-header">
+                    <div class="stat-card" data-page="accidents">
+                        <div class="stat-header">
                             <div>
-                                <div class="card-value">12</div>
-                                <div class="card-label">Jours sans AT</div>
+                                <div class="stat-value">12</div>
+                                <div class="stat-label">Jours sans AT</div>
                             </div>
-                            <div class="card-icon"><i class="fas fa-user-injured"></i></div>
+                            <div class="stat-icon blue">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
                         </div>
-                        <div class="card-trend trend-down">Objectif : > 30 jours</div>
+                        <div class="stat-trend warning">
+                            <i class="fas fa-bullseye"></i> Objectif : > 30 jours
+                        </div>
                     </div>
 
-                    <div class="card-3d searchable-item" onclick="showPage('audits')">
-                        <div class="card-header">
+                    <div class="stat-card" data-page="audits">
+                        <div class="stat-header">
                             <div>
-                                <div class="card-value">5</div>
-                                <div class="card-label">Actions en cours</div>
+                                <div class="stat-value">5</div>
+                                <div class="stat-label">Actions en cours</div>
                             </div>
-                            <div class="card-icon orange"><i class="fas fa-tasks"></i></div>
+                            <div class="stat-icon orange">
+                                <i class="fas fa-tasks"></i>
+                            </div>
                         </div>
-                        <div class="card-trend trend-up">2 clôturées hier</div>
+                        <div class="stat-trend up">
+                            <i class="fas fa-check"></i> 2 clôturées hier
+                        </div>
                     </div>
 
-                    <div class="card-3d searchable-item" onclick="showPage('qualite-retrait')">
-                        <div class="card-header">
+                    <div class="stat-card" data-page="qualite-retrait">
+                        <div class="stat-header">
                             <div>
-                                <div class="card-value">1</div>
-                                <div class="card-label">Alerte Qualité</div>
+                                <div class="stat-value">1</div>
+                                <div class="stat-label">Alerte Qualité</div>
                             </div>
-                            <div class="card-icon red"><i class="fas fa-bullhorn"></i></div>
+                            <div class="stat-icon red">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
                         </div>
-                        <div class="card-trend trend-down" style="background:rgba(226,0,26,0.15); color:var(--rouge-mousquetaires);">
-                            <i class="fas fa-exclamation"></i> Action Requise
+                        <div class="stat-trend down">
+                            <i class="fas fa-bolt"></i> Action Requise
                         </div>
                     </div>
                 </div>
 
                 <!-- Accès Rapide -->
-                <div class="section-header">
-                    <h2><i class="fas fa-bolt" style="color:var(--rouge-mousquetaires);"></i> Accès Rapide</h2>
+                <div class="section-title">
+                    <i class="fas fa-bolt"></i>
+                    <h2>Accès Rapide</h2>
                 </div>
                 <div class="quick-access-grid">
-                    <div class="quick-access-card searchable-item" onclick="showPage('proc-reception')">
-                        <i class="fas fa-clipboard-list"></i>
-                        <span>Procédures</span>
+                    <div class="quick-card" data-page="proc-reception">
+                        <div class="quick-icon"><i class="fas fa-clipboard-list"></i></div>
+                        <div class="quick-label">Procédures</div>
                     </div>
-                    <div class="quick-access-card searchable-item" onclick="showPage('affichage')">
-                        <i class="fas fa-image"></i>
-                        <span>Affichage</span>
+                    <div class="quick-card" data-page="affichage">
+                        <div class="quick-icon"><i class="fas fa-image"></i></div>
+                        <div class="quick-label">Affichage</div>
                     </div>
-                    <div class="quick-access-card searchable-item" onclick="showPage('indicateurs')">
-                        <i class="fas fa-chart-bar"></i>
-                        <span>Indicateurs</span>
+                    <div class="quick-card" data-page="indicateurs">
+                        <div class="quick-icon"><i class="fas fa-chart-bar"></i></div>
+                        <div class="quick-label">Indicateurs</div>
                     </div>
-                    <div class="quick-access-card searchable-item" onclick="showPage('evaluation')">
-                        <i class="fas fa-user-check"></i>
-                        <span>Évaluation</span>
+                    <div class="quick-card" data-page="evaluation">
+                        <div class="quick-icon"><i class="fas fa-user-check"></i></div>
+                        <div class="quick-label">Évaluation</div>
                     </div>
-                    <div class="quick-access-card searchable-item" onclick="showPage('referentiels')">
-                        <i class="fas fa-book"></i>
-                        <span>Référentiels</span>
+                    <div class="quick-card" data-page="referentiels">
+                        <div class="quick-icon"><i class="fas fa-book"></i></div>
+                        <div class="quick-label">Référentiels</div>
                     </div>
-                    <div class="quick-access-card searchable-item" onclick="showPage('formation')">
-                        <i class="fas fa-graduation-cap"></i>
-                        <span>Formation</span>
+                    <div class="quick-card" data-page="formation">
+                        <div class="quick-icon"><i class="fas fa-graduation-cap"></i></div>
+                        <div class="quick-label">Formation</div>
                     </div>
-                    <div class="quick-access-card searchable-item" onclick="showPage('audits')">
-                        <i class="fas fa-clipboard-check"></i>
-                        <span>Audits</span>
+                    <div class="quick-card" data-page="audits">
+                        <div class="quick-icon"><i class="fas fa-clipboard-check"></i></div>
+                        <div class="quick-label">Audits</div>
                     </div>
-                    <div class="quick-access-card searchable-item" onclick="showPage('coordonnees')">
-                        <i class="fas fa-address-book"></i>
-                        <span>Coordonnées</span>
+                    <div class="quick-card" data-page="coordonnees">
+                        <div class="quick-icon"><i class="fas fa-address-book"></i></div>
+                        <div class="quick-label">Coordonnées</div>
                     </div>
-                    <div class="quick-access-card searchable-item" onclick="showPage('accidents')">
-                        <i class="fas fa-user-injured"></i>
-                        <span>Suivi AT</span>
+                    <div class="quick-card" data-page="accidents">
+                        <div class="quick-icon"><i class="fas fa-user-injured"></i></div>
+                        <div class="quick-label">Suivi AT</div>
                     </div>
-                    <div class="quick-access-card searchable-item" onclick="showPage('dechets')">
-                        <i class="fas fa-recycle"></i>
-                        <span>Déchets</span>
+                    <div class="quick-card" data-page="dechets">
+                        <div class="quick-icon"><i class="fas fa-recycle"></i></div>
+                        <div class="quick-label">Déchets</div>
                     </div>
-                    <div class="quick-access-card searchable-item" onclick="showPage('incendie-poi')">
-                        <i class="fas fa-fire-extinguisher"></i>
-                        <span>Incendie / POI</span>
+                    <div class="quick-card" data-page="incendie-poi">
+                        <div class="quick-icon"><i class="fas fa-fire-extinguisher"></i></div>
+                        <div class="quick-label">Incendie / POI</div>
                     </div>
-                    <div class="quick-access-card searchable-item" onclick="showPage('qualite-retrait')">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <span>Retrait Qualité</span>
+                    <div class="quick-card" data-page="qualite-retrait">
+                        <div class="quick-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                        <div class="quick-label">Retrait Qualité</div>
                     </div>
-                    <div class="quick-access-card searchable-item" onclick="showPage('fds')">
-                        <i class="fas fa-flask"></i>
-                        <span>Fiches FDS</span>
+                    <div class="quick-card" data-page="fds">
+                        <div class="quick-icon"><i class="fas fa-flask"></i></div>
+                        <div class="quick-label">Fiches FDS</div>
                     </div>
-                    <div class="quick-access-card searchable-item" onclick="showPage('reglementation')">
-                        <i class="fas fa-gavel"></i>
-                        <span>Réglementation</span>
+                    <div class="quick-card" data-page="reglementation">
+                        <div class="quick-icon"><i class="fas fa-gavel"></i></div>
+                        <div class="quick-label">Réglementation</div>
                     </div>
                 </div>
 
-                <!-- Graphiques -->
-                <div class="charts-row">
-                    <div class="chart-section" style="flex: 2;">
-                        <div class="section-header">
-                            <h3>Suivi des Indicateurs Mensuels</h3>
-                            <button class="btn btn-secondary" style="font-size:12px; padding:5px 15px;">
-                                2025 <i class="fas fa-chevron-down"></i>
+                <!-- Graphiques et Alertes -->
+                <div class="content-grid">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-line"></i> Suivi des Indicateurs 2026</h3>
+                            <button class="btn btn-sm btn-secondary">
+                                <i class="fas fa-download"></i> Export
                             </button>
                         </div>
-                        <div style="height: 300px;">
-                            <canvas id="mainChart"></canvas>
-                        </div>
-                    </div>
-
-                    <div class="chart-section" style="flex: 1;">
-                        <h3>Dernières Alertes</h3>
-                        <div class="alert alert-danger">
-                            <i class="fas fa-exclamation-circle"></i>
-                            <div>
-                                <strong>Retrait Lot #4852</strong><br>
-                                <small>Action immédiate requise</small>
-                            </div>
-                        </div>
-                        <div class="alert alert-warning">
-                            <i class="fas fa-calendar-alt"></i>
-                            <div>
-                                <strong>Audit Certification</strong><br>
-                                <small>Prévu le 15/02/2025</small>
-                            </div>
-                        </div>
-                        <div class="alert alert-info">
-                            <i class="fas fa-thermometer-half"></i>
-                            <div>
-                                <strong>Contrôle Températures</strong><br>
-                                <small>RAS - Dernier contrôle OK</small>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="mainChart"></canvas>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- ============================
-                 PAGE: RÉCEPTION
-            ============================ -->
-            <div id="proc-reception" class="page-content">
-                <div class="breadcrumb">
-                    <a href="#" onclick="showPage('home')">Accueil</a>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Procédures</span>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Réception</span>
-                </div>
-
-                <div class="page-header">
-                    <h2><i class="fas fa-truck-loading" style="color:var(--rouge-mousquetaires);"></i> Réception</h2>
-                    <p>Documents et procédures du service réception</p>
-                </div>
-
-                <div class="content-section">
-                    <h3>Documents Process Réception</h3>
-                    <ul class="doc-list">
-                        <li class="searchable-item" onclick="alert('Ouverture document...')">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Protocole de déchargement</span>
-                        </li>
-                        <li class="searchable-item" onclick="alert('Ouverture document...')">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Contrôle températures réception</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Procédure contrôle qualité à réception</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-excel"></i>
-                            <span>Suivi des litiges réception</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Gestion de la casse</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Retour fournisseur</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Nettoyage zone réception</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Protocole sécurité base</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- ============================
-                 PAGE: STOCK
-            ============================ -->
-            <div id="proc-stock" class="page-content">
-                <div class="breadcrumb">
-                    <a href="#" onclick="showPage('home')">Accueil</a>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Procédures</span>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Stock</span>
-                </div>
-
-                <div class="page-header">
-                    <h2><i class="fas fa-boxes" style="color:var(--rouge-mousquetaires);"></i> Stock</h2>
-                    <p>Gestion des stocks et entrepôt</p>
-                </div>
-
-                <div class="content-section">
-                    <h3>Documents Process Stock</h3>
-                    <ul class="doc-list">
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Contrôle des dates (DLC/DDM)</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Températures entrepôt</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Dons aux associations</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Gestion de la casse</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- ============================
-                 PAGE: PRÉPARATION
-            ============================ -->
-            <div id="proc-preparation" class="page-content">
-                <div class="breadcrumb">
-                    <a href="#" onclick="showPage('home')">Accueil</a>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Procédures</span>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Préparation</span>
-                </div>
-
-                <div class="page-header">
-                    <h2><i class="fas fa-dolly" style="color:var(--rouge-mousquetaires);"></i> Préparation</h2>
-                    <p>Documents et procédures de préparation de commandes</p>
-                </div>
-
-                <div class="content-section">
-                    <h3>Documents Process Préparation</h3>
-                    <ul class="doc-list">
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Déstockage</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Contrôles préparation</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Retrait qualité</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Gestion casse</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Nettoyage zones préparation</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Évaluation personnel préparation</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- ============================
-                 PAGE: CHARGEMENT
-            ============================ -->
-            <div id="proc-chargement" class="page-content">
-                <div class="breadcrumb">
-                    <a href="#" onclick="showPage('home')">Accueil</a>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Procédures</span>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Chargement</span>
-                </div>
-
-                <div class="page-header">
-                    <h2><i class="fas fa-truck" style="color:var(--rouge-mousquetaires);"></i> Chargement</h2>
-                    <p>Procédures de chargement et expédition</p>
-                </div>
-
-                <div class="content-section">
-                    <h3>Documents Process Chargement</h3>
-                    <ul class="doc-list">
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Contrôle à quai</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Température</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Reste à quai</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Interbase</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Nettoyage</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Gestion casse</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- ============================
-                 PAGE: TRANSPORT
-            ============================ -->
-            <div id="proc-transport" class="page-content">
-                <div class="breadcrumb">
-                    <a href="#" onclick="showPage('home')">Accueil</a>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Procédures</span>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Transport</span>
-                </div>
-
-                <div class="page-header">
-                    <h2><i class="fas fa-shipping-fast" style="color:var(--rouge-mousquetaires);"></i> Transport</h2>
-                    <p>Bonnes pratiques et suivi transport</p>
-                </div>
-
-                <div class="content-section">
-                    <h3>Documents Transport</h3>
-                    <ul class="doc-list">
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Bonnes pratiques transport</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Lavage semi-remorques</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Retard livraison PDV</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Contrôle ensemble routier</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-excel"></i>
-                            <span>Litiges transport (casse, manquant, ITB)</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- ============================
-                 PAGE: SERVICE PDV
-            ============================ -->
-            <div id="proc-spdv" class="page-content">
-                <div class="breadcrumb">
-                    <a href="#" onclick="showPage('home')">Accueil</a>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Procédures</span>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Service PDV</span>
-                </div>
-
-                <div class="page-header">
-                    <h2><i class="fas fa-store" style="color:var(--rouge-mousquetaires);"></i> Service Point de Vente (SPDV)</h2>
-                    <p>Gestion des relations avec les points de vente</p>
-                </div>
-
-                <div class="content-section">
-                    <h3>Documents SPDV</h3>
-                    <ul class="doc-list">
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Bonnes pratiques SPDV</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>BNC (Bons Non Conformes)</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>RAQ (Retour Après Qualité)</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Retard livraison</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Litiges transport</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Retour marchandises PDV</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Retrait qualité</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-excel"></i>
-                            <span>Infos PDV (coordonnées, horaires, sas)</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- ============================
-                 PAGE: QUALITÉ CONTRÔLES
-            ============================ -->
-            <div id="qualite-controle" class="page-content">
-                <div class="breadcrumb">
-                    <a href="#" onclick="showPage('home')">Accueil</a>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Qualité / Hygiène</span>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Contrôles</span>
-                </div>
-
-                <div class="page-header">
-                    <h2><i class="fas fa-clipboard-check" style="color:var(--rouge-mousquetaires);"></i> Contrôles Qualité</h2>
-                    <p>Procédures et documents de contrôle qualité</p>
-                </div>
-
-                <div class="content-section">
-                    <h3>Documents Contrôles</h3>
-                    <ul class="doc-list">
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Contrôle préparation</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Métrologie</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Retour marchandises PDV</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>LEHA</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Gestion documentaire</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Affichage qualité</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- ============================
-                 PAGE: TEMPÉRATURES
-            ============================ -->
-            <div id="qualite-temperature" class="page-content">
-                <div class="breadcrumb">
-                    <a href="#" onclick="showPage('home')">Accueil</a>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Qualité / Hygiène</span>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Températures</span>
-                </div>
-
-                <div class="page-header">
-                    <h2><i class="fas fa-thermometer-half" style="color:var(--rouge-mousquetaires);"></i> Contrôle Températures</h2>
-                    <p>Suivi et contrôle des températures</p>
-                </div>
-
-                <div class="stats-container">
-                    <div class="card-3d">
+                    <div class="content-card">
                         <div class="card-header">
-                            <div>
-                                <div class="card-value">-18°C</div>
-                                <div class="card-label">Entrepôt Gel</div>
-                            </div>
-                            <div class="card-icon green"><i class="fas fa-snowflake"></i></div>
+                            <h3><i class="fas fa-bell"></i> Alertes Récentes</h3>
+                            <button class="btn btn-sm btn-outline" data-page="indicateurs">Voir tout</button>
                         </div>
-                        <div class="card-trend trend-up">Conforme</div>
-                    </div>
-
-                    <div class="card-3d">
-                        <div class="card-header">
-                            <div>
-                                <div class="card-value">+4°C</div>
-                                <div class="card-label">Entrepôt Frais</div>
-                            </div>
-                            <div class="card-icon green"><i class="fas fa-temperature-low"></i></div>
-                        </div>
-                        <div class="card-trend trend-up">Conforme</div>
-                    </div>
-
-                    <div class="card-3d">
-                        <div class="card-header">
-                            <div>
-                                <div class="card-value">+12°C</div>
-                                <div class="card-label">Zone Réception</div>
-                            </div>
-                            <div class="card-icon green"><i class="fas fa-thermometer-half"></i></div>
-                        </div>
-                        <div class="card-trend trend-up">Conforme</div>
-                    </div>
-                </div>
-
-                <div class="content-section">
-                    <h3>Documents Températures</h3>
-                    <ul class="doc-list">
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Procédure contrôle températures</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-excel"></i>
-                            <span>Relevés températures entrepôt</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-excel"></i>
-                            <span>Relevés températures livraison frais</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-excel"></i>
-                            <span>Relevés températures livraison gel</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- ============================
-                 PAGE: NETTOYAGE
-            ============================ -->
-            <div id="qualite-nettoyage" class="page-content">
-                <div class="breadcrumb">
-                    <a href="#" onclick="showPage('home')">Accueil</a>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Qualité / Hygiène</span>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Nettoyage</span>
-                </div>
-
-                <div class="page-header">
-                    <h2><i class="fas fa-spray-can" style="color:var(--rouge-mousquetaires);"></i> Nettoyage & Hygiène</h2>
-                    <p>Plans et procédures de nettoyage</p>
-                </div>
-
-                <div class="content-section">
-                    <h3>Documents Nettoyage</h3>
-                    <ul class="doc-list">
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Plan de nettoyage entrepôt</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Nettoyage zones réception</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Nettoyage zones préparation</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Nettoyage technique</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-excel"></i>
-                            <span>Suivi dératisation</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- ============================
-                 PAGE: RETRAIT QUALITÉ
-            ============================ -->
-            <div id="qualite-retrait" class="page-content">
-                <div class="breadcrumb">
-                    <a href="#" onclick="showPage('home')">Accueil</a>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Qualité / Hygiène</span>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Retrait Qualité</span>
-                </div>
-
-                <div class="page-header">
-                    <h2><i class="fas fa-exclamation-triangle" style="color:var(--rouge-mousquetaires);"></i> Retrait Qualité / Rappel Produit</h2>
-                    <p>Gestion des retraits et rappels produits</p>
-                </div>
-
-                <div class="alert alert-danger">
-                    <i class="fas fa-exclamation-circle" style="font-size:24px;"></i>
-                    <div>
-                        <strong>ALERTE EN COURS - Lot #4852</strong><br>
-                        Produit : Jambon supérieur tranché - Action immédiate requise
-                    </div>
-                </div>
-
-                <div class="content-section">
-                    <h3>Documents Retrait Qualité</h3>
-                    <ul class="doc-list">
-                        <li class="searchable-item">
-                            <i class="fas fa-file-pdf"></i>
-                            <span>Procédure retrait qualité</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-excel"></i>
-                            <span>Base de données retraits</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-excel"></i>
-                            <span>Feuilles suivi retrait</span>
-                        </li>
-                        <li class="searchable-item">
-                            <i class="fas fa-file-excel"></i>
-                            <span>Tableau synthétique retraits</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- ============================
-                 PAGE: SÉCURITÉ
-            ============================ -->
-            <div id="proc-securite" class="page-content">
-                <div class="breadcrumb">
-                    <a href="#" onclick="showPage('home')">Accueil</a>
-                    <i class="fas fa-chevron-right"></i>
-                    <span>Procédures</span>
-                    
+                        <div class="card-body">
+                            <div class="alert alert-danger">
+                                <div class="alert-icon"><i class="fas fa-exclamation-circle"></i></div>
+                                <div class="alert-content">
+                                    <div class="alert-title">Retrait Lot #4852</div
